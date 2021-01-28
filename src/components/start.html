@@ -11,44 +11,24 @@
     div {
       font-size: 40px;
     }
-
-    .negative {
-      color: red;
-    }
-    .positive {
-      color: green;
-    }
   </style>
 </head>
 <body>
 
   <div id="app">
-    <div :class="{ negative: count < 0 , positive: count > 0 }">{{ count }}</div>
-    <button @click="increase">Test</button>
-    <button @click="decrease">Decrease</button>
-    <button @click="reset">Reset</button>
-    <button @click="double">Double</button>
+
+
   </div>
 
   <script>
     const app = new Vue({
       el: '#app',
       data: {
-        count: 0
+       
       }, 
       methods: {
-        increase() {
-          this.count++;
-        },
-        decrease() {
-          this.count--;
-        },
-        reset() {
-          this.count=0;
-        },
-        double() {
-          this.count= this.count *2;
-        }
+
+
       }
     })
   </script>
