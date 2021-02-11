@@ -282,6 +282,10 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 
 Vue.use(VueAxios, axios);
+
+axios.defaults.headers.post['ClientID'] = 'Contest01' // for POST requests
+axios.defaults.headers.common['ClientKey'] = 'ADFFE1165rDDfTYR' // for all requests 
+
 const d = uq();
 const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
@@ -292,9 +296,9 @@ export default {
       this.fileInfos = response.data;
     });
 
-    Vue.axios.get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=1")
+    Vue.axios.get("http://dummy.restapiexample.com/api/v1/employees")
       .then((resp) => {
-        console.warn(resp);
+        console.warn(resp.data);
       });
   },
   data: function () {
