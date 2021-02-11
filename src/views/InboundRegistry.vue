@@ -261,16 +261,11 @@
             ></v-textarea>
           </v-container>
           <v-container>
-  <div class="text-center">
-    <v-btn
-      rounded
-      color="green"
-      dark
-      large
-    >
-    <h2>إرسال</h2>
-    </v-btn>
-  </div>
+            <div class="text-center">
+              <v-btn rounded color="green" dark large>
+                <h2>إرسال</h2>
+              </v-btn>
+            </div>
           </v-container>
         </v-form>
       </v-card>
@@ -280,14 +275,28 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import uq from "@umalqura/core";
 import UploadService from "../services/UploadFilesService";
+import axios from "axios";
+import VueAxios from "vue-axios";
 
+Vue.use(VueAxios, axios);
 const d = uq();
 const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
 
 export default {
+  mounted() {
+    UploadService.getFiles().then((response) => {
+      this.fileInfos = response.data;
+    });
+
+    Vue.axios.get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=1")
+      .then((resp) => {
+        console.warn(resp);
+      });
+  },
   data: function () {
     return {
       items: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
@@ -351,11 +360,6 @@ export default {
 
       this.loader = null;
     },
-  },
-  mounted() {
-    UploadService.getFiles().then((response) => {
-      this.fileInfos = response.data;
-    });
   },
 };
 </script>
