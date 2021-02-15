@@ -60,7 +60,8 @@
             <v-row>
               <v-col>
                 <v-autocomplete
-                  :items="items"
+                  :items="entities"
+                  item-text="Name"
                   label="واردة من"
                   outlined
                 ></v-autocomplete>
@@ -121,21 +122,36 @@
             </v-row>
           </v-container>
           <v-container>
-            <!--  the title should be "سري" when the type is confidential  -->
-            <v-text-field label="الموضوع" outlined></v-text-field>
+            <v-row>
+              <v-col  cols="9">
+                <!--  the title should be "سري" when the type is confidential  -->
+                <v-text-field label="الموضوع" outlined></v-text-field>
+              </v-col>
+              <v-col>
+                <v-autocomplete
+                  cols="1"
+                  :items="category"
+                  item-text="Name"
+                  label="التصنيف"
+                  outlined
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
           </v-container>
           <v-container>
             <v-row>
               <v-col>
                 <v-autocomplete
-                  :items="items"
+                  :items="importance"
+                  item-text="Name"
                   label="درجة الأهمية"
                   outlined
                 ></v-autocomplete>
               </v-col>
               <v-col>
                 <v-autocomplete
-                  :items="items"
+                  :items="confidentiality"
+                  item-text="Name"
                   label="درجة السرية"
                   outlined
                 ></v-autocomplete>
@@ -146,14 +162,16 @@
             <v-row>
               <v-col>
                 <v-autocomplete
-                  :items="items"
+                  :items="correspondenceType"
+                  item-text="Name"
                   label="نوع الخطاب"
                   outlined
                 ></v-autocomplete>
               </v-col>
               <v-col>
                 <v-autocomplete
-                  :items="items"
+                  :items="objectiveClass"
+                  item-text="Name"
                   label="التصنيف الموضوعي"
                   outlined
                 ></v-autocomplete>
@@ -193,15 +211,17 @@
                 <v-col>
                   <v-autocomplete
                     cols="4"
-                    :items="items"
+                    :items="attatchmentType"
                     label="نوع المرفق"
+                    item-text="Name"
                     outlined
                   ></v-autocomplete>
                 </v-col>
                 <v-col>
                   <v-autocomplete
                     cols="4"
-                    :items="items"
+                    :items="attatchmentCategory"
+                    item-text="Name"
                     label="تصنيف المرفق"
                     outlined
                   ></v-autocomplete>
@@ -275,7 +295,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 import uq from "@umalqura/core";
 import UploadService from "../services/UploadFilesService";
 import axios from "axios";
@@ -283,24 +303,15 @@ import VueAxios from "vue-axios";
 
 Vue.use(VueAxios, axios);
 
-axios.defaults.headers.post['ClientID'] = 'Contest01' // for POST requests
-axios.defaults.headers.common['ClientKey'] = 'ADFFE1165rDDfTYR' // for all requests 
-
+axios.defaults.headers.post["ClientID"] = "Contest01"; // for POST requests
+axios.defaults.headers.common["ClientID"] = "Contest01"; // for all requests
+axios.defaults.headers.post["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
+axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for all requests
 const d = uq();
 const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
 
 export default {
-  mounted() {
-    UploadService.getFiles().then((response) => {
-      this.fileInfos = response.data;
-    });
-
-    Vue.axios.get("http://dummy.restapiexample.com/api/v1/employees")
-      .then((resp) => {
-        console.warn(resp.data);
-      });
-  },
   data: function () {
     return {
       items: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
@@ -314,9 +325,84 @@ export default {
       selectedFiles: undefined,
       progressInfos: [],
       message: "",
-
       fileInfos: [],
+      objectiveClass: null,
+      entities: null,
+      confidentiality: null,
+      importance: null,
+      category: null,
+      correspondenceType: null,
+      attatchmentType: null,
+      attatchmentCategory: null,
+      attatchmentExtention: null,
     };
+  },
+  mounted() {
+    UploadService.getFiles().then((response) => {
+      this.fileInfos = response.data;
+    });
+
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=1")
+      .then((resp) => {
+        this.objectiveClass = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=3")
+      .then((resp) => {
+        this.confidentiality = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=13")
+      .then((resp) => {
+        this.entities = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=4")
+      .then((resp) => {
+        this.importance = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=2")
+      .then((resp) => {
+        this.category = resp.data; // copy or origin
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=11")
+      .then((resp) => {
+        this.correspondenceType = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=6")
+      .then((resp) => {
+        this.attatchmentType = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=12")
+      .then((resp) => {
+        this.attatchmentCategory = resp.data;
+        console.log(resp.data);
+      });
+
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=7")
+      .then((resp) => {
+        this.attatchmentExtention = resp.data;
+        console.log(resp.data);
+      });
+    Vue.axios
+      .get("http://adf-testintgr01/EGPortalApi/api/cms/GetCMSLookups?type=2")
+      .then((resp) => {
+        this.category = resp.data;
+        console.log(resp.data);
+      });
   },
 
   methods: {
