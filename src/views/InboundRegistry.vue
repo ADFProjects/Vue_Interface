@@ -112,10 +112,13 @@
                 ></v-autocomplete>
               </v-col>
               <v-col>
+                <!-- TODO : change the value -->
                 <v-text-field
                   type="number"
                   class="inputNumber"
                   label="رقم الصادر"
+                  value="000000000"
+                  readonly
                   outlined
                 ></v-text-field>
               </v-col>
@@ -123,9 +126,16 @@
           </v-container>
           <v-container>
             <v-row>
-              <v-col  cols="9">
+              <v-col cols="9">
                 <!--  the title should be "سري" when the type is confidential  -->
-                <v-text-field label="الموضوع" outlined></v-text-field>
+                <v-text-field
+                  v-model="description"
+                  :rules="rules"
+                  counter
+                  maxlength="500"
+                  label="الموضوع"
+                  outlined
+                ></v-text-field>
               </v-col>
               <v-col>
                 <v-autocomplete
@@ -135,6 +145,44 @@
                   label="التصنيف"
                   outlined
                 ></v-autocomplete>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-container>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  type="number"
+                  class="inputNumber"
+                  label="الاسم"
+                  outlined
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  type="number"
+                  class="inputNumber"
+                  label="رقم الجوال"
+                  outlined
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  type="number"
+                  class="inputNumber"
+                  label="رقم الهوية الوطنية"
+                  outlined
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  type="number"
+                  class="inputNumber"
+                  label="البريد الإلكتروني"
+                  outlined
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -275,6 +323,10 @@
           <v-container>
             <!--  the title should be "سري" when the type is confidential  -->
             <v-textarea
+              v-model="description"
+              :rules="rules"
+              counter
+              maxlength="500"
               outlined
               name="input-7-4"
               label="الملاحظات"
@@ -326,15 +378,16 @@ export default {
       progressInfos: [],
       message: "",
       fileInfos: [],
-      objectiveClass: null,
-      entities: null,
-      confidentiality: null,
-      importance: null,
-      category: null,
-      correspondenceType: null,
-      attatchmentType: null,
-      attatchmentCategory: null,
-      attatchmentExtention: null,
+      objectiveClass: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      entities: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      confidentiality: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      importance: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      category: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      correspondenceType: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      attatchmentType: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      attatchmentCategory: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      attatchmentExtention: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
+      rules: [(v) => v.length <= 500 || "Max 25 characters"],
     };
   },
   mounted() {

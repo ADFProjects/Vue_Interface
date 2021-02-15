@@ -8,7 +8,9 @@
 </template>
 
 <script>
-import InboundRegistry from './views/InboundRegistry';
+import InboundRegistry from './views/CorrespondenceInquiry';
+//CorrespondenceInquiry
+//InboundRegistry
 export default {
   name: 'App',
   components: {
