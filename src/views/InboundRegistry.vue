@@ -55,7 +55,7 @@
   <v-app>
     <v-main>
       <v-card class="px-3">
-        <v-form v-model="valid">
+        <v-form ref="form" v-model="valid" lazy-validations>
           <v-container>
             <v-row>
               <v-col>
@@ -63,15 +63,19 @@
                   :items="entities"
                   item-text="Name"
                   label="واردة من"
+                  :rules="[rules.required]"
                   outlined
+                  required
                 ></v-autocomplete>
               </v-col>
               <v-col>
                 <v-text-field
                   type="number"
                   class="inputNumber"
+                  :rules="[rules.required]"
                   label="رقم الوارد"
                   outlined
+                  required
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -108,6 +112,8 @@
                 <v-autocomplete
                   :items="items"
                   label="صادرة إلى"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-autocomplete>
               </v-col>
@@ -129,10 +135,11 @@
               <v-col cols="9">
                 <!--  the title should be "سري" when the type is confidential  -->
                 <v-text-field
-                  v-model="description"
-                  :rules="rules"
+                  v-model="title"
+                  :rules="[rules.required, rules.counterTitle]"
+                  required
+                  maxlength="25"
                   counter
-                  maxlength="500"
                   label="الموضوع"
                   outlined
                 ></v-text-field>
@@ -143,6 +150,8 @@
                   :items="category"
                   item-text="Name"
                   label="التصنيف"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-autocomplete>
               </v-col>
@@ -151,12 +160,7 @@
           <v-container>
             <v-row>
               <v-col>
-                <v-text-field
-                  type="number"
-                  class="inputNumber"
-                  label="الاسم"
-                  outlined
-                ></v-text-field>
+                <v-text-field label="الاسم" outlined></v-text-field>
               </v-col>
               <v-col>
                 <v-text-field
@@ -173,13 +177,15 @@
                   type="number"
                   class="inputNumber"
                   label="رقم الهوية الوطنية"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-text-field>
               </v-col>
               <v-col>
                 <v-text-field
-                  type="number"
-                  class="inputNumber"
+                  v-model="email"
+                  :rules="[rules.email]"
                   label="البريد الإلكتروني"
                   outlined
                 ></v-text-field>
@@ -193,6 +199,8 @@
                   :items="importance"
                   item-text="Name"
                   label="درجة الأهمية"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-autocomplete>
               </v-col>
@@ -201,6 +209,8 @@
                   :items="confidentiality"
                   item-text="Name"
                   label="درجة السرية"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-autocomplete>
               </v-col>
@@ -213,6 +223,8 @@
                   :items="correspondenceType"
                   item-text="Name"
                   label="نوع الخطاب"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-autocomplete>
               </v-col>
@@ -221,6 +233,8 @@
                   :items="objectiveClass"
                   item-text="Name"
                   label="التصنيف الموضوعي"
+                  :rules="[rules.required]"
+                  required
                   outlined
                 ></v-autocomplete>
               </v-col>
@@ -324,9 +338,9 @@
             <!--  the title should be "سري" when the type is confidential  -->
             <v-textarea
               v-model="description"
-              :rules="rules"
-              counter
+              :rules="rules.counterDescription"
               maxlength="500"
+              counter
               outlined
               name="input-7-4"
               label="الملاحظات"
@@ -334,9 +348,14 @@
           </v-container>
           <v-container>
             <div class="text-center">
-              <v-btn rounded color="green" dark large>
-                <h2>إرسال</h2>
-              </v-btn>
+           <v-btn
+      :disabled="valid"
+      color="success"
+      class="mr-4"
+      @click="validate"
+    >
+      <h2>إرسال</h2>
+    </v-btn>
             </div>
           </v-container>
         </v-form>
@@ -366,6 +385,7 @@ const today = d.format("yyyy-MM-dd", "en");
 export default {
   data: function () {
     return {
+      valid: true,
       items: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
       menu: false,
       modal: false,
@@ -387,7 +407,19 @@ export default {
       attatchmentType: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
       attatchmentCategory: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
       attatchmentExtention: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
-      rules: [(v) => v.length <= 500 || "Max 25 characters"],
+      title: "",
+      email: "",
+      rules: {
+        required: (value) => !!value || "مطلوب",
+        counterTitle: (value) => value.length <= 25,
+        counterDescription: (value) => value.length <= 500,
+        email: (value) => {
+          if (value.length > 0) {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return pattern.test(value) || "البريد الإلكتروني غير صحيح";
+          }
+        },
+      },
     };
   },
   mounted() {
@@ -491,6 +523,9 @@ export default {
           this.progressInfos[idx].percentage = 0;
           this.message = "Could not upload the file:" + file.name;
         });
+    },
+    validate() {
+      this.$refs.form.validate();
     },
   },
   watch: {
