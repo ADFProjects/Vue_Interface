@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import InboundRegistry from './components/search-adf/searchForm';
+import InboundRegistry from './views/InboundRegistry.vue';
 //CorrespondenceInquiry
 //InboundRegistry
 export default {
