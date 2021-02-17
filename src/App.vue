@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import InboundRegistry from './views/CorrespondenceInquiry';
+import InboundRegistry from './components/search-adf/searchForm';
 //CorrespondenceInquiry
 //InboundRegistry
 export default {
