@@ -1,30 +1,85 @@
 <template>
   <v-app>
-  
-    <v-main>
-      <inbound-registry/>
-    </v-main>
-    
-    <v-content>
-      <router-view></router-view>
-    </v-content>
-
-    
+    <navbar />
+    <router-view />
   </v-app>
 </template>
 
 <script>
-import InboundRegistry from './views/InboundRegistry.vue';
-//CorrespondenceInquiry
-//InboundRegistry
+import Vue from "vue";
+
+import axios from "axios";
+import VueAxios from "vue-axios";
+
+Vue.use(VueAxios, axios);
+
+axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
+axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
+
 export default {
-  name: 'App',
-  components: {
-    InboundRegistry
-  },
+  components: {},
+  name: "App",
 
   data: () => ({
-    
+    body:
+      "userName=Kfq9py7dk6PhoBgGQCQCZQ%3d%3d&password=9%2bFkJtsldJo5Q9OLbcxeeXeMUv%2bDReAIS3phB2VGxkw%3d#/&grant_type=password",
+    requestBody: "",
+    username: "",
+    password: "",
+    refreshRequestBody: "grant_type=refresh_token& refresh_token=",
   }),
+  mounted() {
+    // get url, substring
+    var url =
+      "https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
+    //window.location.href;
+    this.username = url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
+    this.password = url.substring(url.indexOf("&P=") + 3);
+    this.requestBody =
+      " userName=" +
+      this.username +
+      "&password=" +
+      this.password +
+      "&grant_type=password";
+    // get token request
+    Vue.axios
+      .post("https://emp.adf.gov.sa/cms7514254/api/cmstoken", this.requestBody)
+      .then((resp) => {
+        localStorage.setItem("token", resp.data.access_token);
+        localStorage.setItem("expired", new Date(resp.data[".expires"]));
+        localStorage.setItem("refresh", resp.data.refresh_token);
+        console.log(resp.data.access_token);
+      });
+    // get permissions
+    axios.defaults.headers.common["Authorization"] =
+      "Bearer " + localStorage.getItem("token");
+    Vue.axios
+      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser")
+      .then((resp) => {
+        localStorage.setItem("permissions", resp.data.Permissions);
+      });
+
+    this.refreshToken(localStorage.getItem("expired"));
+  },
+  methods: {
+    refreshToken(date) {
+      const today = new Date();
+      const exp = new Date(date);
+      if (today >= exp) {
+        //refresh the token
+        Vue.axios
+          .post(
+            "https://emp.adf.gov.sa/cms7514254/api/cmstoken",
+            this.refreshRequestBody + localStorage.getItem("refresh")
+          )
+          .then((resp) => {
+            localStorage.setItem("token", resp.data.access_token);
+            localStorage.setItem("expired", new Date(resp.data[".expires"]));
+            localStorage.setItem("refresh", resp.data.refresh_token);
+            console.log("done refresh");
+          });
+      }
+    },
+  },
 };
 </script>

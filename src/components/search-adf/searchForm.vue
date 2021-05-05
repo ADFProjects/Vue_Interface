@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="margin-right:220px;">
+  <div id="app" style="margin-right: 220px">
     <!-- <script src="searchForm.js"></script> -->
     <v-app id="inspire">
       <v-container fluid>
@@ -13,7 +13,12 @@
           hide-default-footer
         >
           <template v-slot:header>
-            <v-toolbar dark color="#252123; darken-3" class="mb-1" style="width: 1000px;">
+            <v-toolbar
+              dark
+              color="#252123; darken-3"
+              class="mb-1"
+              style="width: 1000px"
+            >
               <v-text-field
                 v-model="search"
                 clearable
@@ -48,17 +53,19 @@
           </template>
 
           <template v-slot:default="props">
-            <v-row style="width: 1025px;">
+            <v-row style="width: 1025px">
               <v-col
-                v-for="item in props.items"
+                v-for="(item  , index) in props.items"
                 :key="item.name"
                 cols="12"
                 sm="6"
                 md="4"
                 lg="3"
+
+                
               >
-                <v-card>
-                  <v-card-title class="subheading font-weight-bold">
+                <v-card @click="navigate(index)">
+                  <v-card-title class="subheading font-weight-bold" >
                     {{ item.name }}
                   </v-card-title>
 
@@ -88,7 +95,12 @@
           </template>
 
           <template v-slot:footer>
-            <v-row class="mt-2" align="center" justify="center" style="width: 1009px; padding: 10px;">
+            <v-row
+              class="mt-2"
+              align="center"
+              justify="center"
+              style="width: 1009px; padding: 10px"
+            >
               <span class="grey--text"> المعاملات لكل صفحة</span>
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
@@ -117,25 +129,21 @@
 
               <v-spacer></v-spacer>
 
-              <span
-                class="mr-4
-                grey--text"
-                style="padding:10px;"
-              >
+              <span class="mr-4 grey--text" style="padding: 10px">
                 الصفحة من {{ page }} إلى {{ numberOfPages }}
               </span>
-              
+
               <v-btn
                 fab
                 dark
                 color="green darken-3"
                 class="mr-1"
                 @click="formerPage"
-                style="margin-left:10px;"
+                style="margin-left: 10px"
               >
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
-              
+
               <v-btn
                 fab
                 dark
@@ -287,6 +295,10 @@ export default {
     },
   },
   methods: {
+    navigate(index){
+      console.log( "8888"+index);
+    
+    },
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) this.page += 1;
     },

@@ -2,21 +2,20 @@ import http from "../plugins/http-common.js";
 
 class UploadFilesService {
   upload(file, onUploadProgress) {
+    
     let formData = new FormData();
 
     formData.append("file", file);
 
-    return http.post("/upload", formData, {
+    return http.post("/UploadFile?k=cms", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
       onUploadProgress
     });
   }
+  
 
-  getFiles() {
-    return http.get("/files");
-  }
 }
 
 export default new UploadFilesService();
