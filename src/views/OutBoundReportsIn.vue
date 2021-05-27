@@ -2,200 +2,198 @@
   <div id="app" class="d-flex justify-center">
     <v-app id="inspire">
       <v-main>
-        <v-card>
-          <v-container>
-            <v-app-bar
-              style="border-radius: 4px"
-              width="1160"
-              color="#28714e"
-              dark
-              class="mb-1"
-            >
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-img
-                    v-on="on"
-                    src="~@/assets/reportPdf-adf.png"
-                    alt="InboundImage"
-                    max-height="110"
-                    max-width="50"
-                  ></v-img>
-                </template>
-                <span>تقرير المعاملات</span>
-              </v-tooltip>
-
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-text-field
-                    v-on="on"
-                    v-model="search"
-                    clearable
-                    flat
-                    solo-inverted
-                    hide-details
-                    prepend-inner-icon="mdi-magnify"
-                    label="البحث"
-                    class="mx-4"
-                    style="font-size: 16px; font-weight: bold;"
-                  ></v-text-field>
-                </template>
-                <span>البحث بإستخدام جميع بيانات المعاملة</span>
-              </v-tooltip>
-
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-btn
-                    v-on="on"
-                    @click="generatePDF"
-                    v-model="generatePDF"
-                    large
-                    color="#28714e"
-                    height="48"
-                    style=" box-shadow: rgba(0,0,0,0.9); margin-left:15px;"
-                  >
-                    <img
-                      src="~@/assets/pdf.png"
-                      alt="pdfImage"
-                      height="40"
-                      width="40"
-                    />
-                  </v-btn>
-                </template>
-                <span>طباعة المعاملات بإستخدام صيغة (PDF)</span>
-              </v-tooltip>
-
-              <template v-if="$vuetify.breakpoint.mdAndUp">
-                <v-btn-toggle v-model="sortDesc" mandatory>
-                  <v-tooltip bottom>
-                    <template #activator="{ on }">
-                      <v-btn
-                        v-on="on"
-                        large
-                        depressed
-                        color="#ffffff"
-                        :value="true"
-                      >
-                        <v-icon style="color:#28714e">mdi-arrow-down</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
-                  </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on }">
-                      <v-btn
-                        v-on="on"
-                        large
-                        depressed
-                        color="#ffffff"
-                        :value="false"
-                      >
-                        <v-icon style="color:#28714e">mdi-arrow-up</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
-                  </v-tooltip>
-                </v-btn-toggle>
+        <v-container>
+          <v-app-bar
+            style="border-radius: 4px;opacity: 0.9 !important;"
+            width="1160"
+            color="#28714e"
+            dark
+            class="mb-1"
+          >
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-img
+                  v-on="on"
+                  src="~@/assets/reportPdf-adf.png"
+                  alt="InboundImage"
+                  max-height="110"
+                  max-width="50"
+                ></v-img>
               </template>
-            </v-app-bar>
+              <span>تقرير المعاملات</span>
+            </v-tooltip>
 
-            <v-card>
-              <v-data-table
-                style="font-weight: bold; color:#4d4d4d;"
-                :header-props="{ sortIcon: null }"
-                :sort-desc="sortDesc"
-                v-model="selected"
-                :headers="headers"
-                :items="objectiveClass"
-                sort-by="IncidentNumber"
-                :search="search"
-                :generatePDF="generatePDF"
-                item-key="IncidentNumber"
-                show-select
-                class="elevation-2"
-                :items-per-page="10"
-                :footer-props="{
-                  pageText: '',
-                  itemsPerPageOptions: [5, 10, 15, 25, 50],
-                  'items-per-page-text': 'عدد المعاملات في الصفحة:',
-                }"
-              >
-                <!-- :footer-props="{
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-text-field
+                  v-on="on"
+                  v-model="search"
+                  clearable
+                  flat
+                  solo-inverted
+                  hide-details
+                  prepend-inner-icon="mdi-magnify"
+                  label="البحث"
+                  class="mx-4"
+                  style="font-size: 16px; font-weight: bold;"
+                ></v-text-field>
+              </template>
+              <span>البحث بإستخدام جميع بيانات المعاملة</span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-btn
+                  v-on="on"
+                  @click="generatePDF"
+                  v-model="generatePDF"
+                  large
+                  color="#28714e"
+                  height="48"
+                  style=" box-shadow: rgba(0,0,0,0.9); margin-left:15px;"
+                >
+                  <img
+                    src="~@/assets/pdf.png"
+                    alt="pdfImage"
+                    height="40"
+                    width="40"
+                  />
+                </v-btn>
+              </template>
+              <span>طباعة المعاملات بإستخدام صيغة (PDF)</span>
+            </v-tooltip>
+
+            <template v-if="$vuetify.breakpoint.mdAndUp">
+              <v-btn-toggle v-model="sortDesc" mandatory>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-btn
+                      v-on="on"
+                      large
+                      depressed
+                      color="#ffffff"
+                      :value="true"
+                    >
+                      <v-icon style="color:#28714e">mdi-arrow-down</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-btn
+                      v-on="on"
+                      large
+                      depressed
+                      color="#ffffff"
+                      :value="false"
+                    >
+                      <v-icon style="color:#28714e">mdi-arrow-up</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                </v-tooltip>
+              </v-btn-toggle>
+            </template>
+          </v-app-bar>
+
+          <v-card>
+            <v-data-table
+              style="font-weight: bold; color:#4d4d4d;"
+              :header-props="{ sortIcon: null }"
+              :sort-desc="sortDesc"
+              v-model="selected"
+              :headers="headers"
+              :items="objectiveClass"
+              sort-by="IncidentNumber"
+              :search="search"
+              :generatePDF="generatePDF"
+              item-key="IncidentNumber"
+              show-select
+              class="elevation-2 custom-data-table"
+              :items-per-page="10"
+              :footer-props="{
+                pageText: '',
+                itemsPerPageOptions: [5, 10, 15, 25, 50],
+                'items-per-page-text': 'عدد المعاملات في الصفحة:',
+              }"
+            >
+              <!-- :footer-props="{
               pageText: '',
               'items-per-page-all-text': 'الكل',
               'items-per-page-text': 'عدد الصفوف في الصفحة:',
             }" -->
-                <template v-slot:[`header.data-table-select`]="{ props, on }">
-                  <v-simple-checkbox
-                    color="primary"
-                    v-if="props.indeterminate"
-                    v-ripple
-                    v-bind="props"
-                    :value="props.indeterminate"
-                    v-on="on"
-                  ></v-simple-checkbox>
-                  <v-simple-checkbox
-                    color="primary"
-                    v-if="!props.indeterminate"
-                    v-ripple
-                    v-bind="props"
-                    v-on="on"
-                  ></v-simple-checkbox>
-                </template>
+              <!-- <template v-slot:[`header.data-table-select`]="{ props, on }">
+                <v-simple-checkbox
+                  color="primary"
+                  v-if="props.indeterminate"
+                  v-ripple
+                  v-bind="props"
+                  :value="props.indeterminate"
+                  v-on="on"
+                ></v-simple-checkbox>
+                <v-simple-checkbox
+                  color="primary"
+                  v-if="!props.indeterminate"
+                  v-ripple
+                  v-bind="props"
+                  v-on="on"
+                ></v-simple-checkbox>
+              </template> -->
 
-                <template v-slot:no-data>
-                  <v-alert
-                    :value="true"
-                    color="#339966"
-                    border="top"
-                    colored-border
-                    type="error"
-                    elevation="5"
-                    height="70"
-                    style="
+              <template v-slot:no-data>
+                <v-alert
+                  :value="true"
+                  color="#339966"
+                  border="top"
+                  colored-border
+                  type="error"
+                  elevation="5"
+                  height="70"
+                  style="
                 margin-top: 20px;
                 padding-left: 40px;
                 font-size: 20px;
                 padding-top:25px;
                 color: #4d4d4d;
               "
-                  >
-                    تقرير المعاملات فارغ، لايوجد معاملات لعرضها هنا.
-                  </v-alert>
-                </template>
-                <v-alert
-                  slot="no-results"
-                  :value="true"
-                  border="top"
-                  color="#339966"
-                  colored-border
-                  type="error"
-                  elevation="5"
-                  height="70"
-                  style="
+                >
+                  تقرير المعاملات فارغ، لايوجد معاملات لعرضها هنا.
+                </v-alert>
+              </template>
+              <v-alert
+                slot="no-results"
+                :value="true"
+                border="top"
+                color="#339966"
+                colored-border
+                type="error"
+                elevation="5"
+                height="70"
+                style="
                 font-size: 20px;
                 color: #4d4d4d;
                 margin-top:15px;
                 padding-top:25px;
               "
-                >
-                  بحثك عن " {{ search }} " لم يعثر على نتائج!
-                </v-alert>
+              >
+                بحثك عن " {{ search }} " لم يعثر على نتائج!
+              </v-alert>
 
-                <template v-slot:top="{ pagination, options, updateOptions }">
-                  <!-- items-per-page-all-text="الكل" -->
-                  <v-data-footer
-                    :pagination="pagination"
-                    :options="options"
-                    :items-per-page-options="[5, 10, 15, 25]"
-                    @update:options="updateOptions"
-                    items-per-page-text="عدد المعاملات في الصفحة:"
-                    pageText=""
-                  />
-                </template>
-              </v-data-table>
-            </v-card>
-          </v-container>
-        </v-card>
+              <template v-slot:top="{ pagination, options, updateOptions }">
+                <!-- items-per-page-all-text="الكل" -->
+                <v-data-footer
+                  :pagination="pagination"
+                  :options="options"
+                  :items-per-page-options="[5, 10, 15, 25]"
+                  @update:options="updateOptions"
+                  items-per-page-text="عدد المعاملات في الصفحة:"
+                  pageText=""
+                />
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-container>
       </v-main>
     </v-app>
   </div>
@@ -269,7 +267,7 @@ export default {
         pageindex: 0,
         pageSize: 100,
         SenderType: "SPO",
-        DeliveryBy: "in",
+        DeliveryBy: "spoIn",
       },
 
       GetSequensePdf1: {
@@ -526,7 +524,7 @@ export default {
           .setLineWidth(1.5)
           .setDrawColor(89, 89, 89)
           .line(0, 80, 900, 80);
-        doc.setFontSize(12).text(240, 96, "بيان بالبريد الصادر - داخل المدينة");
+        doc.setFontSize(12).text(245, 96, "بيان بالبريد الصادر - داخل المدينة");
       }
 
       doc.save(`المعاملات الصادرة - داخل المدينة.pdf`);
@@ -541,16 +539,30 @@ export default {
   background-color: #f2f2f2;
   font-weight: bold;
 }
+.custom-data-table thead tr th:nth-child(1) {
+  width: 50px;
+}
+.custom-data-table thead tr th:nth-child(2) {
+  width: 100px;
+}
+.custom-data-table thead tr th:nth-child(3) {
+  min-width: 100px;
+}
+.custom-data-table thead tr th:nth-child(4) {
+  width: 200px;
+}
+.custom-data-table thead tr th:nth-child(5) {
+  width: 200px;
+}
 </style>
 
 <style lang="css" scoped>
 .v-text-field >>> label {
-  font-size: 20px;
+  font-size: 18px;
 }
 .v-tooltip__content {
   font-size: 16px !important;
   opacity: 0.8 !important;
-  font-weight: bold;
   pointer-events: auto;
   color: white;
   background-color: #404040;

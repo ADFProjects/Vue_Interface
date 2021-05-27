@@ -47,8 +47,8 @@ export default {
         pageindex: 0,
         pageSize: 100,
       },
-      rules:{
-                counterTitle: (value) => value.length <= 240,
+      rules: {
+        counterTitle: (value) => value.length <= 240,
         counterDescription: (value) => value.length <= 500,
         nId: (v) => {
           if (v.length > 0) {
@@ -71,15 +71,12 @@ export default {
             return pattern.test(value) || "البريد الإلكتروني غير صحيح";
           }
         },
-      }
+      },
     };
   },
   mounted() {
     Vue.axios
-      .get(
-        "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
-        this.test
-      )
+      .get("https://emp.adf.gov.sa/cms7514254/api/cms/Search", this.test)
       .then((resp) => {
         console.log(resp.data);
         // go to main page

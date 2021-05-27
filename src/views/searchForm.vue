@@ -14,9 +14,7 @@
               :sort-desc="sortDesc"
               :footer-props="{
                 // itemsPerPageOptions:[10,20,30,-1],
-
                 pageText: '',
-
                 'items-per-page-all-text': 'الكل',
                 'items-per-page-text': 'عدد المعاملات الواردة في الصفحة:',
               }"
@@ -171,7 +169,6 @@ export default {
   data: () => {
     return {
       objectiveClass: [], //response
-
       test: {
         RepType: 0,
         SourceType: 2,

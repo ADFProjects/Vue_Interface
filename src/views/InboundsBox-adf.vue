@@ -9,7 +9,7 @@
             :loader="waitingLoader"
           />
           <v-app-bar
-            style="border-radius: 4px"
+            style="border-radius: 4px;opacity: 0.9 !important;"
             width="1160"
             color="#28714e"
             dark
@@ -22,7 +22,7 @@
                   src="~@/assets/InboundsBox-adf.png"
                   alt="InboundImage"
                   max-height="100"
-                  max-width="65"
+                  max-width="60"
                 ></v-img>
               </template>
               <span>صندوق البريد الوارد</span>
@@ -100,7 +100,7 @@
               }"
             >
               <template v-slot:item="{ item }">
-                <tr @click="searchbyid(item)" class="text-center">
+                <tr id="rowCols" @click="searchbyid(item)" class="text-center">
                   <td>{{ item.IncidentNumber }}</td>
                   <template>
                     <td>
@@ -397,6 +397,9 @@ export default {
 </script>
 
 <style>
+#rowCols:hover {
+  cursor: pointer;
+}
 .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
   font-size: 16px !important;
   background-color: #f2f2f2;
@@ -410,12 +413,12 @@ td:first-of-type {
 
 <style lang="css" scoped>
 .v-text-field >>> label {
-  font-size: 20px;
+  font-size: 18px;
 }
 .v-tooltip__content {
   font-size: 16px !important;
   opacity: 0.8 !important;
-  font-weight: bold;
+
   pointer-events: auto;
   color: white;
   background-color: #404040;

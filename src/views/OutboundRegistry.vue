@@ -12,7 +12,6 @@
 .v-tooltip__content {
   font-size: 16px !important;
   opacity: 0.8 !important;
-  font-weight: bold;
   pointer-events: auto;
   color: white;
   background-color: #404040;
@@ -83,29 +82,44 @@
   <div id="app" class="d-flex justify-center">
     <v-app id="inspire">
       <v-main>
-        <v-card>
-          <v-container>
-            <v-app-bar
-              style="border-radius: 4px"
-              width="1160"
-              color="#28714e"
-              dark
-              class="mb-1"
-            >
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-img
-                    v-on="on"
-                    src="~@/assets/OutboundRegistry-adf.png"
-                    alt="InboundImage"
-                    max-height="110"
-                    max-width="50"
-                  ></v-img>
-                </template>
-                <span>إضافة صادر</span>
-              </v-tooltip>
-            </v-app-bar>
+        <v-container>
+          <v-app-bar
+            style="border-radius: 4px;opacity: 0.9 !important;"
+            width="1160"
+            color="#28714e"
+            dark
+            class="mb-1"
+          >
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-img
+                  v-on="on"
+                  src="~@/assets/OutboundRegistry-adf.png"
+                  alt="InboundImage"
+                  max-height="110"
+                  max-width="40"
+                ></v-img>
+              </template>
+              <span>إضافة صادر</span>
+            </v-tooltip>
+            <div>
+              <p
+                class="my-10 font-weight-medium"
+                style="font-size: 20px; color: #e6e6e6; margin:15px; margin-left:8px;"
+              >
+                تسجيل
+              </p>
+            </div>
 
+            <p
+              class="my-10 font-weight-medium"
+              style="opacity: 0.6 !important; font-size: 19px; padding-top:1px;"
+            >
+              المعاملة الصادرة
+            </p>
+          </v-app-bar>
+
+          <v-card>
             <v-form ref="form" v-model="valid" lazy-validations>
               <loading
                 :active="isLoading"
@@ -178,6 +192,20 @@
               </v-container>
               <v-container>
                 <v-row>
+                                    <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingdepartments"
+                      :items="departments"
+                      item-text="GehaName"
+                      label="واردة من"
+                      :rules="rules.required"
+                      v-model="dep"
+                      required
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
                   <v-col>
                     <v-autocomplete
                       color="#28714e"
@@ -518,7 +546,7 @@
               <v-container>
                 <v-checkbox
                   color="#28714e"
-                  v-model="checkbox"
+                  v-model="doprint"
                   label=" طباعة الباركود"
                 ></v-checkbox>
               </v-container>
@@ -527,7 +555,7 @@
                   <router-link to="" @click="overlay = !overlay">
                     <v-btn
                       rounded
-                      color="#28714e"
+                      color="#3d7f5f"
                       dark
                       large
                       @click="validate"
@@ -539,53 +567,27 @@
                 </div>
               </v-container>
             </v-form>
-            <button @click="print">print</button>
-            <div id="printMe">
-              <v-container
-                v-show="true"
-                style="
-                  border-style: solid;
-                  border-color: green;
-                  width: 189px;
-                  height: 172px;
-                  border-width: 1px;
-                  direction: rtl;
-                "
-              >
-                <img
-                  src="@/assets/adf.png"
-                  height="30px"
-                  style="display: block; margin-left: auto; margin-right: auto"
-                />
-                <v-container class="text">
-                  <!--   <v-row style="margin-top: 0; padding: 0; font-size: 3px">
-                  <v-col style="font-size: 8px">رقم الصادر </v-col>
-                  <v-col style="padding: 0; margin: 0">
-                    {{ this.outboundNumber }}</v-col
-                  >
-                </v-row>
-                -->
-                  <v-row style="margin-top: 0; padding: 0; font-size: 3px">
-                    <v-col>المرفقات</v-col>
-                    <v-col> {{ filsUrls.length }}</v-col>
-                  </v-row>
-                  <barcode
-                    v-bind:value="barcodeValue"
-                    width="1"
-                    height="35"
-                    :displayValue="true"
-                    fontSize="10"
-                  >
-                    فشل تحميل الباركود
-                  </barcode>
-                  <v-row style="margin-top: 0; padding: 0; font-size: 3px">
-                    <v-col style="padding: 0; margin: 0">الوقت </v-col>
-                    <v-col style="padding: 0; margin: 0">
-                      {{ this.requestBody.RequestDate }}</v-col
-                    >
-                  </v-row>
+            <div>
+                <v-container v-show="false">
+                  <div id="bc">
+                    <div style="width: 100%">
+                      <div
+                        class="d-flex justify-center"
+                        style="display: table; margin: 0 auto"
+                      >
+                        <barcode
+                          v-bind:value="barcodeValue"
+                          width="1"
+                          height="30"
+                          :displayValue="false"
+                          fontSize="10"
+                        >
+                          فشل تحميل الباركود
+                        </barcode>
+                      </div>
+                    </div>
+                  </div>
                 </v-container>
-              </v-container>
             </div>
             <v-overlay :value="overlay">
               <v-progress-circular
@@ -594,8 +596,8 @@
               ></v-progress-circular>
             </v-overlay>
             <pre></pre>
-          </v-container>
-        </v-card>
+          </v-card>
+        </v-container>
       </v-main>
     </v-app>
   </div>
@@ -616,7 +618,6 @@ import VueHtml2Canvas from "vue-html2canvas";
 
 import VueHtmlToPaper from "vue-html-to-paper";
 
-import print from "print-js";
 
 const options = {
   name: "_blank",
@@ -654,6 +655,7 @@ export default {
   data: function() {
     return {
       printer_off: true,
+      doprint: true,
       checkbox: true,
       other: false,
       otherTo: "",
@@ -711,6 +713,7 @@ export default {
       deliveryCo: ["سمسا", "فيدكس"],
       recivedData: "",
       //Start of filed data
+      dep:"",
       from: "",
       to: "",
       title: "",
@@ -873,10 +876,30 @@ export default {
 
   methods: {
     print() {
-      //this.$htmlToPaper('printMe' , [this.cssText]);
-      print("printMe", "html");
+      const prtHtml = document.getElementById("bc").innerHTML;
+      // Open the print window
+      const WinPrint = window.open(
+        "",
+        "",
+        "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
+      );
+      WinPrint.document.write(`<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+  <div>
+    ${prtHtml}
+    </div>
+  </body>
+</html>`);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+    
     },
-    uploadForm() {},
     replay() {
       this.isLoading = true;
       this.requestBody.PreviousNo = this.recivedData.IncidentNumber;
@@ -1060,6 +1083,18 @@ export default {
         this.selectedCategory,
         this.category
       );
+            this.requestBody.SelectedManager = this.listSearchDep(
+        this.dep,
+        this.departments
+      ).ManagerUserName;
+      this.requestBody.DestNumber = this.listSearchDep(
+        this.dep,
+        this.departments
+      ).DeptNo;
+      this.requestBody.SelectedManagerName = this.listSearchDep(
+        this.dep,
+        this.departments
+      ).GehaName;
       this.sendWayVerfication();
       this.addAttatchmentToRequest();
     },
@@ -1076,12 +1111,16 @@ export default {
           this.isLoading = false;
           console.log(resp.data);
           if (!resp.data.ErrorCode) {
-            console.log("valid");
             this.outboundNumber = resp.data.Num.toString();
+            this.barcodeValue = this.outboundNumber;
+            console.log("should be printed?");
+            if (this.doprint) {
+              console.log("printed");
+            this.print();
+           }
             this.showAlterSuccessMessage();
             this.$refs.form.reset();
             this.resetAttatchement();
-
             this.$router.push({
               name: "outboundbox", //use name for router push
             });

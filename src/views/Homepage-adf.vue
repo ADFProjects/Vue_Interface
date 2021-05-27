@@ -1,9 +1,14 @@
 <template>
-  <div id="app">
+  <div id="app" class="d-flex justify-center">
     <v-app id="inspire">
-      <v-container  fluid grid-list-md text-xs-center>
-        <v-layout row wrap align-center>
-          <v-flex>
+      <v-container
+        fluid
+        grid-list-md
+        text-xs-center
+        class="d-flex justify-center"
+      >
+        <v-layout row wrap align-center class="d-flex justify-center">
+          <v-flex class="d-flex justify-center">
             <v-row align="center" justify="center">
               <!-- --------------------------------------- -->
               <v-col cols="12" sm="6" class="my-5">
@@ -35,7 +40,7 @@
                     <v-card-text class="pt-0">
                       <div
                         class="text-center subheading font-weight-bold"
-                        style="color:#00802b; font-size:30px;"
+                        style="color:#3d7f5f; font-size:30px;"
                       >
                         صادر عام
                       </div>
@@ -113,7 +118,7 @@
                     <v-card-text class="pt-0">
                       <div
                         class="text-center subheading font-weight-bold"
-                        style="color:#00802b; font-size:30px;"
+                        style="color:#3d7f5f; font-size:30px;"
                       >
                         وارد عام
                       </div>
@@ -190,7 +195,7 @@
                     <v-card-text class="pt-0">
                       <div
                         class="text-center subheading font-weight-bold"
-                        style="color:#00802b; font-size:30px;"
+                        style="color:#3d7f5f; font-size:30px;"
                       >
                         وارد نظام مراسلات
                       </div>
@@ -267,7 +272,7 @@
                     <v-card-text class="pt-0">
                       <div
                         class="text-center subheading font-weight-bold"
-                        style="color:#00802b; font-size:30px;"
+                        style="color:#3d7f5f; font-size:30px;"
                       >
                         صادر نظام مراسلات
                       </div>

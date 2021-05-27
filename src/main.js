@@ -16,7 +16,7 @@ import sortReports from './views/SortOutBounds-adf';
 import saudipostreportIn from './views/OutBoundReportsIn';
 import saudipostreportOut from './views/OutBoundReportsOut';
 import saudipostreportInbox from './views/OutBoundReportsInbox';
-import saudipostreportInSmsa from './views/OutBoundReportsSmsa';
+import saudipostreportSmsa from './views/OutBoundReportsSmsa';
 import saudipostreportManualDelivery from './views/OutBoundReportsManualDelivery';
 import homepage from './views/Homepage-adf';
 import alter from './views/alter';
@@ -57,7 +57,6 @@ Vue.use(VueHtmlToPaper);
 Vue.use(Vuex)
 
 Vue.use(TastyBurgerButton);
-
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
@@ -119,9 +118,9 @@ const routes = [
     component: saudipostreportInbox,
   },
   {
-    path: '/saudipostreportInSmsa',
-    name: 'saudipostreportInSmsa',
-    component: saudipostreportInSmsa,
+    path: '/saudipostreportSmsa',
+    name: 'saudipostreportSmsa',
+    component: saudipostreportSmsa,
   },
   {
     path: '/saudipostreportManualDelivery',

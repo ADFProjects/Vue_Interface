@@ -2,255 +2,270 @@
   <div id="app" class="d-flex justify-center">
     <v-app id="inspire">
       <v-main>
-        <v-card>
-          <v-container>
-            <v-app-bar
-              style="border-radius: 4px"
-              width="1160"
-              color="#28714e"
-              dark
-              class="mb-1"
-            >
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-img
-                    v-on="on"
-                    src="~@/assets/reportPdf-adf.png"
-                    alt="InboundImage"
-                    max-height="110"
-                    max-width="50"
-                  ></v-img>
-                </template>
-                <span>الإستعلام عن معاملة</span>
-              </v-tooltip>
-            </v-app-bar>
+        <v-container>
+          <v-app-bar
+            style="border-radius: 4px;opacity: 0.9 !important;"
+            width="1160"
+            color="#28714e"
+            dark
+            class="mb-1"
+          >
 
-            <v-card>
-              <v-form>
-                <loading
-                  :active="isLoading"
-                  :is-full-page="fullPage"
-                  :loader="waitingLoader"
-                />
-                <v-container>
-                  <v-card>
-                    <v-card-title class="grey--text text--darken-2">
-                      نوع الاستعلام :</v-card-title
-                    >
-                    <v-container>
-                      <v-radio-group v-model="type" @change="types($event)">
-                        <v-row>
-                          <v-col v-for="n in sendway" :key="n">
-                            <v-radio
-                              :label="n"
-                              :value="n"
-                              color="#28714e"
-                            ></v-radio>
-                          </v-col>
-                        </v-row>
-                      </v-radio-group>
-                    </v-container>
-                  </v-card>
-                </v-container>
-                <v-container>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        color="#28714e"
-                        label="الإسم"
-                        v-model="ename"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                    <v-col>
-                      <v-text-field
-                        color="#28714e"
-                        type="number"
-                        class="inputNumber"
-                        label="رقم الجوال"
-                        :rules="rules.mobileNum"
-                        placeholder="05xxxxxxxx"
-                        v-model="phone"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        color="#28714e"
-                        type="number"
-                        class="inputNumber"
-                        label="رقم الهوية الوطنية"
-                        v-model="nid"
-                        :rules="rules.nId"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                    <v-col>
-                      <v-text-field
-                        color="#28714e"
-                        label="البريد الإلكتروني"
-                        v-model="email"
-                        :rules="rules.email"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        color="#28714e"
-                        type="number"
-                        class="inputNumber"
-                        label="رقم المعاملة"
-                        v-model="id"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                    <v-col>
-                      <v-text-field
-                        color="#28714e"
-                        label="الموضوع"
-                        v-model="title"
-                        outlined
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :loading="isLoadingdepartments"
-                        :items="departments"
-                        item-text="GehaName"
-                        label="اسم الإدارة"
-                        v-model="selectedDep"
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col>
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :loading="isLoadingentities"
-                        :items="entities"
-                        item-text="Name"
-                        label="اسم الجهة"
-                        v-model="selectedEnti"
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :loading="isLoadingcorrespondenceType"
-                        :items="correspondenceType"
-                        item-text="Name"
-                        label="نوع الخطاب"
-                        v-model="selectedtype"
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col>
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :loading="isLoadingobjectiveClass"
-                        :items="objectiveClass"
-                        item-text="Name"
-                        label="التصنيف الموضوعي"
-                        v-model="selectedObj"
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :loading="isLoadingimportance"
-                        :items="importance"
-                        item-text="Name"
-                        label="درجة الأهمية"
-                        v-model="selectedImp"
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col>
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :loading="isLoadingconfidentiality"
-                        :items="confidentiality"
-                        item-text="Name"
-                        label="درجة السرية"
-                        v-model="selectedConf"
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :return-value.sync="date"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-img
+                  v-on="on"
+                  src="~@/assets/Search-adf.png"
+                  alt="InboundImage"
+                  max-height="100"
+                  max-width="40"
+                ></v-img>
+              </template>
+              <span>الإستعلام عن المعاملة</span>
+            </v-tooltip>
+            <div>
+              <p
+                class="my-10 font-weight-medium"
+                style="font-size: 20px; color: #e6e6e6; margin:15px; margin-left:8px;"
+              >
+                إستعلام
+              </p>
+            </div>
+
+            <p
+              class="my-10 font-weight-medium"
+              style="opacity: 0.6 !important; font-size: 19px;padding-top:1px;"
+            >
+              المعاملات الواردة والصادرة
+            </p>
+          </v-app-bar>
+          <v-card>
+            <v-form>
+              <loading
+                :active="isLoading"
+                :is-full-page="fullPage"
+                :loader="waitingLoader"
+              />
+              <v-container>
+                <v-card>
+                  <v-card-title class="grey--text text--darken-2">
+                    نوع الاستعلام :</v-card-title
+                  >
+                  <v-container>
+                    <v-radio-group v-model="type" @change="types($event)">
+                      <v-row>
+                        <v-col v-for="n in sendway" :key="n">
+                          <v-radio
+                            :label="n"
+                            :value="n"
+                            color="#28714e"
+                          ></v-radio>
+                        </v-col>
+                      </v-row>
+                    </v-radio-group>
+                  </v-container>
+                </v-card>
+              </v-container>
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-text-field
                       color="#28714e"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          color="#28714e"
-                          v-model="dateRangeText"
-                          label="الفترة الزمنية"
-                          prepend-icon="mdi-calendar"
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-hijri-date-picker
-                        color="#28714e"
-                        v-model="dates"
-                        range
-                        locale="ar"
-                      ></v-hijri-date-picker>
-                    </v-menu>
-                  </v-row>
-                </v-container>
-                <v-container>
-                  <div class="text-center">
-                    <v-btn
-                      rounded
+                      label="الإسم"
+                      v-model="ename"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
                       color="#28714e"
-                      dark
-                      large
-                      @click="isValid"
-                      width="200"
-                    >
-                      <router-link :to="to">
-                        <h5 class="my-10" style="color: white;">بحث</h5>
-                      </router-link>
-                    </v-btn>
-                  </div>
-                </v-container>
-              </v-form>
-              <v-overlay :value="overlay">
-                <v-progress-circular
-                  indeterminate
-                  size="64"
-                ></v-progress-circular>
-              </v-overlay>
-            </v-card>
-          </v-container>
-        </v-card>
+                      type="number"
+                      class="inputNumber"
+                      label="رقم الجوال"
+                      :rules="rules.mobileNum"
+                      placeholder="05xxxxxxxx"
+                      v-model="phone"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      color="#28714e"
+                      type="number"
+                      class="inputNumber"
+                      label="رقم الهوية الوطنية"
+                      v-model="nid"
+                      :rules="rules.nId"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      color="#28714e"
+                      label="البريد الإلكتروني"
+                      v-model="email"
+                      :rules="rules.email"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      color="#28714e"
+                      type="number"
+                      class="inputNumber"
+                      label="رقم المعاملة"
+                      v-model="id"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      color="#28714e"
+                      label="الموضوع"
+                      v-model="title"
+                      outlined
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingdepartments"
+                      :items="departments"
+                      item-text="GehaName"
+                      label="اسم الإدارة"
+                      v-model="selectedDep"
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingentities"
+                      :items="entities"
+                      item-text="Name"
+                      label="اسم الجهة"
+                      v-model="selectedEnti"
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingcorrespondenceType"
+                      :items="correspondenceType"
+                      item-text="Name"
+                      label="نوع الخطاب"
+                      v-model="selectedtype"
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingobjectiveClass"
+                      :items="objectiveClass"
+                      item-text="Name"
+                      label="التصنيف الموضوعي"
+                      v-model="selectedObj"
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingimportance"
+                      :items="importance"
+                      item-text="Name"
+                      label="درجة الأهمية"
+                      v-model="selectedImp"
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingconfidentiality"
+                      :items="confidentiality"
+                      item-text="Name"
+                      label="درجة السرية"
+                      v-model="selectedConf"
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="date"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                    color="#28714e"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        color="#28714e"
+                        v-model="dateRangeText"
+                        label="الفترة الزمنية"
+                        prepend-icon="mdi-calendar"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-hijri-date-picker
+                      color="#28714e"
+                      v-model="dates"
+                      style="opacity: 0.9 !important;"
+                      range
+                      locale="ar"
+                    ></v-hijri-date-picker>
+                  </v-menu>
+                </v-row>
+              </v-container>
+              <v-container>
+                <div class="text-center">
+                  <v-btn
+                    rounded
+                    style="opacity: 0.9 !important;"
+                    color="#28714e"
+                    dark
+                    large
+                    @click="isValid"
+                    width="200"
+                  >
+                    <router-link :to="to">
+                      <h5 class="my-10" style="color: white;">بحث</h5>
+                    </router-link>
+                  </v-btn>
+                </div>
+              </v-container>
+            </v-form>
+            <v-overlay :value="overlay">
+              <v-progress-circular
+                indeterminate
+                size="64"
+              ></v-progress-circular>
+            </v-overlay>
+          </v-card>
+        </v-container>
       </v-main>
     </v-app>
   </div>
@@ -435,7 +450,6 @@ export default {
       ) {
         this.fillData();
         this.search();
-        //this.to = "/viewInquire";
       } else {
         this.showAlterFailureMessage("الرجاء تعبئة أحد الخانات");
       }
@@ -531,7 +545,6 @@ export default {
 .v-tooltip__content {
   font-size: 16px !important;
   opacity: 0.8 !important;
-  font-weight: bold;
   pointer-events: auto;
   color: white;
   background-color: #404040;

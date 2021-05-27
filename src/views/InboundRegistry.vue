@@ -5,7 +5,6 @@
 .v-tooltip__content {
   font-size: 16px !important;
   opacity: 0.8 !important;
-  font-weight: bold;
   pointer-events: auto;
   color: white;
   background-color: #404040;
@@ -73,28 +72,49 @@
   <div id="app" class="d-flex justify-center">
     <v-app id="inspire">
       <v-main>
-        <v-card>
-          <v-container>
-            <v-app-bar
-              style="border-radius: 4px"
-              width="1160"
-              color="#28714e"
-              dark
-              class="mb-1"
+        <v-container>
+          <v-app-bar
+            style="border-radius: 4px; opacity: 0.9 !important"
+            width="1160"
+            color="#28714e"
+            dark
+            class="mb-1"
+          >
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-img
+                  v-on="on"
+                  src="~@/assets/InboundRegistry-adf.png"
+                  alt="InboundImage"
+                  max-height="110"
+                  max-width="40"
+                ></v-img>
+              </template>
+              <span>إضافة وارد</span>
+            </v-tooltip>
+
+            <div>
+              <p
+                class="my-10 font-weight-medium"
+                style="
+                  font-size: 20px;
+                  color: #e6e6e6;
+                  margin: 15px;
+                  margin-left: 8px;
+                "
+              >
+                تسجيل
+              </p>
+            </div>
+
+            <p
+              class="my-10 font-weight-medium"
+              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
             >
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-img
-                    v-on="on"
-                    src="~@/assets/InboundRegistry-adf.png"
-                    alt="InboundImage"
-                    max-height="110"
-                    max-width="50"
-                  ></v-img>
-                </template>
-                <span>إضافة وارد</span>
-              </v-tooltip>
-            </v-app-bar>
+              المعاملة الواردة
+            </p>
+          </v-app-bar>
+          <v-card>
             <v-form ref="form" v-model="valid" lazy-validations>
               <loading
                 :active="isLoading"
@@ -501,21 +521,21 @@
                                   <v-list-item-subtitle>
                                     <a
                                       :href="file.url"
-                                      style="color: #28714e;font-weight: bold;"
+                                      style="color: #28714e; font-weight: bold"
                                       >{{ file.name }}</a
                                     >
                                   </v-list-item-subtitle>
                                 </v-col>
                                 <v-col>
                                   <v-list-item-subtitle>
-                                    <h6 :key="file" style="font-weight: bold;">
+                                    <h6 :key="file" style="font-weight: bold">
                                       {{ file.type }}
                                     </h6>
                                   </v-list-item-subtitle>
                                 </v-col>
                                 <v-col>
                                   <v-list-item-subtitle>
-                                    <h6 :key="file" style="font-weight: bold;">
+                                    <h6 :key="file" style="font-weight: bold">
                                       {{ file.category }}
                                     </h6>
                                   </v-list-item-subtitle>
@@ -543,19 +563,74 @@
                   label="الملاحظات"
                 ></v-textarea>
               </v-container>
-
+             <v-container
+              v-show="true"
+              class="d-flex justify-center"
+              style="padding-left:140px;"
+            >
+              <div class="mx-auto text-center">
+                <v-form ref="formOriginal" v-model="valid" lazy-validations>
+                  <v-row>
+                    <v-col cols="1"></v-col>
+                    <v-col v-show="sendOriginal">
+                      <v-autocomplete
+                        color="#28714e"
+                        no-data-text="لايوجد بيانات"
+                        :rules="[rules.required]"
+                        :loading="isLoadingdepartments"
+                        :items="departments"
+                        item-text="GehaName"
+                        label=" إلى"
+                        v-model="originalTo"
+                        required
+                        outlined
+                      ></v-autocomplete>
+                    </v-col>
+                    <v-col v-show="sendOriginal" cols="6">
+                      <v-textarea
+                        color="#28714e"
+                        height="55"
+                        maxlength="500"
+                        v-model="remarksOrigin"
+                        counter
+                        outlined
+                        name="input-7-4"
+                        label="الملاحظات"
+                      ></v-textarea>
+                    </v-col>
+                    <v-col v-show="sendOriginal" cols="2">
+                      <router-link to="" @click="overlay = !overlay">
+                        <v-btn
+                          color="#3d7f5f"
+                          rounded
+                         
+                          dark
+                          large
+                          @click="validate"
+                          width="150"
+                        >
+                          <router-link :to="sendO">
+                            <h5 class="my-10" style="color: white;">إرسال</h5>
+                          </router-link>
+                        </v-btn>
+                      </router-link>
+                    </v-col>
+                  </v-row>
+                </v-form>
+              </div>
+            </v-container>
               <v-container>
                 <div class="text-center">
                   <router-link to="" @click="overlay = !overlay">
                     <v-btn
                       rounded
-                      color="#28714e"
+                      color="#3d7f5f"
                       dark
                       large
                       @click="validate"
                       width="200"
                     >
-                      <h5 class="my-10" style="color: white;">إرسال</h5>
+                      <h5 class="my-10" style="color: white">إرسال</h5>
                     </v-btn>
                   </router-link>
                 </div>
@@ -568,8 +643,8 @@
               ></v-progress-circular>
             </v-overlay>
             <pre></pre>
-          </v-container>
-        </v-card>
+          </v-card>
+        </v-container>
       </v-main>
     </v-app>
   </div>
@@ -602,8 +677,11 @@ export default {
   components: {
     Loading,
   },
-  data: function() {
+  data: function () {
     return {
+      sendO: "",
+      remarksOrigin:"",
+      originalTo:"",
       rowdeliveryCo: "",
       deliveryCo: ["سمسا", "فيدكس"],
       commpanyToggle: false,
