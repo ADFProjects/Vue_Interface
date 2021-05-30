@@ -250,6 +250,26 @@
                     <v-autocomplete
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
+                      :loading="isLoadingdepartments"
+                      :items="departments"
+                      item-text="GehaName"
+                      label="نسخة إلى"
+                      v-model="toCopies"
+                      outlined
+                      deletable-chips
+                      multiple
+                      small-chips
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-container>
+
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
                       :loading="isLoadingimportance"
                       :items="importance"
                       item-text="Name"
@@ -712,6 +732,7 @@ export default {
       //Start of filed data
       from: "",
       to: "",
+      toCopies: "",
       title: "",
       email: "",
       remarks: "",
@@ -769,7 +790,7 @@ export default {
         GehaName: "",
         IncidentNumber: 1000212,
       },
-    sendSmsRequestBody: {
+      sendSmsRequestBody: {
         Username: "ITCorrespondence",
         Password: "C0rresp0ndence",
         mobile: "",
@@ -786,8 +807,10 @@ export default {
         counterDescription: [(value) => value.length <= 500],
         nId: [
           (v) => (v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true),
+          (v) => (this.doSendSMS && !v ? "مطلوب" : true),
         ],
         mobileNum: [
+          (v) => (this.doSendSMS && !v ? "مطلوب" : true),
           (v) =>
             v.length > 0 && v.charAt(0) != "0" ? "رقم الجوال غير صحيح" : true,
           (v) =>
@@ -874,35 +897,18 @@ export default {
 
   methods: {
     sendSMS() {
+      console.log("sms to be sent");
+
+      this.sendSmsRequestBody.mobile = this.mobileNumber;
       Vue.axios
         .post(
           "http://172.30.140.3/smsapi/api/SMS/Send",
-          this.requestBody
+          this.sendSmsRequestBody, {}
         )
         .then((resp) => {
-          this.isLoading = false;
-
+          console.log("sms sent");
           console.log(resp.data);
-          if (!resp.data.ErrorCode) {
-            console.log("valid");
-            //send Origin
-            if (this.sendOriginal) {
-              this.sendOriginRequest(resp.data.Num.toString());
-            }
-            if (this.doSendSMS) {
-              this.sendSMS();
-            }
-            this.showAlterSuccessMessage(resp.data.Num.toString());
-            this.$refs.form.reset();
-            this.resetAttatchement();
-            this.$router.push({
-              name: "inboundbox", //use name for router push
-            });
-          } else {
-            this.showAlterFailureMessage(resp.data.ErrorCode);
-          }
         });
-
     },
     deliveryCompany($event) {
       console.log($event);
@@ -1072,6 +1078,7 @@ export default {
               this.sendOriginRequest(resp.data.Num.toString());
             }
             if (this.doSendSMS) {
+              console.log("sms");
               this.sendSMS();
             }
             this.showAlterSuccessMessage(resp.data.Num.toString());
