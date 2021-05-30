@@ -174,7 +174,6 @@
                       item-text="Name"
                       label="واردة من"
                       :loading="isLoadingentities"
-                      @change="otherSelection"
                       :rules="rules.required"
                       v-model="from"
                       outlined
@@ -182,15 +181,6 @@
                       no-data-text="لايوجد بيانات"
                       class="dir"
                     ></v-autocomplete>
-                  </v-col>
-                  <v-col v-show="other">
-                    <v-text-field
-                      color="#28714e"
-                      label="اسم الجهة"
-                      :rules="rules.requiredIf"
-                      outlined
-                      v-model="otherTo"
-                    ></v-text-field>
                   </v-col>
                   <v-col>
                     <v-menu
@@ -328,7 +318,7 @@
                       v-model="title"
                       :rules="rules.counterTitle"
                       required
-                      maxlength="240"
+                      maxlength="500"
                       v-bind:readonly="titleValid"
                       counter
                       label="الموضوع"
@@ -382,7 +372,7 @@
                       color="#28714e"
                       type="number"
                       class="inputNumber"
-                      label="رقم الهوية الوطنية"
+                      label="رقم الهوية الوطنية / السجل التجاري / الإقامة"
                       v-model="senderID"
                       :rules="rules.nId"
                       outlined
@@ -549,7 +539,6 @@
                   </div>
                 </v-container>
               </v-form>
-
               <v-container>
                 <!--  the title should be "سري" when the type is confidential  -->
                 <v-textarea
@@ -563,62 +552,55 @@
                   label="الملاحظات"
                 ></v-textarea>
               </v-container>
-             <v-container
-              v-show="true"
-              class="d-flex justify-center"
-              style="padding-left:140px;"
-            >
-              <div class="mx-auto text-center">
-                <v-form ref="formOriginal" v-model="valid" lazy-validations>
-                  <v-row>
-                    <v-col cols="1"></v-col>
-                    <v-col v-show="sendOriginal">
-                      <v-autocomplete
-                        color="#28714e"
-                        no-data-text="لايوجد بيانات"
-                        :rules="[rules.required]"
-                        :loading="isLoadingdepartments"
-                        :items="departments"
-                        item-text="GehaName"
-                        label=" إلى"
-                        v-model="originalTo"
-                        required
-                        outlined
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col v-show="sendOriginal" cols="6">
-                      <v-textarea
-                        color="#28714e"
-                        height="55"
-                        maxlength="500"
-                        v-model="remarksOrigin"
-                        counter
-                        outlined
-                        name="input-7-4"
-                        label="الملاحظات"
-                      ></v-textarea>
-                    </v-col>
-                    <v-col v-show="sendOriginal" cols="2">
-                      <router-link to="" @click="overlay = !overlay">
-                        <v-btn
-                          color="#3d7f5f"
-                          rounded
-                         
-                          dark
-                          large
-                          @click="validate"
-                          width="150"
-                        >
-                          <router-link :to="sendO">
-                            <h5 class="my-10" style="color: white;">إرسال</h5>
-                          </router-link>
-                        </v-btn>
-                      </router-link>
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </div>
-            </v-container>
+              <v-container>
+                <v-row>
+                  <v-col cols="2">
+                    <v-checkbox
+                      rounded
+                      color="#28714e"
+                      v-model="doSendOrigin"
+                      label="إرسال أصل"
+                      @click="sendOriginal = !sendOriginal"
+                    >
+                    </v-checkbox>
+                  </v-col>
+                  <v-col v-show="sendOriginal">
+                    <v-autocomplete
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingdepartments"
+                      :items="departments"
+                      item-text="GehaName"
+                      label="إلى"
+                      :rules="rules.requiredIf"
+                      v-model="originalTo"
+                      required
+                      outlined
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col v-show="sendOriginal">
+                    <v-textarea
+                      color="#28714e"
+                      height="55"
+                      maxlength="500"
+                      v-model="remarksOrigin"
+                      counter
+                      outlined
+                      name="input-7-4"
+                      label="الملاحظات"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-container>
+                <v-checkbox
+                  rounded
+                  color="#28714e"
+                  v-model="doSendSMS"
+                  label="إرسال تذكرة مراجع"
+                >
+                </v-checkbox>
+              </v-container>
               <v-container>
                 <div class="text-center">
                   <router-link to="" @click="overlay = !overlay">
@@ -649,7 +631,6 @@
     </v-app>
   </div>
 </template>
-
 <script>
 import Vue from "vue";
 import uq from "@umalqura/core";
@@ -679,16 +660,16 @@ export default {
   },
   data: function () {
     return {
+      doSendOrigin: false,
+      doSendSMS: false,
       sendO: "",
-      remarksOrigin:"",
-      originalTo:"",
+      remarksOrigin: "",
+      originalTo: "",
       rowdeliveryCo: "",
       deliveryCo: ["سمسا", "فيدكس"],
       commpanyToggle: false,
       sendway: [" مراسل", "البريد السعودي", "شركة شحن"],
-      rowType: "صادر عادي",
-      other: false,
-      otherTo: "",
+      rowType: "البريد السعودي",
       sendOriginal: false,
       overlay: false,
       isLoading: false,
@@ -780,15 +761,31 @@ export default {
         RelatedAtt: [],
         SenderType: "",
       },
+      sendOriginRequestBody: {
+        RecieverUsername: "",
+        title: "",
+        Details: "",
+        GehaCode: 1,
+        GehaName: "",
+        IncidentNumber: 1000212,
+      },
+    sendSmsRequestBody: {
+        Username: "ITCorrespondence",
+        Password: "C0rresp0ndence",
+        mobile: "",
+        text: "Test message",
+        Source: "CMS",
+        Service_name: "CMS_Ticket",
+      },
       emailRules: [(v) => !!v || "Email is required"],
       rules: {
-        requiredIf: [(value) => (this.other && !value ? "مطلوب" : true)],
+        requiredIf: [(value) => (this.sendOriginal && !value ? "مطلوب" : true)],
+        requiredIfSms: [(value) => (this.doSendSMS && !value ? "مطلوب" : true)],
         required: [(value) => !!value || "مطلوب"],
-        counterTitle: [(value) => value.length > 0 && value.length <= 240],
+        counterTitle: [(value) => value.length > 0 && value.length <= 500],
         counterDescription: [(value) => value.length <= 500],
         nId: [
-          (v) =>
-            v.length > 0 && v.length != 10 ? "رقم الهوية غير صحيح" : true,
+          (v) => (v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true),
         ],
         mobileNum: [
           (v) =>
@@ -876,6 +873,37 @@ export default {
   },
 
   methods: {
+    sendSMS() {
+      Vue.axios
+        .post(
+          "http://172.30.140.3/smsapi/api/SMS/Send",
+          this.requestBody
+        )
+        .then((resp) => {
+          this.isLoading = false;
+
+          console.log(resp.data);
+          if (!resp.data.ErrorCode) {
+            console.log("valid");
+            //send Origin
+            if (this.sendOriginal) {
+              this.sendOriginRequest(resp.data.Num.toString());
+            }
+            if (this.doSendSMS) {
+              this.sendSMS();
+            }
+            this.showAlterSuccessMessage(resp.data.Num.toString());
+            this.$refs.form.reset();
+            this.resetAttatchement();
+            this.$router.push({
+              name: "inboundbox", //use name for router push
+            });
+          } else {
+            this.showAlterFailureMessage(resp.data.ErrorCode);
+          }
+        });
+
+    },
     deliveryCompany($event) {
       console.log($event);
       if ($event.localeCompare(this.deliveryCo[0]) == 0) {
@@ -1039,6 +1067,13 @@ export default {
           console.log(resp.data);
           if (!resp.data.ErrorCode) {
             console.log("valid");
+            //send Origin
+            if (this.sendOriginal) {
+              this.sendOriginRequest(resp.data.Num.toString());
+            }
+            if (this.doSendSMS) {
+              this.sendSMS();
+            }
             this.showAlterSuccessMessage(resp.data.Num.toString());
             this.$refs.form.reset();
             this.resetAttatchement();
@@ -1048,6 +1083,33 @@ export default {
           } else {
             this.showAlterFailureMessage(resp.data.ErrorCode);
           }
+        });
+    },
+    sendOriginRequest(incidentNumber) {
+      this.isLoading = true;
+      this.sendOriginRequestBody.GehaCode = this.listSearchDep(
+        this.originalTo,
+        this.departments
+      ).DeptNo;
+      this.sendOriginRequestBody.GehaName = this.originalTo;
+      this.sendOriginRequestBody.Details = this.remarksOrigin;
+
+      this.sendOriginRequestBody.RecieverUsername = localStorage.getItem(
+        "username"
+      );
+      this.sendOriginRequestBody.title = this.title;
+      this.sendOriginRequestBody.IncidentNumber = incidentNumber;
+
+      Vue.axios
+        .post(
+          "https://emp.adf.gov.sa/cms7514254/api/cms/ConfirmInboundReceive",
+          this.requestBody
+        )
+        .then((resp) => {
+          this.isLoading = false;
+          console.log(this.sendOriginRequestBody);
+          console.log("ارسال اصل");
+          console.log(resp.data);
         });
     },
     listSearch(nameKey, myArray) {
@@ -1141,13 +1203,6 @@ export default {
       } else {
         this.titleValid = false;
         this.title = "";
-      }
-    },
-    otherSelection() {
-      if (this.from.localeCompare("اخرى") == 0) {
-        this.other = true;
-      } else {
-        this.other = false;
       }
     },
   }, //End of Methodes

@@ -215,7 +215,6 @@
                       :items="entities"
                       item-text="Name"
                       label="صادرة إلى"
-                      @change="otherSelection"
                       :rules="rules.required"
                       v-model="to"
                       outlined
@@ -223,15 +222,6 @@
                       class="dir"
                       :readonly="recivedData != null"
                     ></v-autocomplete>
-                  </v-col>
-                  <v-col v-show="other">
-                    <v-text-field
-                      color="#28714e"
-                      label="اسم الجهة"
-                      :rules="rules.requiredIf"
-                      outlined
-                      v-model="otherTo"
-                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -309,7 +299,7 @@
                       v-model="title"
                       required
                       :rules="rules.counterTitle"
-                      maxlength="240"
+                      maxlength="500"
                       v-bind:readonly="titleValid"
                       counter
                       label="الموضوع"
@@ -363,7 +353,7 @@
                       color="#28714e"
                       type="number"
                       class="inputNumber"
-                      label="رقم الهوية الوطنية"
+                      label="رقم الهوية الوطنية / السجل التجاري / الإقامة"
                       :rules="rules.nId"
                       v-model="senderID"
                       outlined
@@ -657,8 +647,6 @@ export default {
       printer_off: true,
       doprint: true,
       checkbox: true,
-      other: false,
-      otherTo: "",
       rowdeliveryCo: "",
       compare: "",
       spoToggle: false,
@@ -770,13 +758,12 @@ export default {
         cssText: "width: 189px;height: 172px;",
       },
       rules: {
-        requiredIf: [(value) => (this.other && !value ? "مطلوب" : true)],
         required: [(value) => !!value || "مطلوب"],
-        counterTitle: [(value) => value.length > 0 && value.length <= 240],
+        counterTitle: [(value) => value.length > 0 && value.length <= 500],
         counterDescription: [(value) => value.length <= 500],
         nId: [
           (v) =>
-            v.length > 0 && v.length != 10 ? "رقم الهوية غير صحيح" : true,
+            v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true,
         ],
         mobileNum: [
           (v) =>
@@ -1052,11 +1039,8 @@ export default {
       this.requestBody.OutboundDocNo = "";
       this.requestBody.RequestDate = new Date().toLocaleString();
       this.requestBody.OutboundHDate = this.date;
-      if (this.other) {
-        this.requestBody.ToGeha = this.otherTo;
-      } else {
+
         this.requestBody.ToGeha = this.to;
-      }
 
       this.requestBody.RelatedEmail = this.email;
       this.requestBody.RelatedName = this.senderName;
@@ -1225,13 +1209,7 @@ export default {
         this.title = "";
       }
     },
-    otherSelection() {
-      if (this.to.localeCompare("اخرى") == 0) {
-        this.other = true;
-      } else {
-        this.other = false;
-      }
-    },
+
   }, //End of Methodes
   watch: {
     loader() {
