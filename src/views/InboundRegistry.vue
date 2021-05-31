@@ -192,7 +192,7 @@
                       min-width="auto"
                       color="#28714e"
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ on, attrs }" v-show="false">
                         <v-text-field
                           color="#28714e"
                           v-model="date"
@@ -203,12 +203,12 @@
                           outlined
                         ></v-text-field>
                       </template>
-                      <v-hijri-date-picker
+                      <v-date-picker
                         color="#28714e"
-                        :max="today"
+                        :max="date"
                         v-model="date"
                         locale="ar"
-                      />
+                      ></v-date-picker>
                     </v-menu>
                   </v-col>
                 </v-row>
@@ -653,7 +653,7 @@
 </template>
 <script>
 import Vue from "vue";
-import uq from "@umalqura/core";
+//import uq from "@umalqura/core";
 import UploadService from "../services/UploadFilesService";
 import axios from "axios";
 import VueAxios from "vue-axios";
@@ -669,9 +669,16 @@ axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST req
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + localStorage.getItem("token");
 
-const d = uq();
-const day = d.format("yyyy-MM-dd");
-const today = d.format("yyyy-MM-dd", "en");
+//Hijri
+//const dH = uq();
+//const dayH = d.format("yyyy-MM-dd");
+//const todayH = d.format("yyyy-MM-dd", "en");
+
+//const d = new Date();
+//const day = d.format("yyyy-MM-dd");
+//const today = d.format("yyyy-MM-dd", "en");
+
+//Email pattern
 const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default {
@@ -701,8 +708,7 @@ export default {
       menu: false,
       modal: false,
       menu2: false,
-      date: day.toString(),
-      today: today.toString(),
+      date: new Date().toISOString().substr(0, 10),
       loader: null,
       loading: false,
       selectedFiles: undefined,
@@ -903,7 +909,8 @@ export default {
       Vue.axios
         .post(
           "http://172.30.140.3/smsapi/api/SMS/Send",
-          this.sendSmsRequestBody, {}
+          this.sendSmsRequestBody,
+          {}
         )
         .then((resp) => {
           console.log("sms sent");
