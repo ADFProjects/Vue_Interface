@@ -201,7 +201,7 @@
                                   'light-green lighten-5': sortBy === key.text,
                                 }"
                               >
-                                {{ item[key.id] }}
+                                {{ item[key.id].substr(0, 10) }}
                               </v-list-item-content>
                             </template>
                             <span class="text-truncate ml-1 mr-1">{{
@@ -251,7 +251,7 @@ export default {
       keys: [
         {
           text: "التاريخ",
-          id: "OutboundHDate",
+          id: "OutboundGDate",
         },
         {
           text: "الموضوع",
@@ -259,24 +259,17 @@ export default {
         },
         {
           text: "درجة الأهمية",
-          id: "ImportanceVal",
+          id: "Importance",
         },
         {
           text: "درجة السرية",
-          id: "ConfidentialVal",
+          id: "Confidential",
         },
         {
           text: "نوع الخطاب",
-          id: "IOboundType",
+          id: "txt6",
         },
-        {
-          text: "المرفقات",
-          id: "IOboundCategory",
-        },
-        {
-          text: "الملاحظات",
-          id: "IOboundRemarks",
-        },
+
       ],
       items: [
         {
@@ -393,7 +386,7 @@ export default {
     searchbyid(id) {
       console.log(id);
       Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID=499")
+        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID="+id)
         .then((resp) => {
           this.navigate(resp.data);
         });

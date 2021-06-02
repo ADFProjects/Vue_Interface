@@ -609,6 +609,7 @@ import VueHtml2Canvas from "vue-html2canvas";
 import VueHtmlToPaper from "vue-html-to-paper";
 
 
+
 const options = {
   name: "_blank",
   specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"],
@@ -1039,6 +1040,8 @@ export default {
       this.requestBody.OutboundDocNo = "";
       this.requestBody.RequestDate = new Date().toLocaleString();
       this.requestBody.OutboundHDate = this.date;
+      this.requestBody.OutboundDate = this.date;
+      this.requestBody.OutboundGDate = new Date().toISOString().substr(0, 10);
 
         this.requestBody.ToGeha = this.to;
 

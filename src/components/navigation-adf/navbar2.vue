@@ -16,11 +16,11 @@
           />
         </div>
         <div class="d-inline-block ml-4">
-          <router-link to="/homepage" style="text-decoration: none;">
+          <router-link to="/homepage" style="text-decoration: none">
             <img src="@/assets/ADF_LOGO.png" height="56px" width="56px" />
           </router-link>
         </div>
-        <div id="fonts" class="d-inline-block ml-4" style="color: #e6e6e6; ">
+        <div id="fonts" class="d-inline-block ml-4" style="color: #e6e6e6">
           <h5>نظام الاتصالات الإدارية</h5>
         </div>
       </div>
@@ -30,7 +30,11 @@
       app
       right
       clipped
-      style="background-color: #303030; text-align: center; opacity: 0.8 !important;"
+      style="
+        background-color: #303030;
+        text-align: center;
+        opacity: 0.8 !important;
+      "
     >
       <v-list>
         <v-list-item-group v-model="model" active-class="green darken-2">
@@ -43,10 +47,10 @@
                 <v-list-item style="height: 70px">
                   <v-list-item-icon>
                     <v-list-item-title
-                      style="color: #e6e6e6; font-size: 18px;float:center;"
+                      style="color: #e6e6e6; font-size: 18px; float: center"
                     >
                       {{ item.name }}
-                      <v-icon style="float:right; padding-left:55px;">{{
+                      <v-icon style="float: right; padding-left: 55px">{{
                         item.icon
                       }}</v-icon>
                     </v-list-item-title>
@@ -64,7 +68,7 @@
                     @click="dialog = !dialog"
                   >
                     التقاريـر
-                    <v-icon style="float:right; padding-left:55px;"
+                    <v-icon style="float: right; padding-left: 55px"
                       >mdi-arrow-up-bold-box-outline</v-icon
                     >
                   </v-list-item-title>
@@ -89,12 +93,12 @@
               color="#28714e"
               dark
               class="font-weight-medium"
-              style="font-size: 19px; color: #e6e6e6;opacity: 0.9 !important;"
+              style="font-size: 19px; color: #e6e6e6; opacity: 0.9 !important"
             >
               <div>
                 <p
                   class="my-10 font-weight-medium"
-                  style="font-size: 20px; color: #e6e6e6; margin-left:8px;"
+                  style="font-size: 20px; color: #e6e6e6; margin-left: 8px"
                 >
                   تصنيف
                 </p>
@@ -102,7 +106,11 @@
 
               <p
                 class="my-10 font-weight-medium"
-                style="opacity: 0.6 !important; font-size: 19px;padding-top:1px;"
+                style="
+                  opacity: 0.6 !important;
+                  font-size: 19px;
+                  padding-top: 1px;
+                "
               >
                 المعاملات الصادرة
               </p>
@@ -125,7 +133,7 @@
                     max-height="100"
                     max-width="100"
                     class="my-1"
-                    style="right:93px;"
+                    style="right: 93px"
                   ></v-img>
                   <h6
                     id="rowCols"
@@ -134,7 +142,7 @@
                   >
                     بيان بالبريد الصادر
                     <br />
-                    <h6 style="color:#b37700;" class="my-2" id="rowCols">
+                    <h6 style="color: #b37700" class="my-2" id="rowCols">
                       الخارجي
                     </h6>
                   </h6>
@@ -156,7 +164,7 @@
                       border-radius: 29px;
                       border-top-left-radius: 45px;
                       border-top-right-radius: 45px;
-                     right:90px;
+                      right: 90px;
                     "
                     max-height="90"
                     max-width="90"
@@ -164,11 +172,11 @@
                   <h6
                     id="rowCols"
                     class="my-7"
-                    style="color: #4d4d4d; font-weight: bold;"
+                    style="color: #4d4d4d; font-weight: bold"
                   >
                     بيان بالبريد الصادر
                     <br />
-                    <h6 id="rowCols" style="color:#b37700;" class="my-2">
+                    <h6 id="rowCols" style="color: #b37700" class="my-2">
                       صندوق البريد
                     </h6>
                   </h6>
@@ -179,7 +187,7 @@
                   sm="6"
                   md="4"
                   class="subheading font-weight-bold text-center my-13"
-                  style="font-size: 16px; cursor: pointer;"
+                  style="font-size: 16px; cursor: pointer"
                   @click="reports('In')"
                 >
                   <v-img
@@ -189,23 +197,27 @@
                     max-height="100"
                     max-width="100"
                     class="my-1"
-                    style=" right:80px;"
+                    style="right: 80px"
                   ></v-img>
                   <h6
                     id="rowCols"
                     class="my-5"
-                    style="color: #4d4d4d; font-weight: bold;"
+                    style="color: #4d4d4d; font-weight: bold"
                   >
                     بيان بالبريد الصادر
                     <br />
-                    <h6 id="rowCols" style="color:#b37700;" class="my-2">
+                    <h6 id="rowCols" style="color: #b37700" class="my-2">
                       الداخلي
                     </h6>
                   </h6>
                 </v-col>
-                <v-col style="bottom: 15px;">
+                <v-col style="bottom: 15px">
                   <hr
-                    style="height: 0.1px; background-color: #808080; width: 870px;"
+                    style="
+                      height: 0.1px;
+                      background-color: #808080;
+                      width: 870px;
+                    "
                   />
                 </v-col>
                 <!-- ------------------------------------------------------ -->
@@ -227,16 +239,16 @@
                     max-height="100"
                     max-width="100"
                     class="my-1"
-                    style="right:220px;bottom:20px;"
+                    style="right: 220px; bottom: 20px"
                   ></v-img>
-                  <v-col style="right:130px;bottom:20px;">
+                  <v-col style="right: 130px; bottom: 20px">
                     <h6
                       id="rowCols"
-                      style="color: #4d4d4d; font-weight: bold; top:200px;"
+                      style="color: #4d4d4d; font-weight: bold; top: 200px"
                     >
                       بيان بالبريد الصادر
                       <br />
-                      <h6 id="rowCols" style="color:#b37700;" class="my-2">
+                      <h6 id="rowCols" style="color: #b37700" class="my-2">
                         شركة سمسا
                       </h6>
                     </h6>
@@ -258,13 +270,13 @@
                     max-height="100"
                     max-width="100"
                     class="my-1"
-                    style=" right:200px; bottom:20px;"
+                    style="right: 200px; bottom: 20px"
                   ></v-img>
-                  <v-col style="right:120px; bottom:20px;">
-                    <h6 id="rowCols" style="color: #4d4d4d; font-weight: bold;">
+                  <v-col style="right: 120px; bottom: 20px">
+                    <h6 id="rowCols" style="color: #4d4d4d; font-weight: bold">
                       بيان بالبريد الصادر
                       <br />
-                      <h6 id="rowCols" style="color:#b37700;" class="my-2">
+                      <h6 id="rowCols" style="color: #b37700" class="my-2">
                         تسليم يدوي
                       </h6>
                     </h6>
@@ -276,11 +288,11 @@
             <v-card-actions class="justify-end">
               <v-btn
                 style="
-                font-size: 18px;
-                font-weight: bold;
-                color: #4d4d4d;
-                margin-top: 200px;
-              "
+                  font-size: 18px;
+                  font-weight: bold;
+                  color: #4d4d4d;
+                  margin-top: 200px;
+                "
                 text
                 @click="dialog = !dialog"
                 >إغلاق</v-btn
@@ -294,7 +306,7 @@
       <div id="app" style="position: absolute">
         <v-app id="inspire">
           <v-bottom-navigation
-            style="background-color: #303030; opacity: 0.9 !important;"
+            style="background-color: #303030; opacity: 0.9 !important"
             height="50"
             dark
             app
@@ -324,7 +336,7 @@
 </template>
 <script>
 export default {
-  data: function() {
+  data: function () {
     return {
       // Bottom navigation date
       date: new Date().toISOString().substr(0, 4),
@@ -337,38 +349,38 @@ export default {
         {
           name: "الإحصائيات",
           link: "/homepage",
-          permission: "",
+          permission: [],
           icon: "mdi-view-dashboard",
         },
         {
           name: "صندوق الصادر",
           link: "/outboundbox",
-          permission: "11S",
+          permission: ["11S"],
           icon: "mdi-folder",
         },
 
         {
           name: "صندوق الوارد",
           link: "/inboundbox",
-          permission: "10S",
+          permission: ["10S"],
           icon: "mdi-folder",
         },
         {
           name: "إضافة صادر",
           link: "/outbound",
-          permission: "11A",
+          permission: ["11A"],
           icon: "mdi-email",
         },
         {
           name: "إضافة وارد",
           link: "/inbound",
-          permission: "10A",
+          permission: ["10A"],
           icon: "mdi-email",
         },
         {
           name: "استعـلام",
           link: "/inquire",
-          permission: "",
+          permission: ["13S", "12S"],
           icon: "mdi-help-box",
         },
       ],
@@ -400,14 +412,29 @@ export default {
       const [year, month, day] = date.split("-");
       return `${month}/${day}/${year}`;
     },
-    permissions(p) {
-      if (p.localeCompare("") == 0) {
-        return true;
-      } else if (localStorage.getItem("permissions").search(p) != -1) {
-        return true;
+    async permissions(p) {
+      var list = [];
+      for (var i = 0; i < p.length; i++) {
+        //if the page without permissions
+        if (p[i].localeCompare("") == 0) {
+          return true;
+        } else if (localStorage.getItem("permissions") == null) {
+          return false;
+        } else if (localStorage.getItem("permissions").search(p[i]) != -1) {
+          list.push(true);
+        } else {
+          // route to denied access
+          list.push(false);
+        }
+      }
+      if (list.length > 1) {
+        if (!(list[0] || list[1])) {
+          return false;
+        } else {
+          return true;
+        }
       } else {
-        // route to denied access
-        return false;
+        return list[0];
       }
     },
 

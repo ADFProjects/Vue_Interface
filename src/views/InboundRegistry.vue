@@ -787,6 +787,8 @@ export default {
         DestNumber: "",
         RelatedAtt: [],
         SenderType: "",
+        RelatedGehat: [
+        ],
       },
       sendOriginRequestBody: {
         RecieverUsername: "",
@@ -797,13 +799,10 @@ export default {
         IncidentNumber: 1000212,
       },
       sendSmsRequestBody: {
-        Username: "ITCorrespondence",
-        Password: "C0rresp0ndence",
-        mobile: "",
-        text: "Test message",
-        Source: "CMS",
-        Service_name: "CMS_Ticket",
+        MobileNo: "",
+        Message: "",
       },
+       
       emailRules: [(v) => !!v || "Email is required"],
       rules: {
         requiredIf: [(value) => (this.sendOriginal && !value ? "مطلوب" : true)],
@@ -902,15 +901,29 @@ export default {
   },
 
   methods: {
-    sendSMS() {
+    addDepartmentsList() {
+      for (let i = 0; i < this.toCopies.length; i++) {
+        this.requestBody.RelatedGehat.push({
+          Name: this.listSearchDep(this.toCopies[i], this.departments).GehaName ,
+          Type: 2,
+          Text6: "COPY" ,
+          Value: this.listSearchDep(this.toCopies[i], this.departments).ManagerUserName
+        });
+      }
+      console.log(this.toCopies);
+    },
+    sendSMS(id) {
       console.log("sms to be sent");
 
-      this.sendSmsRequestBody.mobile = this.mobileNumber;
+     // var sms1 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية برقم مرجعي:"+id+"\n"+"وسيتم التواصل معكم قريباً";
+      var sms2 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية بالرقم المرجعي :"+"\n"+id+".";
+
+      this.sendSmsRequestBody.MobileNo = this.mobileNumber;
+      this.sendSmsRequestBody.Message = sms2;
       Vue.axios
         .post(
-          "http://172.30.140.3/smsapi/api/SMS/Send",
+          "https://emp.adf.gov.sa/cms7514254/api/cms/SendSMS",
           this.sendSmsRequestBody,
-          {}
         )
         .then((resp) => {
           console.log("sms sent");
@@ -1021,7 +1034,7 @@ export default {
       this.requestBody.IOboundRemarks = this.remarks;
       this.requestBody.OutboundDocNo = this.outboundNumber;
       this.requestBody.RequestDate = new Date().toLocaleString();
-      this.requestBody.OutboundHDate = this.date;
+      this.requestBody.OutboundGDate = this.date;
       this.requestBody.FromGeha = this.from;
 
       this.requestBody.FromID = this.listSearch(this.from, this.entities);
@@ -1063,7 +1076,7 @@ export default {
       this.requestBody.RelatedPhone = this.mobileNumber;
       this.requestBody.RelatedID = this.senderID;
       this.addAttatchmentToRequest();
-
+      this.addDepartmentsList();
       console.log(this.requestBody);
     },
     sendRequest() {
@@ -1086,7 +1099,7 @@ export default {
             }
             if (this.doSendSMS) {
               console.log("sms");
-              this.sendSMS();
+              this.sendSMS(resp.data.Num.toString());
             }
             this.showAlterSuccessMessage(resp.data.Num.toString());
             this.$refs.form.reset();

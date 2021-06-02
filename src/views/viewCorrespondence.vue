@@ -72,7 +72,7 @@
       <v-main>
         <v-container>
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
@@ -94,7 +94,12 @@
             <div>
               <p
                 class="my-10 font-weight-medium"
-                style="font-size: 20px; color: #e6e6e6; margin:15px; margin-left:8px;"
+                style="
+                  font-size: 20px;
+                  color: #e6e6e6;
+                  margin: 15px;
+                  margin-left: 8px;
+                "
               >
                 إستعراض
               </p>
@@ -102,7 +107,7 @@
 
             <p
               class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px;padding-top:1px;"
+              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
             >
               بيانات المعاملة
             </p>
@@ -195,6 +200,25 @@
                   </v-col>
                 </v-row>
               </v-container>
+              <v-container v-show="toggleInbound">
+                <v-row>
+                  <v-col>
+                    <v-autocomplete
+                      color="#28714e"
+                      :loading="isLoadingdepartments"
+                      :items="departments"
+                      item-text="GehaName"
+                      label="نسخة إلى"
+                      v-model="toCopies"
+                      outlined
+                      deletable-chips
+                      multiple
+                      small-chips
+                      readonly
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-container>
               <v-container>
                 <v-row>
                   <v-col>
@@ -267,6 +291,7 @@
                       label="التصنيف"
                       required
                       outlined
+                      readonly
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -370,18 +395,18 @@
 
             <v-container v-show="toggleInbound" class="d-flex justify-center">
               <v-row>
-                <v-col>
+                <v-col v-show="toggleInbound">
                   <div class="text-center">
                     <v-btn
                       rounded
                       color="#39ac73"
-                      style="opacity: 0.9 !important;"
+                      style="opacity: 0.9 !important"
                       dark
                       large
                       width="200"
                       @click="sendOriginal = !sendOriginal"
                     >
-                      <h5 class="my-10" style="color: white;">إرسال أصل</h5>
+                      <h5 class="my-10" style="color: white">إرسال أصل</h5>
                     </v-btn>
                   </div>
                 </v-col>
@@ -390,16 +415,14 @@
                     <v-btn
                       rounded
                       color="#28714e"
-                      style="opacity: 0.9 !important;"
+                      style="opacity: 0.9 !important"
                       dark
                       large
                       width="200"
                       @click="resend"
                     >
                       <router-link :to="resendto">
-                        <h5 class="my-10" style="color: white;">
-                          تسديد الوارد
-                        </h5>
+                        <h5 class="my-10" style="color: white">تسديد الوارد</h5>
                       </router-link>
                     </v-btn>
                   </div>
@@ -420,7 +443,7 @@
             <v-container
               v-show="toggleInbound"
               class="d-flex justify-center"
-              style="padding-left:140px;"
+              style="padding-left: 140px"
             >
               <div class="mx-auto text-center">
                 <v-form ref="formOriginal" v-model="valid" lazy-validations>
@@ -457,14 +480,13 @@
                         <v-btn
                           color="#3d7f5f"
                           rounded
-                         
                           dark
                           large
                           @click="validate"
                           width="150"
                         >
                           <router-link :to="sendO">
-                            <h5 class="my-10" style="color: white;">إرسال</h5>
+                            <h5 class="my-10" style="color: white">إرسال</h5>
                           </router-link>
                         </v-btn>
                       </router-link>
@@ -497,16 +519,18 @@ Vue.use(VueAxios, axios);
 
 axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
 axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + localStorage.getItem("token");
 
 const d = uq();
-const day = d.format("yyyy-MM-dd");
+//const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
 
 export default {
   components: {
     Loading,
   },
-  data: function() {
+  data: function () {
     return {
       sendO: "",
       resendto: "",
@@ -524,6 +548,10 @@ export default {
         GehaName: "ادارة المالية",
         IncidentNumber: 1000212,
       },
+      copiesRequestBody: {
+        RepType: 5, // copy
+        RelatedID: null, // request ID
+      },
       originalTo: "",
       sendOriginal: false,
       overlay: false,
@@ -536,7 +564,7 @@ export default {
       menu: false,
       modal: false,
       menu2: false,
-      date: day.toString(),
+      date: "",
       today: today.toString(),
       loader: null,
       loading: false,
@@ -544,6 +572,7 @@ export default {
       progressInfos: [],
       message: "",
       //Start of filed data
+      toCopies: [],
       outbound: "",
       inbound: "",
       IncidentNumber: "",
@@ -621,8 +650,27 @@ export default {
 
       console.log(this.filsUrls);
     },
+    fillDepts(id) {
+      console.log("dep id :"+id);
+      this.copiesRequestBody.RelatedID = id;
+      Vue.axios
+        .post(
+          "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+          this.copiesRequestBody
+        )
+        .then((resp) => {
+         var list = resp.data;
+      for (var i = 0; i < list.length; i++) {
+        this.toCopies.push(list[i].RecieverName);
+      }
+
+        });
+
+
+    },
     sendRequest() {
       this.isLoading = true;
+
       this.requestBody.GehaCode = this.listSearchDep(
         this.originalTo,
         this.departments
@@ -632,7 +680,6 @@ export default {
 
       this.requestBody.RecieverUsername = localStorage.getItem("username");
       this.requestBody.title = this.title;
-
 
       Vue.axios
         .post(
@@ -651,6 +698,7 @@ export default {
         });
     },
     fillData(data) {
+      this.date = data.OutboundGDate.substr(0, 10);
       this.by = data.SourceType;
       this.from = data.FromGeha;
       this.id = data.FromID;
@@ -675,6 +723,7 @@ export default {
       }
 
       this.fillAttatchment(data.RelatedAtt);
+      this.fillDepts(data.Id);
       console.log(data.SourceType);
       if (data.SourceType % 2 != 0) {
         // رقم صادر الصندوق

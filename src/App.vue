@@ -30,7 +30,8 @@ export default {
   }),
   mounted() {
     // get url, substring
-    var url = "https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
+    var url =
+      "https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
     //window.location.href;
     this.username = url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
     this.password = url.substring(url.indexOf("&P=") + 3);
@@ -41,29 +42,42 @@ export default {
       this.password +
       "&grant_type=password";
     // get token request
+
     Vue.axios
       .post("https://emp.adf.gov.sa/cms7514254/api/cmstoken", this.requestBody)
       .then((resp) => {
         localStorage.setItem("token", resp.data.access_token);
         localStorage.setItem("expired", new Date(resp.data[".expires"]));
         localStorage.setItem("refresh", resp.data.refresh_token);
-        console.log(resp.data);
+        console.log(resp.data.access_token);
+      }).then(() => {
+        this.getLoginUserFunction();
       });
     // get permissions
     axios.defaults.headers.common["Authorization"] =
       "Bearer " + localStorage.getItem("token");
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser")
-      .then((resp) => {
-        localStorage.setItem("permissions", resp.data.Permissions);
-        localStorage.setItem("username", resp.data.EmployeeUserName);
-      });
 
-    this.refreshToken(localStorage.getItem("expired"));
   },
   methods: {
-    getUserInfo(){
-      
+    getLoginUserFunction() {
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
+      Vue.axios
+        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser")
+        .then((resp) => {
+          localStorage.setItem("permissions", resp.data.Permissions);
+          localStorage.setItem("username", resp.data.EmployeeUserName);
+
+        })
+        .then(() => {
+          this.refreshToken(localStorage.getItem("expired"));
+        })
+        .catch((error) => {
+          console.log(
+            "Error ===>>> App.vue ______ getLoginUserFunction _______Error: " +
+              error
+          );
+        });
     },
     refreshToken(date) {
       const today = new Date();
