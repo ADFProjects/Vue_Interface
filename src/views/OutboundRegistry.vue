@@ -1,3 +1,4 @@
+
 <style lang="css" scoped>
 @media print {
   @page {
@@ -6,11 +7,20 @@
     padding: 0;
   }
 }
+.v-radio >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.checkBoxs--text >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
 .v-text-field >>> label {
-  font-size: 20px;
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
@@ -18,6 +28,9 @@
 }
 </style>
 <style>
+.v-text-field input {
+  font-size: 0.9em;
+}
 .inputNumber input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -79,12 +92,12 @@
     4. Arabic date display
     5. Direction rtl             DONE
   -->
-  <div id="app" class="d-flex justify-center">
+  <div id="app" class="d-flex justify-center my-application">
     <v-app id="inspire">
       <v-main>
         <v-container>
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
@@ -100,27 +113,32 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>إضافة صادر</span>
+              <span class="my-application">إضافة معاملة صادرة</span>
             </v-tooltip>
             <div>
               <p
-                class="my-10 font-weight-medium"
-                style="font-size: 20px; color: #e6e6e6; margin:15px; margin-left:8px;"
+                class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
               >
                 تسجيل
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px; padding-top:1px;"
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
             >
               المعاملة الصادرة
             </p>
           </v-app-bar>
 
           <v-card>
-            <v-form ref="form" v-model="valid" lazy-validations>
+            <v-form
+              class="my-application"
+              ref="form"
+              v-model="valid"
+              lazy-validations
+            >
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
@@ -170,7 +188,7 @@
               <v-container v-show="commpanyToggle">
                 <v-card>
                   <v-card-title class="grey--text text--darken-2">
-                    شركة الشحن :</v-card-title
+                    شركات الشحن :</v-card-title
                   >
                   <v-container>
                     <v-radio-group
@@ -192,7 +210,7 @@
               </v-container>
               <v-container>
                 <v-row>
-                                    <v-col>
+                  <v-col>
                     <v-autocomplete
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
@@ -492,21 +510,21 @@
                                   <v-list-item-subtitle>
                                     <a
                                       :href="file.url"
-                                      style="color: #28714e;font-weight: bold;"
+                                      style="color: #28714e; font-weight: bold"
                                       >{{ file.name }}</a
                                     >
                                   </v-list-item-subtitle>
                                 </v-col>
                                 <v-col>
                                   <v-list-item-subtitle>
-                                    <h6 :key="file" style="font-weight: bold;">
+                                    <h6 :key="file" style="font-weight: bold">
                                       {{ file.type }}
                                     </h6>
                                   </v-list-item-subtitle>
                                 </v-col>
                                 <v-col>
                                   <v-list-item-subtitle>
-                                    <h6 :key="file" style="font-weight: bold;">
+                                    <h6 :key="file" style="font-weight: bold">
                                       {{ file.category }}
                                     </h6>
                                   </v-list-item-subtitle>
@@ -535,6 +553,7 @@
               </v-container>
               <v-container>
                 <v-checkbox
+                  class="checkBoxs--text"
                   color="#28714e"
                   v-model="doprint"
                   label=" طباعة الباركود"
@@ -551,33 +570,38 @@
                       @click="validate"
                       width="200"
                     >
-                      <h5 class="my-10" style="color: white;">إرسال</h5>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        إرسال
+                      </h5>
                     </v-btn>
                   </router-link>
                 </div>
               </v-container>
             </v-form>
             <div>
-                <v-container v-show="false">
-                  <div id="bc">
-                    <div style="width: 100%">
-                      <div
-                        class="d-flex justify-center"
-                        style="display: table; margin: 0 auto"
+              <v-container v-show="false">
+                <div id="bc">
+                  <div style="width: 100%">
+                    <div
+                      class="d-flex justify-center"
+                      style="display: table; margin: 0 auto"
+                    >
+                      <barcode
+                        v-bind:value="barcodeValue"
+                        width="1"
+                        height="30"
+                        :displayValue="false"
+                        fontSize="10"
                       >
-                        <barcode
-                          v-bind:value="barcodeValue"
-                          width="1"
-                          height="30"
-                          :displayValue="false"
-                          fontSize="10"
-                        >
-                          فشل تحميل الباركود
-                        </barcode>
-                      </div>
+                        فشل تحميل الباركود
+                      </barcode>
                     </div>
                   </div>
-                </v-container>
+                </div>
+              </v-container>
             </div>
             <v-overlay :value="overlay">
               <v-progress-circular
@@ -607,8 +631,6 @@ import VueBarcode from "vue-barcode";
 import VueHtml2Canvas from "vue-html2canvas";
 
 import VueHtmlToPaper from "vue-html-to-paper";
-
-
 
 const options = {
   name: "_blank",
@@ -643,7 +665,7 @@ export default {
     Loading,
     barcode: VueBarcode,
   },
-  data: function() {
+  data: function () {
     return {
       printer_off: true,
       doprint: true,
@@ -697,12 +719,12 @@ export default {
       isLoadingattatchmentCategory: true,
       isLoadingattatchmentExtention: true,
       isLoadingdepartments: true,
-      sendway: ["صادر عادي", "البريد السعودي", "شركة شحن"],
-      sendwaySPO: ["داخلي", "خارجي", "صندوق البريد"],
+      sendway: ["صادر عادي", "البريد السعودي", "شركات شحن"],
+      sendwaySPO: ["داخلي", "خارجي"],
       deliveryCo: ["سمسا", "فيدكس"],
       recivedData: "",
       //Start of filed data
-      dep:"",
+      dep: "",
       from: "",
       to: "",
       title: "",
@@ -724,7 +746,7 @@ export default {
       //End of filed data
       filsUrls: [],
       requestBody: {
-        DeliveryBy: "",
+        DeliveryBy: "spoOut",
         Status: 1,
         RequesterID: 4106, // employee ID from login
         RequestDate: "", // current date
@@ -763,8 +785,7 @@ export default {
         counterTitle: [(value) => value.length > 0 && value.length <= 500],
         counterDescription: [(value) => value.length <= 500],
         nId: [
-          (v) =>
-            v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true,
+          (v) => (v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true),
         ],
         mobileNum: [
           (v) =>
@@ -886,7 +907,6 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       WinPrint.close();
-    
     },
     replay() {
       this.isLoading = true;
@@ -921,9 +941,10 @@ export default {
         this.requestBody.DeliveryBy = "spoIn";
       } else if ($event.localeCompare(this.sendwaySPO[1]) == 0) {
         this.requestBody.DeliveryBy = "spoOut";
-      } else {
-        this.requestBody.DeliveryBy = "spoInbox";
       }
+       else {
+         this.requestBody.DeliveryBy = "spoOut";
+       }
     },
     deliveryCompany($event) {
       console.log($event);
@@ -947,7 +968,7 @@ export default {
         this.requestBody.SenderType = "MADF";
         this.requestBody.TotID = this.listSearch(this.to, this.entities);
       } else if (this.rowType.localeCompare(this.sendway[2]) == 0) {
-        console.log("شركة");
+        console.log("شركات");
         this.requestBody.SourceType = "4";
         this.requestBody.SenderType = "deliveryCo";
       }
@@ -1040,10 +1061,8 @@ export default {
       this.requestBody.OutboundDocNo = "";
       this.requestBody.RequestDate = new Date().toLocaleString();
       this.requestBody.OutboundHDate = this.date;
-      this.requestBody.OutboundDate = this.date;
-      this.requestBody.OutboundGDate = new Date().toISOString().substr(0, 10);
 
-        this.requestBody.ToGeha = this.to;
+      this.requestBody.ToGeha = this.to;
 
       this.requestBody.RelatedEmail = this.email;
       this.requestBody.RelatedName = this.senderName;
@@ -1070,7 +1089,7 @@ export default {
         this.selectedCategory,
         this.category
       );
-            this.requestBody.SelectedManager = this.listSearchDep(
+      this.requestBody.SelectedManager = this.listSearchDep(
         this.dep,
         this.departments
       ).ManagerUserName;
@@ -1103,8 +1122,8 @@ export default {
             console.log("should be printed?");
             if (this.doprint) {
               console.log("printed");
-            this.print();
-           }
+              this.print();
+            }
             this.showAlterSuccessMessage();
             this.$refs.form.reset();
             this.resetAttatchement();
@@ -1212,7 +1231,6 @@ export default {
         this.title = "";
       }
     },
-
   }, //End of Methodes
   watch: {
     loader() {

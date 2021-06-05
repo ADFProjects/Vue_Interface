@@ -1,6 +1,6 @@
-<template>
+<template class="my-application">
   <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
+    <v-app id="inspire" class="my-application">
       <v-main>
         <v-container>
           <v-app-bar
@@ -9,7 +9,6 @@
             color="#28714e"
             dark
             class="mb-1"
-           
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -26,7 +25,7 @@
                   max-width="60"
                 ></v-img>
               </template>
-              <span>صندوق البريد الصادر</span>
+              <span class="my-application">صندوق البريد الصادر</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -44,7 +43,7 @@
                   style="font-size: 16px; font-weight: bold"
                 ></v-text-field>
               </template>
-              <span>البحث بإستخدام جميع خانات المعاملة</span>
+              <span class="my-application">البحث بإستخدام جميع خانات المعاملة</span>
             </v-tooltip>
 
             <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -61,7 +60,7 @@
                       <v-icon style="color: #28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                  <span class="my-application">ترتيب المعاملات من الأحدث إلى الأقدم</span>
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on }">
@@ -75,7 +74,7 @@
                       <v-icon style="color: #28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                  <span class="my-application">ترتيب المعاملات من الأقدم إلى الأحدث</span>
                 </v-tooltip>
               </v-btn-toggle>
             </template>
@@ -83,7 +82,7 @@
 
           <v-card>
             <v-data-table
-              style="font-weight: bold; color: #4d4d4d"
+              style="font-weight: bold; color: #595959"
               :header-props="{ sortIcon: null }"
               :headers="headers"
               :items="allOutboundsBox"
@@ -92,20 +91,22 @@
               :items-per-page="10"
               sort-by="IncidentNumber"
               :sort-desc="sortDesc"
-              class="elevation-2"
+              class="elevation-2 my-application"
               :footer-props="{
-                itemsPerPageOptions: [5, 10, 15, 25, 50],
+                itemsPerPageOptions: [5, 10, 15, 25],
                 pageText: '',
-                //'items-per-page-all-text': 'الكل',
+                pageText: 'من {0}-{1} إلى {2}',
+                showFirstLastPage: true,
                 'items-per-page-text': 'عدد المعاملات الصادرة في الصفحة:',
+                //'items-per-page-all-text': 'الكل',
               }"
             >
-              <template v-slot:item="{ item }">
-                <tr id="rowCols" @click="searchbyid(item)" class="text-center">
-                  <td>{{ item.IncidentNumber }}</td>
-                  <template>
-                    <td>
-                      <v-chip :color="getColor(item.ResponseStatusName)" dark>
+              <template v-slot:item="{ item }" class="my-application">
+                <tr id="rowCols" @click="searchbyid(item)" class="text-center my-application">
+                  <td class="my-application" id="tdAll" >{{ item.IncidentNumber }}</td>
+                  <template class="my-application" id="tdAll">
+                    <td class="my-application" id="tdAll">
+                      <v-chip id="tdAll" :color="getColor(item.ResponseStatusName)" dark class="my-application">
                         {{ item.ResponseStatusName }}
                       </v-chip>
                     </td>
@@ -113,30 +114,32 @@
 
                   <v-tooltip bottom :disabled="item.IOboundSubject.length < 30">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate">
+                      <td id="tdAll" v-on="on" class="truncate my-application">
                         {{ item.IOboundSubject }}
                       </td>
                     </template>
-                    <span class="text-truncate ml-1 mr-1">{{
+                    <span class="text-truncate ml-1 mr-1 my-application">{{
                       item.IOboundSubject
                     }}</span>
                   </v-tooltip>
 
                   <v-tooltip bottom :disabled="item.ToGeha.length < 35">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate">{{ item.ToGeha }}</td>
+                      <td id="tdAll" v-on="on" class="truncate my-application">{{ item.ToGeha }}</td>
                     </template>
-                    <span class="text-truncate ml-1 mr-1">{{
+                    <span class="text-truncate ml-1 mr-1 my-application">{{
                       item.ToGeha
                     }}</span>
                   </v-tooltip>
-                  <td>{{ item.RequestDate_Ar }}</td>
+                  <td id="tdAll" class="my-application">{{ item.RequestDate_Ar }}</td>
                 </tr>
               </template>
 
               <template v-slot:no-data>
                 <v-alert
+                id="tdAll"
                   :value="true"
+                  class="my-application"
                   color="#339966"
                   border="top"
                   colored-border
@@ -162,11 +165,13 @@
                   @update:options="updateOptions"
                   :items-per-page-options="[5, 10, 15, 25]"
                   items-per-page-text="عدد المعاملات الصادرة في الصفحة:"
-                  pageText=""
+                  pageText="من {0}-{1} إلى {2}"
+                  showFirstLastPage
                 />
               </template>
 
               <v-alert
+              id="tdAll"
                 slot="no-results"
                 :value="true"
                 border="top"
@@ -185,11 +190,11 @@
                 بحثك عن "{{ search }}" لم يعثر على نتائج.
               </v-alert>
 
-              <template v-slot:[`item.ResponseStatusName`]="{ item }">
+              <!-- <template v-slot:[`item.ResponseStatusName`]="{ item }">
                 <v-chip :color="getColor(item.ResponseStatusName)" dark>
                   {{ item.ResponseStatusName }}
                 </v-chip>
-              </template>
+              </template> -->
             </v-data-table>
             <v-overlay :value="overlay">
               <v-progress-circular
@@ -263,7 +268,7 @@ export default {
         },
 
         { text: "حالة المعاملة", value: "ResponseStatusName", align: "center" },
-        { text: "عنوان المعاملة", value: "IOboundSubject", align: "center" },
+        { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
         { text: "الجهة الصادرة", value: "ToGeha", align: "center" },
         { text: "تاريخ المعاملة", value: "RequestDate_Ar", align: "center" },
       ],
@@ -337,27 +342,45 @@ export default {
 };
 </script>
 
-<style>
+<style  lang="scss">
+#tdAll {
+  font-size: 12px;
+  font-family: "Almarai", sans-serif !important;
+}
 #rowCols:hover {
   cursor: pointer;
+}
+.v-text-field input {
+  font-size: 0.9em;
 }
 .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
   font-size: 16px !important;
   background-color: #f2f2f2;
   font-weight: bold;
 }
-/* .elevation-1 tr th:first-of-type,
-td:first-of-type {
-  background-color: #f2f2f2;
-} */
 </style>
 
 <style lang="css" scoped>
+::v-deep .v-data-table-header th {
+  background-color: #f2f2f2 !important;
+  font-weight: bold !important;
+}
+::v-deep th {
+  color: #262626 !important;
+  font-weight: bold !important;
+  opacity: 0.8 !important;
+  letter-spacing: 0.3px;
+}
+::v-deep td {
+  color: #595959;
+  font-size: 1px;
+}
 .v-text-field >>> label {
-  font-size: 18px;
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;

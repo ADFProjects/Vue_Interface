@@ -1,6 +1,12 @@
+
+
 <style lang="css" scoped>
+.v-text-field >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
@@ -9,6 +15,9 @@
 </style>
 
 <style>
+.v-text-field input {
+  font-size: 0.9em;
+}
 .inputNumber input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -67,8 +76,8 @@
     4. Arabic date display
     5. Direction rtl             DONE
   -->
-  <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
+  <div id="app" class="d-flex justify-center ">
+    <v-app class="my-application" id="inspire">
       <v-main>
         <v-container>
           <v-app-bar
@@ -88,33 +97,33 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>عرض المعاملة</span>
+              <span class="my-application">عرض المعاملة</span>
             </v-tooltip>
 
-            <div>
+            <div class="my-application">
               <p
-                class="my-10 font-weight-medium"
-                style="
-                  font-size: 20px;
-                  color: #e6e6e6;
-                  margin: 15px;
-                  margin-left: 8px;
-                "
+                class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
               >
                 إستعراض
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
             >
               بيانات المعاملة
             </p>
           </v-app-bar>
 
           <v-card>
-            <v-form ref="form" v-model="valid" lazy-validations>
+            <v-form
+              class="my-application"
+              ref="form"
+              v-model="valid"
+              lazy-validations
+            >
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
@@ -200,25 +209,6 @@
                   </v-col>
                 </v-row>
               </v-container>
-              <v-container v-show="toggleInbound">
-                <v-row>
-                  <v-col>
-                    <v-autocomplete
-                      color="#28714e"
-                      :loading="isLoadingdepartments"
-                      :items="departments"
-                      item-text="GehaName"
-                      label="نسخة إلى"
-                      v-model="toCopies"
-                      outlined
-                      deletable-chips
-                      multiple
-                      small-chips
-                      readonly
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
               <v-container>
                 <v-row>
                   <v-col>
@@ -291,7 +281,6 @@
                       label="التصنيف"
                       required
                       outlined
-                      readonly
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -382,6 +371,7 @@
             <v-container>
               <!--  the title should be "سري" when the type is confidential  -->
               <v-textarea
+                class="my-application"
                 color="#28714e"
                 readonly
                 v-model="remarks"
@@ -395,7 +385,7 @@
 
             <v-container v-show="toggleInbound" class="d-flex justify-center">
               <v-row>
-                <v-col v-show="toggleInbound">
+                <v-col>
                   <div class="text-center">
                     <v-btn
                       rounded
@@ -406,7 +396,12 @@
                       width="200"
                       @click="sendOriginal = !sendOriginal"
                     >
-                      <h5 class="my-10" style="color: white">إرسال أصل</h5>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        إرسال أصل
+                      </h5>
                     </v-btn>
                   </div>
                 </v-col>
@@ -422,7 +417,12 @@
                       @click="resend"
                     >
                       <router-link :to="resendto">
-                        <h5 class="my-10" style="color: white">تسديد الوارد</h5>
+                        <h5
+                          class="my-10 my-application"
+                          style="color: white; font-size: 14px"
+                        >
+                          تسديد الوارد
+                        </h5>
                       </router-link>
                     </v-btn>
                   </div>
@@ -434,7 +434,12 @@
                 <v-col>
                   <div class="text-center">
                     <v-btn rounded color="red" dark large>
-                      <h5 class="white--text">إلغاء</h5>
+                      <h5
+                        class="white--text my-application"
+                        style="font-size: 14px"
+                      >
+                        إلغاء
+                      </h5>
                     </v-btn>
                   </div>
                 </v-col>
@@ -486,7 +491,12 @@
                           width="150"
                         >
                           <router-link :to="sendO">
-                            <h5 class="my-10" style="color: white">إرسال</h5>
+                            <h5
+                              class="my-10 my-application"
+                              style="color: white; font-size: 14px"
+                            >
+                              إرسال
+                            </h5>
                           </router-link>
                         </v-btn>
                       </router-link>
@@ -519,11 +529,9 @@ Vue.use(VueAxios, axios);
 
 axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
 axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
-axios.defaults.headers.common["Authorization"] =
-  "Bearer " + localStorage.getItem("token");
 
 const d = uq();
-//const day = d.format("yyyy-MM-dd");
+const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
 
 export default {
@@ -548,10 +556,6 @@ export default {
         GehaName: "ادارة المالية",
         IncidentNumber: 1000212,
       },
-      copiesRequestBody: {
-        RepType: 5, // copy
-        RelatedID: null, // request ID
-      },
       originalTo: "",
       sendOriginal: false,
       overlay: false,
@@ -564,7 +568,7 @@ export default {
       menu: false,
       modal: false,
       menu2: false,
-      date: "",
+      date: day.toString(),
       today: today.toString(),
       loader: null,
       loading: false,
@@ -572,7 +576,6 @@ export default {
       progressInfos: [],
       message: "",
       //Start of filed data
-      toCopies: [],
       outbound: "",
       inbound: "",
       IncidentNumber: "",
@@ -650,27 +653,8 @@ export default {
 
       console.log(this.filsUrls);
     },
-    fillDepts(id) {
-      console.log("dep id :"+id);
-      this.copiesRequestBody.RelatedID = id;
-      Vue.axios
-        .post(
-          "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
-          this.copiesRequestBody
-        )
-        .then((resp) => {
-         var list = resp.data;
-      for (var i = 0; i < list.length; i++) {
-        this.toCopies.push(list[i].RecieverName);
-      }
-
-        });
-
-
-    },
     sendRequest() {
       this.isLoading = true;
-
       this.requestBody.GehaCode = this.listSearchDep(
         this.originalTo,
         this.departments
@@ -698,7 +682,6 @@ export default {
         });
     },
     fillData(data) {
-      this.date = data.OutboundGDate.substr(0, 10);
       this.by = data.SourceType;
       this.from = data.FromGeha;
       this.id = data.FromID;
@@ -723,7 +706,6 @@ export default {
       }
 
       this.fillAttatchment(data.RelatedAtt);
-      this.fillDepts(data.Id);
       console.log(data.SourceType);
       if (data.SourceType % 2 != 0) {
         // رقم صادر الصندوق

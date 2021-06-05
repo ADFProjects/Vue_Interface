@@ -1,6 +1,6 @@
-<template>
+<template class="my-application">
   <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
+    <v-app id="inspire" class="my-application">
       <v-main>
         <v-container>
           <loading
@@ -9,7 +9,7 @@
             :loader="waitingLoader"
           />
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
@@ -25,7 +25,7 @@
                   max-width="60"
                 ></v-img>
               </template>
-              <span>صندوق البريد الوارد</span>
+              <span class="my-application">صندوق البريد الوارد</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -43,7 +43,9 @@
                   style="font-size: 16px; font-weight: bold"
                 ></v-text-field>
               </template>
-              <span>البحث بإستخدام جميع خانات المعاملة</span>
+              <span class="my-application"
+                >البحث بإستخدام جميع خانات المعاملة</span
+              >
             </v-tooltip>
 
             <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -60,7 +62,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأحدث إلى الأقدم</span
+                  >
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on }">
@@ -74,7 +78,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأقدم إلى الأحدث</span
+                  >
                 </v-tooltip>
               </v-btn-toggle>
             </template>
@@ -82,7 +88,7 @@
 
           <v-card>
             <v-data-table
-              style="font-weight: bold; color: #4d4d4d"
+              style="font-weight: bold; color: #595959"
               :header-props="{ sortIcon: null }"
               :headers="headers"
               :items="allInboundsBox"
@@ -91,20 +97,44 @@
               :items-per-page="10"
               sort-by="IncidentNumber"
               :sort-desc="sortDesc"
-              class="elevation-2"
+              class="elevation-2 my-application"
               :footer-props="{
-                itemsPerPageOptions: [5, 10, 15, 25, 50],
-                pageText: '',
-                //'items-per-page-all-text': 'الكل',
+                itemsPerPageOptions: [5, 10, 15, 25],
                 'items-per-page-text': 'عدد المعاملات الواردة في الصفحة:',
+                showFirstLastPage: true,
+                pageText: 'من {0}-{1} إلى {2}',
+                //'items-per-page-all-text': 'الكل',
               }"
             >
-              <template v-slot:item="{ item }">
-                <tr id="rowCols" @click="searchbyid(item)" class="text-center">
-                  <td>{{ item.IncidentNumber }}</td>
-                  <template>
-                    <td>
-                      <v-chip :color="getColor(item.ResponseStatusName)" dark>
+              <!-- <template slot="headers" scope="props">
+                <tr>
+                  <th
+                    class="my-application"
+                    v-for="header in props.headers"
+                    :key="header.text"
+                  >
+                    fghghg {{ header.text }}
+                  </th>
+                </tr>
+              </template> -->
+
+              <template v-slot:item="{ item }" class="my-application">
+                <tr
+                  id="rowCols"
+                  @click="searchbyid(item)"
+                  class="text-center my-application"
+                >
+                  <td class="my-application" id="tdAll">
+                    {{ item.IncidentNumber }}
+                  </td>
+                  <template class="my-application" id="tdAll">
+                    <td class="my-application" id="tdAll">
+                      <v-chip
+                        id="tdAll"
+                        class="my-application"
+                        :color="getColor(item.ResponseStatusName)"
+                        dark
+                      >
                         {{ item.ResponseStatusName }}
                       </v-chip>
                     </td>
@@ -112,36 +142,40 @@
 
                   <v-tooltip bottom :disabled="item.IOboundSubject.length < 32">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate">
+                      <td v-on="on" class="truncate my-application" id="tdAll">
                         {{ item.IOboundSubject }}
                       </td>
                     </template>
-                    <span class="text-truncate ml-1 mr-1" v-on="on">{{
+                    <span class="text-truncate ml-1 mr-1 my-application">{{
                       item.IOboundSubject
                     }}</span>
                   </v-tooltip>
 
                   <v-tooltip bottom :disabled="item.OutboundDocNo.length < 9">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate">
+                      <td v-on="on" class="truncate my-application" id="tdAll">
                         {{ item.OutboundDocNo }}
                       </td>
                     </template>
-                    <span class="text-truncate ml-1 mr-1" v-on="on">{{
+                    <span class="text-truncate ml-1 mr-1 my-application">{{
                       item.OutboundDocNo
                     }}</span>
                   </v-tooltip>
 
                   <v-tooltip bottom :disabled="item.FromGeha.length < 30">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate">{{ item.FromGeha }}</td>
+                      <td v-on="on" class="truncate my-application" id="tdAll">
+                        {{ item.FromGeha }}
+                      </td>
                     </template>
-                    <span class="text-truncate ml-1 mr-1" v-on="on">{{
+                    <span class="text-truncate ml-1 mr-1 my-application">{{
                       item.FromGeha
                     }}</span>
                   </v-tooltip>
 
-                  <td>{{ item.RequestDate_Ar }}</td>
+                  <td class="my-application" id="tdAll">
+                    {{ item.RequestDate_Ar }}
+                  </td>
                 </tr>
               </template>
               <template v-slot:no-data>
@@ -154,12 +188,12 @@
                   elevation="5"
                   height="70"
                   style="
-                      margin-top: 20px;
-                      padding-left: 40px;
-                      padding-top: 25px;
-                      font-size: 20px;
-                      color: #4d4d4d;
-                    "
+                    margin-top: 20px;
+                    padding-left: 40px;
+                    padding-top: 25px;
+                    font-size: 20px;
+                    color: #4d4d4d;
+                  "
                 >
                   الصندوق فارغ، لا يوجد معاملات لعرضها هنا.
                 </v-alert>
@@ -172,10 +206,12 @@
                   @update:options="updateOptions"
                   :items-per-page-options="[5, 10, 15, 25]"
                   items-per-page-text="عدد المعاملات الواردة في الصفحة:"
-                  pageText=""
+                  pageText="من {0}-{1} إلى {2}"
+                  showFirstLastPage
                 />
               </template>
               <v-alert
+                id="tdAll"
                 slot="no-results"
                 :value="true"
                 border="top"
@@ -185,20 +221,20 @@
                 elevation="5"
                 height="70"
                 style="
-                    margin-top: 15px;
-                    padding-top: 25px;
-                    font-size: 20px;
-                    color: #4d4d4d;
-                  "
+                  margin-top: 15px;
+                  padding-top: 25px;
+                  font-size: 20px;
+                  color: #4d4d4d;
+                "
               >
                 بحثك عن "{{ search }}" لم يعثر على نتائج.
               </v-alert>
 
-              <template v-slot:[`item.ResponseStatusName`]="{ item }">
-                <v-chip :color="getColor(item.ResponseStatusName)" dark>
+              <!-- <template v-slot:[`item.ResponseStatusName`]="{ item }">
+                <v-chip :color="getColor(item.ResponseStatusName)" dark >
                   {{ item.ResponseStatusName }}
                 </v-chip>
-              </template>
+              </template> -->
             </v-data-table>
             <v-overlay :value="overlay">
               <v-progress-circular
@@ -272,7 +308,7 @@ export default {
           value: "IncidentNumber",
         },
         { text: "حالة المعاملة", value: "ResponseStatusName", align: "center" },
-        { text: "عنوان المعاملة", value: "IOboundSubject", align: "center" },
+        { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
         { text: "رقم صادر الجهة", value: "OutboundDocNo", align: "center" },
         { text: "الجهة الموردة", value: "FromGeha", align: "center" },
         { text: "تاريخ المعاملة", value: "RequestDate_Ar", align: "center" },
@@ -396,37 +432,50 @@ export default {
 };
 </script>
 
-<style>
+<style  lang="scss">
+#tdAll {
+  font-size: 12px;
+  font-family: "Almarai", sans-serif !important;
+}
 #rowCols:hover {
   cursor: pointer;
 }
-.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
-  font-size: 16px !important;
-  background-color: #f2f2f2;
-  font-weight: bold;
+.v-text-field input {
+  font-size: 0.9em;
 }
-/* .elevation-1 tr th:first-of-type,
-td:first-of-type {
-  background-color: #f2f2f2;
-} */
 </style>
 
 <style lang="css" scoped>
-.v-text-field >>> label {
-  font-size: 18px;
-}
-.v-tooltip__content {
-  font-size: 16px !important;
+::v-deep th .my-application {
+  color: rgb(36, 224, 193) !important;
+  font-weight: bold !important;
   opacity: 0.8 !important;
-
-  pointer-events: auto;
-  color: white;
-  background-color: #404040;
+  letter-spacing: 0.3px;
+  font-family: "Almarai", sans-serif;
+}
+::v-deep td {
+  color: #595959;
+  font-size: 1px;
 }
 .truncate {
   max-width: 1vw;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.checkBoxs--text >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.v-text-field >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.v-tooltip__content {
+  font-size: 14px !important;
+  opacity: 0.8 !important;
+  pointer-events: auto;
+  color: white;
+  background-color: #404040;
 }
 </style>

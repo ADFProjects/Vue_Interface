@@ -20,7 +20,7 @@
                   max-width="50"
                 ></v-img>
               </template>
-              <span>تقرير المعاملات</span>
+              <span>تقرير المعاملات - صندوق البريد</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -99,7 +99,7 @@
 
           <v-card>
             <v-data-table
-              style="font-weight: bold; color:#4d4d4d;"
+              style="font-weight: bold; color:#595959;"
               :header-props="{ sortIcon: null }"
               :sort-desc="sortDesc"
               v-model="selected"
@@ -114,70 +114,12 @@
               :items-per-page="10"
               :footer-props="{
                 pageText: '',
-                itemsPerPageOptions: [5, 10, 15, 25, 50],
+                itemsPerPageOptions: [5, 10, 15, 25],
                 'items-per-page-text': 'عدد المعاملات في الصفحة:',
+                showFirstLastPage: true,
+                pageText: 'من {0}-{1} إلى {2}',
               }"
             >
-              <!-- <template v-slot:[`header.data-table-select`]="{ props, on }">
-                <v-simple-checkbox
-                  color="primary"
-                  v-if="props.indeterminate"
-                  v-ripple
-                  v-bind="props"
-                  :value="props.indeterminate"
-                  v-on="on"
-                ></v-simple-checkbox>
-                <v-simple-checkbox
-                  color="primary"
-                  v-if="!props.indeterminate"
-                  v-ripple
-                  v-bind="props"
-                  v-on="on"
-                ></v-simple-checkbox>
-              </template> -->
-              <!-- 
-               <template slot="item" slot-scope="props">
-            <td>
-              <v-checkbox
-                primary
-                hide-details
-                v-model="props.selected"
-              ></v-checkbox>
-            </td>
-            <td class="text-xs-left">{{ props.item.IncidentNumber }}</td>
-            <td class="text-xs-left">{{ props.item.IOboundSubject }}</td> 
-               <td class="text-xs-left">{{ props.item.ToGeha }}</td>   
-                     <td class="text-xs-left">{{ props.item.RequestDate_Ar }}</td>
-               </template> -->
-
-              <!-- <template v-slot:item="{ item }">
-                <tr class="text-center">
-                  <td>{{ item.IncidentNumber }}</td>
-
-                  <v-tooltip bottom :disabled="item.IOboundSubject.length < 32">
-                    <template #activator="{ on }">
-                      <td v-on="on" class="truncate">
-                        {{ item.IOboundSubject }}
-                      </td>
-                    </template>
-                    <span class="text-truncate ml-1 mr-1" v-on="on">{{
-                      item.IOboundSubject
-                    }}</span>
-                  </v-tooltip>
-
-                  <v-tooltip bottom :disabled="item.ToGeha.length < 30">
-                    <template #activator="{ on }">
-                      <td v-on="on" class="truncate">{{ item.ToGeha }}</td>
-                    </template>
-                    <span class="text-truncate ml-1 mr-1" v-on="on">{{
-                      item.ToGeha
-                    }}</span>
-                  </v-tooltip>
-
-                  <td>{{ item.RequestDate_Ar }}</td>
-                </tr>
-              </template> -->
-
               <template v-slot:no-data>
                 <v-alert
                   :value="true"
@@ -225,7 +167,8 @@
                   :items-per-page-options="[5, 10, 15, 25]"
                   @update:options="updateOptions"
                   items-per-page-text="عدد المعاملات في الصفحة:"
-                  pageText=""
+                   pageText="من {0}-{1} إلى {2}"
+                  showFirstLastPage
                 />
               </template>
             </v-data-table>
@@ -336,7 +279,7 @@ export default {
           value: "IncidentNumber",
           align: "center",
         },
-        { text: "عنوان المعاملة", value: "IOboundSubject", align: "center" },
+        { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
         {
           text: "الجهة الصادرة | صندوق البريد",
           value: "ToGeha",
@@ -592,11 +535,21 @@ export default {
 </style>
 
 <style lang="css" scoped>
+::v-deep .v-data-table-header th {
+  background-color: #f2f2f2 !important;
+  font-weight: bold !important;
+}
+::v-deep th {
+  color: #262626 !important;
+  font-weight: bold !important;
+  opacity: 0.8 !important;
+  letter-spacing: 0.3px;
+}
 .v-text-field >>> label {
   font-size: 18px;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;

@@ -20,7 +20,7 @@
                   max-width="50"
                 ></v-img>
               </template>
-              <span>تقرير المعاملات</span>
+              <span>تقرير المعاملات - شركة سمسا</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -99,7 +99,7 @@
 
           <v-card>
             <v-data-table
-              style="font-weight: bold; color:#4d4d4d;"
+              style="font-weight: bold; color:#595959;"
               :header-props="{ sortIcon: null }"
               :sort-desc="sortDesc"
               v-model="selected"
@@ -113,8 +113,9 @@
               class="elevation-2 custom-data-table"
               :items-per-page="10"
               :footer-props="{
-                pageText: '',
-                itemsPerPageOptions: [5, 10, 15, 25, 50],
+                itemsPerPageOptions: [5, 10, 15, 25],
+                showFirstLastPage: true,
+                pageText: 'من {0}-{1} إلى {2}',
                 'items-per-page-text': 'عدد المعاملات في الصفحة:',
               }"
             >
@@ -183,7 +184,8 @@
                   :items-per-page-options="[5, 10, 15, 25]"
                   @update:options="updateOptions"
                   items-per-page-text="عدد المعاملات في الصفحة:"
-                  pageText=""
+                  pageText="من {0}-{1} إلى {2}"
+                  showFirstLastPage
                 />
               </template>
             </v-data-table>
@@ -296,7 +298,7 @@ export default {
           value: "IncidentNumber",
           align: "center",
         },
-        { text: "عنوان المعاملة", value: "IOboundSubject", align: "center" },
+        { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
         {
           text: "الجهة الصادرة | شركة سمسا",
           value: "ToGeha",
@@ -552,11 +554,21 @@ export default {
 </style>
 
 <style lang="css" scoped>
+::v-deep .v-data-table-header th {
+  background-color: #f2f2f2 !important;
+  font-weight: bold !important;
+}
+::v-deep th {
+  color: #262626 !important;
+  font-weight: bold !important;
+  opacity: 0.8 !important;
+  letter-spacing: 0.3px;
+}
 .v-text-field >>> label {
   font-size: 18px;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;

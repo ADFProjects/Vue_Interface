@@ -1,15 +1,15 @@
 <template>
-  <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
+  <div id="app" class="d-flex justify-center my-application">
+    <v-app id="inspire" class="my-application">
       <v-main>
         <v-container fluid>
           <!-- <v-container fluid> -->
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
-            class="mb-4"
+            class="mb-4 my-application"
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -21,7 +21,7 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>الإستعلام عن المعاملة</span>
+              <span class="my-application">الإستعلام عن المعاملة</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -35,16 +35,19 @@
                   hide-details
                   prepend-inner-icon="mdi-magnify"
                   label="البحث"
-                  class="mx-4"
-                  style="font-size: 16px; font-weight: bold; width: 420px;"
+                  class="mx-4 my-application"
+                  style="font-size: 16px; font-weight: bold; width: 420px"
                 ></v-text-field>
               </template>
-              <span>البحث بإستخدام جميع خانات المعاملة</span>
+              <span class="my-application"
+                >البحث بإستخدام جميع خانات المعاملة</span
+              >
             </v-tooltip>
 
             <template v-if="$vuetify.breakpoint.mdAndUp">
               <v-spacer></v-spacer>
               <v-select
+                class="my-application"
                 v-model="sortBy"
                 flat
                 solo-inverted
@@ -69,7 +72,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأحدث إلى الأقدم</span
+                  >
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on }">
@@ -83,7 +88,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأقدم إلى الأحدث</span
+                  >
                 </v-tooltip>
               </v-btn-toggle>
             </template>
@@ -97,16 +104,18 @@
             :search="search"
             sort-by="IncidentNumber"
             :sort-desc="sortDesc"
-            class="elevation-2"
+            class="elevation-2 my-application"
             :footer-props="{
+              showFirstLastPage: true,
               itemsPerPageOptions: [5, 10, 15, 25],
               pageText: '',
-              'items-per-page-all-text': 'الكل',
+
               'items-per-page-text': 'عدد المعاملات في الصفحة:',
             }"
           >
             <template v-slot:no-data>
               <v-alert
+                class="alerts"
                 :value="true"
                 color="#339966"
                 border="top"
@@ -114,20 +123,14 @@
                 type="error"
                 height="70"
                 elevation="5"
-                style="
-                     text-align: center;
-                   top: 20px;
-                    padding-top: 25px;
-                    font-size: 20px;
-                    color: #4d4d4d;
-                    font-weight: bold;
-                    "
+                style="top: 20px; padding-top: 25px; color: #595959"
               >
                 الصندوق فارغ، لا يوجد معاملات لعرضها هنا.
               </v-alert>
             </template>
 
             <v-alert
+              class="alerts"
               slot="no-results"
               :value="true"
               border="top"
@@ -136,22 +139,20 @@
               type="error"
               elevation="5"
               style="
-                    text-align: center;
-                   top: 20px;
-                    padding-top: 25px;
-                    font-size: 20px;
-                    color: #4d4d4d;
-                    font-weight: bold;
-                  "
+                text-align: center;
+                top: 20px;
+                padding-top: 25px;
+                color: #595959;
+              "
             >
               بحثك عن "{{ search }}" لم يعثر على نتائج.
             </v-alert>
             <!--  probs has been removed -->
-            <template v-slot:default>
-              <v-row class="ma-2">
+            <template v-slot:default class="my-application">
+              <v-row class="ma-2 my-application">
                 <v-col
                   md="4"
-                  class="pa-3 d-flex flex-column"
+                  class="pa-3 d-flex flex-column my-application"
                   v-for="item in displayData"
                   :key="item.IncidentNumber"
                   cols="12"
@@ -160,31 +161,42 @@
                 >
                   <v-card
                     @click="searchbyid(item.ID)"
-                    class="elevation-5 flex d-flex flex-column"
-                    style="border-radius: 10px;"
+                    class="elevation-5 flex d-flex flex-column my-application"
+                    style="border-radius: 10px; color: #595959"
                   >
                     <v-card-title
                       style="background-color: #f2f2f2"
-                      class="subheading font-weight-bold"
+                      class="subheading font-weight-bold my-application"
                     >
-                      <span style="padding-left:10px">
+                      <span
+                        class="my-application"
+                        style="padding-left: 10px; font-size: 16px"
+                      >
                         رقم المعاملة |
                       </span>
-                      <span style="color:#2d8659; font-size: 17px;">
+                      <span
+                        class="my-application"
+                        style="color: #2d8659; font-size: 16px"
+                      >
                         {{ item.IncidentNumber }}
                       </span>
                     </v-card-title>
 
                     <v-divider></v-divider>
 
-                    <div class="body-1">
+                    <div class="body-1 my-application">
                       <v-list dense>
                         <v-list-item v-for="key in keys" :key="key.text">
                           <v-list-item-content
+                            class="my-application"
                             :class="{
                               'light-green lighten-5': sortBy === key.text,
                             }"
-                            style="color:#595959; font-weight: bold;"
+                            style="
+                              color: #595959;
+                              font-weight: bold;
+                              font-size: 13px;
+                            "
                           >
                             {{ key.text }}:
                           </v-list-item-content>
@@ -196,17 +208,21 @@
                             <template #activator="{ on }">
                               <v-list-item-content
                                 v-on="on"
-                                class="truncate align-end"
+                                class="truncate align-end my-application"
                                 :class="{
-                                  'light-green lighten-5': sortBy === key.text,
+                                  'light-green lighten-5 my-application':
+                                    sortBy === key.text,
                                 }"
+                                style="font-size: 12px"
                               >
-                                {{ item[key.id].substr(0, 10) }}
+                                {{ item[key.id] }}
                               </v-list-item-content>
                             </template>
-                            <span class="text-truncate ml-1 mr-1">{{
-                              item[key.id]
-                            }}</span>
+                            <span
+                              class="text-truncate ml-1 mr-1 my-application"
+                            >
+                              {{ item[key.id] }}</span
+                            >
                           </v-tooltip>
                         </v-list-item>
                       </v-list>
@@ -251,7 +267,7 @@ export default {
       keys: [
         {
           text: "التاريخ",
-          id: "OutboundGDate",
+          id: "OutboundHDate",
         },
         {
           text: "الموضوع",
@@ -259,17 +275,24 @@ export default {
         },
         {
           text: "درجة الأهمية",
-          id: "Importance",
+          id: "ImportanceVal",
         },
         {
           text: "درجة السرية",
-          id: "Confidential",
+          id: "ConfidentialVal",
         },
         {
           text: "نوع الخطاب",
-          id: "txt6",
+          id: "IOboundType",
         },
-
+        {
+          text: "المرفقات",
+          id: "IOboundCategory",
+        },
+        {
+          text: "الملاحظات",
+          id: "IOboundRemarks",
+        },
       ],
       items: [
         {
@@ -386,7 +409,7 @@ export default {
     searchbyid(id) {
       console.log(id);
       Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID="+id)
+        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID=499")
         .then((resp) => {
           this.navigate(resp.data);
         });
@@ -409,27 +432,59 @@ export default {
 
 <style>
 .v-data-iterator {
-  font-size: 14px;
+  font-size: 10px;
+}
+.v-text-field input {
+  font-size: 0.9em;
+}
+.alerts {
+  font-size: 16x;
+  font-weight: bold;
+  color: #595959;
+  font-family: "Almarai", sans-serif !important;
+  text-align: center;
 }
 </style>
 
 <style lang="css" scoped>
-.v-text-field >>> label {
-  font-size: 18px;
-}
 .v-select >>> label {
-  font-size: 18px;
+  font-size: 16px;
 }
-.v-tooltip__content {
-  font-size: 16px !important;
-  opacity: 0.8 !important;
-  pointer-events: auto;
-  color: white;
-  background-color: #404040;
-}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.v-text-field >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.v-tooltip__content {
+  font-size: 14px !important;
+  opacity: 0.8 !important;
+  pointer-events: auto;
+  color: white;
+  background-color: #404040;
+}
 </style>
+
+<style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400&display=swap");
+
+$font-family: "Almarai", sans-serif;
+.my-application {
+  .headline,
+  [class*="display-"],
+  [class*="text-"] {
+    font-family: $font-family, sans-serif !important;
+    font-size: 16px !important;
+  }
+  font-family: $font-family, sans-serif !important;
+}
+</style>
+
+
+
+

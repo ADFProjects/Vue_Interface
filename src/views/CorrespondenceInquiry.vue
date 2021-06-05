@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="d-flex justify-center">
+  <div id="app" class="d-flex justify-center my-application">
     <v-app id="inspire">
       <v-main>
         <v-container>
@@ -20,31 +20,26 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>الإستعلام عن المعاملة</span>
+              <span class="my-application">الإستعلام عن المعاملة</span>
             </v-tooltip>
             <div>
               <p
-                class="my-10 font-weight-medium"
-                style="
-                  font-size: 20px;
-                  color: #e6e6e6;
-                  margin: 15px;
-                  margin-left: 8px;
-                "
+                class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
               >
                 إستعلام
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
             >
               المعاملات الواردة والصادرة
             </p>
           </v-app-bar>
           <v-card>
-            <v-form>
+            <v-form class="my-application">
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
@@ -56,11 +51,7 @@
                     نوع الاستعلام :</v-card-title
                   >
                   <v-container>
-                    <v-radio-group
-                      v-model="type"
-                      @change="types($event)"
-                      required
-                    >
+                    <v-radio-group v-model="type" @change="types($event)">
                       <v-row>
                         <v-col v-for="n in sendway" :key="n">
                           <v-radio
@@ -238,13 +229,13 @@
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker
+                    <v-hijri-date-picker
                       color="#28714e"
                       v-model="dates"
                       style="opacity: 0.9 !important"
                       range
                       locale="ar"
-                    ></v-date-picker>
+                    ></v-hijri-date-picker>
                   </v-menu>
                 </v-row>
               </v-container>
@@ -252,15 +243,19 @@
                 <div class="text-center">
                   <v-btn
                     rounded
-                    style="opacity: 0.9 !important"
-                    color="#28714e"
+                    color="#3d7f5f"
                     dark
                     large
                     @click="isValid"
                     width="200"
                   >
                     <router-link :to="to">
-                      <h5 class="my-10" style="color: white">بحث</h5>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        بحث
+                      </h5>
                     </router-link>
                   </v-btn>
                 </div>
@@ -282,7 +277,7 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-//import uq from "@umalqura/core";
+import uq from "@umalqura/core";
 import VueSimpleAlert from "vue-simple-alert";
 
 import Loading from "vue-loading-overlay";
@@ -290,26 +285,21 @@ import "vue-loading-overlay/dist/vue-loading.css";
 
 Vue.use(VueSimpleAlert, { reverseButtons: true });
 
-//const d = uq();
-//const today = d.format("yyyy-MM-dd", "en");
+const d = uq();
+const today = d.format("yyyy-MM-dd", "en");
 const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 Vue.use(VueAxios, axios);
-axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
-axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
-axios.defaults.headers.common["Authorization"] =
-  "Bearer " + localStorage.getItem("token");
 
+axios.defaults.headers.common["ClientID"] = "Contest01"; // for all requests
+axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for all requests
 export default {
   components: {
     Loading,
   },
   data: function () {
     return {
-      permission: "",
-      end: "",
-      start: "",
-      type: null,
+      type: "",
       sendway: ["وارد", "صادر"],
       fullPage: true,
       overlay: false,
@@ -339,7 +329,7 @@ export default {
       nid: "",
       phone: "",
       email: "",
-      today: new Date().toISOString().substr(0, 10),
+      today: today.toString(),
       searchRequestBody: {
         RepType: 0,
         SourceType: 4,
@@ -433,28 +423,8 @@ export default {
         this.correspondenceType = resp.data;
         this.isLoadingcorrespondenceType = false;
       });
-
-    if (this.permissions("13S") && this.permissions("12S")) {
-      this.sendway = ["وارد", "صادر"];
-    } else if (this.permissions("13S")) {
-      this.sendway = ["صادر"];
-      this.type = this.sendway[0];
-    } else if (this.permissions("12S")) {
-      this.sendway = ["وارد"];
-      this.type = this.sendway[0];
-    }
   },
   methods: {
-    permissions(p) {
-      if (p.localeCompare("") == 0) {
-        return true;
-      } else if (localStorage.getItem("permissions").search(p) != -1) {
-        return true;
-      } else {
-        // route to denied access
-        return false;
-      }
-    },
     types($event) {
       console.log($event);
       if ($event.localeCompare(this.sendway[0]) == 0) {
@@ -466,34 +436,25 @@ export default {
       }
     },
     isValid() {
-      console.log("type " + this.type);
-      if (this.type) {
-        console.log("type true");
-
-        if (
-          this.ename ||
-          this.phone ||
-          this.title ||
-          this.email ||
-          this.id ||
-          this.nid ||
-          this.selectedObj ||
-          this.selectedtype ||
-          this.selectedDep ||
-          this.selectedConf ||
-          this.selectedImp ||
-          this.selectedEnti ||
-          this.dateRangeText
-        ) {
-          console.log("date: " + this.dateRangeText);
-
-          this.fillData();
-          this.search();
-        } else {
-          this.showAlterFailureMessage("الرجاء تعبئة أحد الخانات");
-        }
+      if (
+        this.ename ||
+        this.phone ||
+        this.title ||
+        this.email ||
+        this.id ||
+        this.nid ||
+        this.selectedObj ||
+        this.selectedtype ||
+        this.selectedDep ||
+        this.selectedConf ||
+        this.selectedImp ||
+        this.selectedEnti ||
+        this.dateRangeText
+      ) {
+        this.fillData();
+        this.search();
       } else {
-        this.showAlterFailureMessage("الرجا تحديد نوع الاستعلام");
+        this.showAlterFailureMessage("الرجاء تعبئة أحد الخانات");
       }
     },
     search() {
@@ -515,26 +476,6 @@ export default {
             });
           }
         });
-    },
-    dateSubstring() {
-      var s = this.dateRangeText.substring(0, 10).split("-").reverse();
-      var e = this.dateRangeText.substring(13).split("-").reverse();
-      console.log("end = " + this.e);
-      //incase only one date is choosen
-      if (this.dateRangeText.length == 10) {
-        e = s;
-      }
-
-      var sDate = new Date(s[2], s[1], s[0]);
-      var eDate = new Date(e[2], e[1], e[0]);
-      // incase choosing the end date first
-      if (sDate > eDate) {
-        this.searchRequestBody.start = s[1] + "/" + s[0] + "/" + s[2];
-        this.searchRequestBody.end = e[1] + "/" + e[0] + "/" + e[2];
-      } else {
-        this.searchRequestBody.start = s[1] + "/" + s[0] + "/" + s[2];
-        this.searchRequestBody.end = e[1] + "/" + e[0] + "/" + e[2];
-      }
     },
     fillData() {
       this.searchRequestBody.RelatedName = this.ename ? this.ename : " ";
@@ -567,7 +508,6 @@ export default {
         this.selectedEnti,
         this.entities
       );
-      this.dateSubstring();
       console.log(this.searchRequestBody);
     },
     listSearch(nameKey, myArray) {
@@ -611,5 +551,32 @@ export default {
   pointer-events: auto;
   color: white;
   background-color: #404040;
+}
+</style>
+
+<style lang="css" scoped>
+.v-radio >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.checkBoxs--text >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.v-text-field >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.v-tooltip__content {
+  font-size: 14px !important;
+  opacity: 0.8 !important;
+  pointer-events: auto;
+  color: white;
+  background-color: #404040;
+}
+</style>
+<style>
+.v-text-field input {
+  font-size: 0.9em;
 }
 </style>

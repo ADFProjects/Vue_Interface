@@ -39,8 +39,8 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold"
-                        style="color:#3d7f5f; font-size:30px;"
+                        class="text-center subheading font-weight-bold my-application"
+                        style="color: #3d7f5f; font-size: 15px"
                       >
                         صادر عام
                       </div>
@@ -48,12 +48,15 @@
                       <v-radio-group
                         v-model="radiosOutAdf"
                         @change="OutBoundAdf"
+                        mandatory
                       >
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال الاسبوع</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الاسبوع</span
                               >
                             </div>
                           </template>
@@ -61,8 +64,10 @@
                         <v-radio value="Month" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال الشهر</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الشهر</span
                               >
                             </div>
                           </template>
@@ -70,17 +75,19 @@
                         <v-radio value="Year" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال السنة</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال السنة</span
                               >
                             </div>
                           </template>
                         </v-radio>
                       </v-radio-group>
-                      <v-divider class="my-1"></v-divider>
+                      <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 "
-                        style="color:#b37700; font-size:19px;"
+                        class="subheading font-weight-bold text-center my-2 my-application"
+                        style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgOutBoundAdf }}
                       </div>
@@ -117,18 +124,24 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold"
-                        style="color:#3d7f5f; font-size:30px;"
+                        class="text-center subheading font-weight-bold my-application"
+                        style="color: #3d7f5f; font-size: 15px"
                       >
                         وارد عام
                       </div>
 
-                      <v-radio-group v-model="radiosInAdf" @change="InBoundAdf">
+                      <v-radio-group
+                        mandatory
+                        v-model="radiosInAdf"
+                        @change="InBoundAdf"
+                      >
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال اليوم</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الاسبوع</span
                               >
                             </div>
                           </template>
@@ -136,8 +149,10 @@
                         <v-radio value="Month" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال الشهر</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الشهر</span
                               >
                             </div>
                           </template>
@@ -145,18 +160,20 @@
                         <v-radio value="Year" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال السنة</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال السنة</span
                               >
                             </div>
                           </template>
                         </v-radio>
                       </v-radio-group>
 
-                      <v-divider class="my-1"></v-divider>
+                      <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 "
-                        style="color:#b37700; font-size:19px;"
+                        class="subheading text-center my-2 my-application font-weight-bold"
+                        style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgInBoundAdf }}
                       </div>
@@ -194,18 +211,24 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold"
-                        style="color:#3d7f5f; font-size:30px;"
+                        class="text-center subheading font-weight-bold font-weight-bold my-application"
+                        style="color: #3d7f5f; font-size: 15px"
                       >
                         وارد نظام مراسلات
                       </div>
 
-                      <v-radio-group v-model="radiosInMur" @change="InBoundMur">
+                      <v-radio-group
+                        mandatory
+                        v-model="radiosInMur"
+                        @change="InBoundMur"
+                      >
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال اليوم</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الاسبوع</span
                               >
                             </div>
                           </template>
@@ -213,8 +236,10 @@
                         <v-radio value="Month" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال الشهر</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الشهر</span
                               >
                             </div>
                           </template>
@@ -222,18 +247,20 @@
                         <v-radio value="Year" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال السنة</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال السنة</span
                               >
                             </div>
                           </template>
                         </v-radio>
                       </v-radio-group>
 
-                      <v-divider class="my-1"></v-divider>
+                      <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 "
-                        style="color:#b37700; font-size:19px;"
+                        class="subheading font-weight-bold text-center my-2 my-application font-weight-bold"
+                        style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgInBoundMur }}
                       </div>
@@ -271,21 +298,24 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold"
-                        style="color:#3d7f5f; font-size:30px;"
+                        class="text-center subheading font-weight-bold my-application"
+                        style="color: #3d7f5f; font-size: 15px"
                       >
                         صادر نظام مراسلات
                       </div>
 
                       <v-radio-group
+                        mandatory
                         v-model="radiosOutMur"
                         @change="OutBoundMur"
                       >
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال اليوم</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الاسبوع</span
                               >
                             </div>
                           </template>
@@ -293,8 +323,10 @@
                         <v-radio value="Month" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال الشهر</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال الشهر</span
                               >
                             </div>
                           </template>
@@ -302,18 +334,20 @@
                         <v-radio value="Year" color="#00802b">
                           <template v-slot:label>
                             <div>
-                              <strong style="color:#595959;"
-                                >عدد المعاملات خلال السنة</strong
+                              <span
+                                class="radioGrups my-application"
+                                style="color: #595959"
+                                >عدد المعاملات خلال السنة</span
                               >
                             </div>
                           </template>
                         </v-radio>
                       </v-radio-group>
 
-                      <v-divider class="my-1"></v-divider>
+                      <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 "
-                        style="color:#b37700; font-size:19px;"
+                        class="subheading font-weight-bold text-center my-2 my-application font-weight-bold"
+                        style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgOutBoundMur }}
                       </div>
@@ -349,7 +383,6 @@ export default {
       radiosOutMur: "",
       radiosInAdf: "",
       radiosInMur: "",
-      //radios: "Week",
       week: [],
       month: [],
       year: [],
@@ -516,5 +549,8 @@ export default {
 .v-sheet--offset {
   top: -24px;
   position: relative;
+}
+.radioGrups {
+  font-size: 14px;
 }
 </style>

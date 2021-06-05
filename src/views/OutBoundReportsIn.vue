@@ -4,7 +4,7 @@
       <v-main>
         <v-container>
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
@@ -20,7 +20,7 @@
                   max-width="50"
                 ></v-img>
               </template>
-              <span>تقرير المعاملات</span>
+              <span>تقرير المعاملات - الداخلية</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -35,7 +35,7 @@
                   prepend-inner-icon="mdi-magnify"
                   label="البحث"
                   class="mx-4"
-                  style="font-size: 16px; font-weight: bold;"
+                  style="font-size: 16px; font-weight: bold"
                 ></v-text-field>
               </template>
               <span>البحث بإستخدام جميع بيانات المعاملة</span>
@@ -50,7 +50,7 @@
                   large
                   color="#28714e"
                   height="48"
-                  style=" box-shadow: rgba(0,0,0,0.9); margin-left:15px;"
+                  style="box-shadow: rgba(0, 0, 0, 0.9); margin-left: 15px"
                 >
                   <img
                     src="~@/assets/pdf.png"
@@ -74,7 +74,7 @@
                       color="#ffffff"
                       :value="true"
                     >
-                      <v-icon style="color:#28714e">mdi-arrow-down</v-icon>
+                      <v-icon style="color: #28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
                   <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
@@ -88,7 +88,7 @@
                       color="#ffffff"
                       :value="false"
                     >
-                      <v-icon style="color:#28714e">mdi-arrow-up</v-icon>
+                      <v-icon style="color: #28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
                   <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
@@ -99,7 +99,7 @@
 
           <v-card>
             <v-data-table
-              style="font-weight: bold; color:#4d4d4d;"
+              style="font-weight: bold; color: #595959"
               :header-props="{ sortIcon: null }"
               :sort-desc="sortDesc"
               v-model="selected"
@@ -114,33 +114,14 @@
               :items-per-page="10"
               :footer-props="{
                 pageText: '',
-                itemsPerPageOptions: [5, 10, 15, 25, 50],
+                itemsPerPageOptions: [5, 10, 15, 25],
                 'items-per-page-text': 'عدد المعاملات في الصفحة:',
+                showFirstLastPage: true,
+                pageText: 'من {0}-{1} إلى {2}',
+               
+                
               }"
             >
-              <!-- :footer-props="{
-              pageText: '',
-              'items-per-page-all-text': 'الكل',
-              'items-per-page-text': 'عدد الصفوف في الصفحة:',
-            }" -->
-              <!-- <template v-slot:[`header.data-table-select`]="{ props, on }">
-                <v-simple-checkbox
-                  color="primary"
-                  v-if="props.indeterminate"
-                  v-ripple
-                  v-bind="props"
-                  :value="props.indeterminate"
-                  v-on="on"
-                ></v-simple-checkbox>
-                <v-simple-checkbox
-                  color="primary"
-                  v-if="!props.indeterminate"
-                  v-ripple
-                  v-bind="props"
-                  v-on="on"
-                ></v-simple-checkbox>
-              </template> -->
-
               <template v-slot:no-data>
                 <v-alert
                   :value="true"
@@ -151,12 +132,12 @@
                   elevation="5"
                   height="70"
                   style="
-                margin-top: 20px;
-                padding-left: 40px;
-                font-size: 20px;
-                padding-top:25px;
-                color: #4d4d4d;
-              "
+                    margin-top: 20px;
+                    padding-left: 40px;
+                    font-size: 20px;
+                    padding-top: 25px;
+                    color: #4d4d4d;
+                  "
                 >
                   تقرير المعاملات فارغ، لايوجد معاملات لعرضها هنا.
                 </v-alert>
@@ -171,11 +152,11 @@
                 elevation="5"
                 height="70"
                 style="
-                font-size: 20px;
-                color: #4d4d4d;
-                margin-top:15px;
-                padding-top:25px;
-              "
+                  font-size: 20px;
+                  color: #4d4d4d;
+                  margin-top: 15px;
+                  padding-top: 25px;
+                "
               >
                 بحثك عن " {{ search }} " لم يعثر على نتائج!
               </v-alert>
@@ -188,7 +169,10 @@
                   :items-per-page-options="[5, 10, 15, 25]"
                   @update:options="updateOptions"
                   items-per-page-text="عدد المعاملات في الصفحة:"
-                  pageText=""
+                  pageText="من {0}-{1} إلى {2}"
+                  
+                  showFirstLastPage
+                   
                 />
               </template>
             </v-data-table>
@@ -268,6 +252,7 @@ export default {
         pageSize: 100,
         SenderType: "SPO",
         DeliveryBy: "spoIn",
+        TotalCount: null,
       },
 
       GetSequensePdf1: {
@@ -299,7 +284,7 @@ export default {
           value: "IncidentNumber",
           align: "center",
         },
-        { text: "عنوان المعاملة", value: "IOboundSubject", align: "center" },
+        { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
         {
           text: "الجهة الصادرة | داخل المدينة",
           value: "ToGeha",
@@ -363,7 +348,7 @@ export default {
         theme: "grid",
         columns,
         // body: this.items,
-        body: this.selected,
+        body: this.selected.reverse(),
 
         margin: { left: 10, top: 110 },
         tableWidth: 580,
@@ -520,10 +505,7 @@ export default {
         });
         var dataString = "التاريخ:" + "  " + date;
         doc.setFontSize(12).text(dataString, 16, 40);
-        doc
-          .setLineWidth(1.5)
-          .setDrawColor(89, 89, 89)
-          .line(0, 80, 900, 80);
+        doc.setLineWidth(1.5).setDrawColor(89, 89, 89).line(0, 80, 900, 80);
         doc.setFontSize(12).text(245, 96, "بيان بالبريد الصادر - داخل المدينة");
       }
 
@@ -557,11 +539,21 @@ export default {
 </style>
 
 <style lang="css" scoped>
+::v-deep .v-data-table-header th {
+  background-color: #f2f2f2 !important;
+  font-weight: bold !important;
+}
+::v-deep th {
+  color: #262626 !important;
+  font-weight: bold !important;
+  opacity: 0.8 !important;
+  letter-spacing: 0.3px;
+}
 .v-text-field >>> label {
   font-size: 18px;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
