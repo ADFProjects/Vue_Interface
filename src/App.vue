@@ -100,3 +100,18 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+  @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400&display=swap');
+ 
+  $font-family: 'Almarai', sans-serif;
+  .my-application {
+    .headline,
+    [class*='display-'],
+    [class*='text-'] {
+      color: #202020;
+      font-family: $font-family, sans-serif !important;
+      font-size: 16px !important;
+    }
+    font-family: $font-family, sans-serif !important;
+  }
+</style>

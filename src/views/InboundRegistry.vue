@@ -1,19 +1,9 @@
-
 <style lang="css" scoped>
-.v-radio >>> label {
-  font-family: "Almarai", sans-serif !important;
-  font-size: 0.9em;
-}
-.checkBoxs--text >>> label {
-  font-family: "Almarai", sans-serif !important;
-  font-size: 0.9em;
-}
 .v-text-field >>> label {
-  font-family: "Almarai", sans-serif !important;
-  font-size: 0.9em;
+  font-size: 20px;
 }
 .v-tooltip__content {
-  font-size: 14px !important;
+  font-size: 16px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
@@ -21,12 +11,6 @@
 }
 </style>
 <style>
-/* .v-list .v-list-item--active {
-  background-color: #28714e !important;
-} */
-.v-text-field input {
-  font-size: 0.9em;
-}
 .inputNumber input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -70,11 +54,11 @@
     transform: rotate(360deg);
   }
 }
-/* 
+
 .v-autocomplete-content {
   direction: rtl;
-  color: chartreuse;
-} */
+  color: blue;
+}
 </style>
 <template>
   <!--
@@ -85,7 +69,7 @@
     4. Arabic date display
     5. Direction rtl             DONE
   -->
-  <div id="app" class="d-flex justify-center my-application">
+  <div id="app" class="d-flex justify-center">
     <v-app id="inspire">
       <v-main>
         <v-container>
@@ -94,7 +78,7 @@
             width="1160"
             color="#28714e"
             dark
-            class="mb-1 my-application"
+            class="mb-1"
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -106,32 +90,32 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span class="my-application">إضافة معاملة واردة</span>
+              <span>إضافة وارد</span>
             </v-tooltip>
 
             <div>
               <p
-                class="my-10 font-weight-medium my-application"
-                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
+                class="my-10 font-weight-medium"
+                style="
+                  font-size: 20px;
+                  color: #e6e6e6;
+                  margin: 15px;
+                  margin-left: 8px;
+                "
               >
                 تسجيل
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium my-application"
-              style="opacity: 0.6 !important; padding-top: 1px"
+              class="my-10 font-weight-medium"
+              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
             >
               المعاملة الواردة
             </p>
           </v-app-bar>
           <v-card>
-            <v-form
-              class="my-application"
-              ref="form"
-              v-model="valid"
-              lazy-validations
-            >
+            <v-form ref="form" v-model="valid" lazy-validations>
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
@@ -592,7 +576,6 @@
                 <v-row>
                   <v-col cols="2">
                     <v-checkbox
-                      class="checkBoxs--text"
                       rounded
                       color="#28714e"
                       v-model="doSendOrigin"
@@ -631,7 +614,6 @@
               </v-container>
               <v-container>
                 <v-checkbox
-                  class="checkBoxs--text"
                   rounded
                   color="#28714e"
                   v-model="doSendSMS"
@@ -650,12 +632,7 @@
                       @click="validate"
                       width="200"
                     >
-                      <h5
-                        class="my-10 my-application"
-                        style="color: white; font-size: 14px"
-                      >
-                        إرسال
-                      </h5>
+                      <h5 class="my-10" style="color: white">إرسال</h5>
                     </v-btn>
                   </router-link>
                 </div>
@@ -810,6 +787,8 @@ export default {
         DestNumber: "",
         RelatedAtt: [],
         SenderType: "",
+        RelatedGehat: [
+        ],
       },
       sendOriginRequestBody: {
         RecieverUsername: "",
@@ -820,13 +799,10 @@ export default {
         IncidentNumber: 1000212,
       },
       sendSmsRequestBody: {
-        Username: "ITCorrespondence",
-        Password: "C0rresp0ndence",
-        mobile: "",
-        text: "Test message",
-        Source: "CMS",
-        Service_name: "CMS_Ticket",
+        MobileNo: "",
+        Message: "",
       },
+       
       emailRules: [(v) => !!v || "Email is required"],
       rules: {
         requiredIf: [(value) => (this.sendOriginal && !value ? "مطلوب" : true)],
@@ -925,15 +901,29 @@ export default {
   },
 
   methods: {
-    sendSMS() {
+    addDepartmentsList() {
+      for (let i = 0; i < this.toCopies.length; i++) {
+        this.requestBody.RelatedGehat.push({
+          Name: this.listSearchDep(this.toCopies[i], this.departments).GehaName ,
+          Type: 2,
+          Text6: "COPY" ,
+          Value: this.listSearchDep(this.toCopies[i], this.departments).ManagerUserName
+        });
+      }
+      console.log(this.toCopies);
+    },
+    sendSMS(id) {
       console.log("sms to be sent");
 
-      this.sendSmsRequestBody.mobile = this.mobileNumber;
+     // var sms1 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية برقم مرجعي:"+id+"\n"+"وسيتم التواصل معكم قريباً";
+      var sms2 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية بالرقم المرجعي :"+"\n"+id+".";
+
+      this.sendSmsRequestBody.MobileNo = this.mobileNumber;
+      this.sendSmsRequestBody.Message = sms2;
       Vue.axios
         .post(
-          "http://172.30.140.3/smsapi/api/SMS/Send",
+          "https://emp.adf.gov.sa/cms7514254/api/cms/SendSMS",
           this.sendSmsRequestBody,
-          {}
         )
         .then((resp) => {
           console.log("sms sent");
@@ -1044,7 +1034,7 @@ export default {
       this.requestBody.IOboundRemarks = this.remarks;
       this.requestBody.OutboundDocNo = this.outboundNumber;
       this.requestBody.RequestDate = new Date().toLocaleString();
-      this.requestBody.OutboundHDate = this.date;
+      this.requestBody.OutboundGDate = this.date;
       this.requestBody.FromGeha = this.from;
 
       this.requestBody.FromID = this.listSearch(this.from, this.entities);
@@ -1086,7 +1076,7 @@ export default {
       this.requestBody.RelatedPhone = this.mobileNumber;
       this.requestBody.RelatedID = this.senderID;
       this.addAttatchmentToRequest();
-
+      this.addDepartmentsList();
       console.log(this.requestBody);
     },
     sendRequest() {
@@ -1109,7 +1099,7 @@ export default {
             }
             if (this.doSendSMS) {
               console.log("sms");
-              this.sendSMS();
+              this.sendSMS(resp.data.Num.toString());
             }
             this.showAlterSuccessMessage(resp.data.Num.toString());
             this.$refs.form.reset();

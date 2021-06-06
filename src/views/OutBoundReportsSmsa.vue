@@ -1,14 +1,15 @@
-<template>
-  <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
-      <v-main>
-        <v-container>
+<template class="my-application">
+  <div id="app" class="d-flex justify-center my-application">
+    <v-app id="inspire" class="addBackground my-application">
+      <v-main class="my-application">
+        <v-container class="my-application">
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            elevation="20"
+            style="border-radius: 4px; opacity: 0.9 !important;"
             width="1160"
             color="#28714e"
             dark
-            class="mb-1"
+            class="mb-1 my-application"
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -20,7 +21,7 @@
                   max-width="50"
                 ></v-img>
               </template>
-              <span>تقرير المعاملات - شركة سمسا</span>
+              <span class="my-application">تقرير المعاملات - شركة سمسا</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -34,11 +35,13 @@
                   hide-details
                   prepend-inner-icon="mdi-magnify"
                   label="البحث"
-                  class="mx-4"
+                  class="mx-4 my-application"
                   style="font-size: 16px; font-weight: bold;"
                 ></v-text-field>
               </template>
-              <span>البحث بإستخدام جميع بيانات المعاملة</span>
+              <span class="my-application"
+                >البحث بإستخدام جميع بيانات المعاملة</span
+              >
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -60,7 +63,9 @@
                   />
                 </v-btn>
               </template>
-              <span>طباعة المعاملات بإستخدام صيغة (PDF)</span>
+              <span class="my-application"
+                >طباعة المعاملات بإستخدام صيغة (PDF)</span
+              >
             </v-tooltip>
 
             <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -77,7 +82,9 @@
                       <v-icon style="color:#28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأحدث إلى الأقدم</span
+                  >
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on }">
@@ -91,7 +98,9 @@
                       <v-icon style="color:#28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
-                  <span>ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأقدم إلى الأحدث</span
+                  >
                 </v-tooltip>
               </v-btn-toggle>
             </template>
@@ -110,7 +119,7 @@
               :generatePDF="generatePDF"
               item-key="IncidentNumber"
               show-select
-              class="elevation-2 custom-data-table"
+              class="elevation-10 custom-data-table my-application"
               :items-per-page="10"
               :footer-props="{
                 itemsPerPageOptions: [5, 10, 15, 25],
@@ -144,17 +153,18 @@
                   border="top"
                   colored-border
                   type="error"
-                  elevation="5"
+                  elevation="6"
                   height="70"
                   style="
-                margin-top: 20px;
-                padding-left: 40px;
-                font-size: 20px;
-                padding-top:25px;
-                color: #4d4d4d;
+                      margin-top: 20px;
+                      padding-left: 40px;
+                      padding-top: 25px;
+                      color: #595959;
               "
                 >
-                  تقرير المعاملات فارغ، لايوجد معاملات لعرضها هنا.
+                  <span class="my-application">
+                    تقرير المعاملات فارغ، لايوجد معاملات لعرضها هنا.</span
+                  >
                 </v-alert>
               </template>
               <v-alert
@@ -164,16 +174,17 @@
                 color="#339966"
                 colored-border
                 type="error"
-                elevation="5"
+                elevation="6"
                 height="70"
                 style="
-                font-size: 20px;
-                color: #4d4d4d;
-                margin-top:15px;
-                padding-top:25px;
+                   color: #595959;
+                    margin-top: 15px;
+                    padding-top: 25px;
               "
               >
-                بحثك عن " {{ search }} " لم يعثر على نتائج!
+                <span class="my-application">
+                  بحثك عن " {{ search }} " لم يعثر على نتائج.
+                </span>
               </v-alert>
 
               <template v-slot:top="{ pagination, options, updateOptions }">
@@ -246,27 +257,27 @@ export default {
 
       OutBoundReportsSmsa: {
         RepType: 0,
-        SourceType: 4,
-        query: null,
-        IncidentNumber: 0,
-        RelatedID: null,
-        start: null,
-        end: null,
-        status: 0,
-        RelatedName: null,
-        RelatedEmail: null,
-        RelatedPhone: null,
-        Subject: null,
-        Dept: null,
-        Geha: "صندوق",
-        ImportanceVal: null,
         ConfidentialVal: null,
+        Dept: null,
+        Geha: null,
         IOboundType: null,
-        IOboundClassification: null,
-        SenderType: "deliveryCo",
-        DeliveryBy: "smsa", //fedex
-        pageindex: 0,
+        IOboundCategory: null,
+        ImportanceVal: null,
+        IncidentNumber: null,
+        RelatedEmail: null,
+        RelatedID: null,
+        RelatedName: null,
+        RelatedPhone: null,
+        SourceType: 4,
+        Subject: null,
+        end: null,
+        query: null,
+        start: null,
+        status: 2,
         pageSize: 100,
+        pageindex: 0,
+        SenderType: "deliveryCo",
+        DeliveryBy: "smsa",
       },
 
       GetSequensePdf1: {
@@ -530,6 +541,25 @@ export default {
 };
 </script>
 
+<style lang="scss">
+#tdAll {
+  font-size: 12px;
+  font-family: "Almarai", sans-serif !important;
+}
+#rowCols:hover {
+  cursor: pointer;
+}
+.v-text-field input {
+  font-size: 0.9em;
+}
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  font-size: 16px !important;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  font-family: "Almarai", sans-serif !important;
+}
+</style>
+
 <style>
 .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
   font-size: 16px !important;
@@ -564,8 +594,13 @@ export default {
   opacity: 0.8 !important;
   letter-spacing: 0.3px;
 }
+::v-deep td {
+  color: #595959;
+  font-size: 1px;
+}
 .v-text-field >>> label {
-  font-size: 18px;
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
 }
 .v-tooltip__content {
   font-size: 14px !important;
@@ -573,5 +608,20 @@ export default {
   pointer-events: auto;
   color: white;
   background-color: #404040;
+}
+.truncate {
+  max-width: 1vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+
+<style scoped>
+.addBackground {
+  background: url("../assets/Background-adf.png");
+  background-size: 100% 100%;
+  background-position: center;
+  /* height: 100vh; */
 }
 </style>
