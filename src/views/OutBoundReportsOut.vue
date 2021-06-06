@@ -5,11 +5,11 @@
         <v-container class="my-application">
           <v-app-bar
             elevation="20"
-            style="border-radius: 4px; opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
-            class="mb-1 my-application "
+            class="mb-1 my-application"
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -174,11 +174,11 @@
                   elevation="6"
                   height="70"
                   style="
-                      margin-top: 20px;
-                      padding-left: 40px;
-                      padding-top: 25px;
-                      color: #595959;
-                    "
+                    margin-top: 20px;
+                    padding-left: 40px;
+                    padding-top: 25px;
+                    color: #595959;
+                  "
                 >
                   <span class="my-application">
                     تقرير المعاملات فارغ، لايوجد معاملات لعرضها هنا.</span
@@ -194,11 +194,7 @@
                 type="error"
                 elevation="6"
                 height="70"
-                style="
-                   color: #595959;
-                    margin-top: 15px;
-                    padding-top: 25px;
-                  "
+                style="color: #595959; margin-top: 15px; padding-top: 25px"
               >
                 <span class="my-application">
                   بحثك عن " {{ search }} " لم يعثر على نتائج.
@@ -576,10 +572,7 @@ export default {
         });
         var dataString = "التاريخ:" + "  " + date;
         doc.setFontSize(12).text(dataString, 16, 40);
-        doc
-          .setLineWidth(1.5)
-          .setDrawColor(89, 89, 89)
-          .line(0, 80, 900, 80);
+        doc.setLineWidth(1.5).setDrawColor(89, 89, 89).line(0, 80, 900, 80);
         doc
           .setFontSize(12)
           .text(245, 96, "بيان بالبريد الصادر -  خارج المدينة");
@@ -637,16 +630,16 @@ export default {
   background-color: #f2f2f2 !important;
   font-weight: bold !important;
 }
+::v-deep .v-data-table td {
+  color: #595959 !important;
+  font-size: 12px !important;
+}
 ::v-deep th {
-  color: #262626 !important;
   font-weight: bold !important;
   opacity: 0.8 !important;
   letter-spacing: 0.3px;
 }
-::v-deep td {
-  color: #595959;
-  font-size: 1px;
-}
+
 .v-text-field >>> label {
   font-family: "Almarai", sans-serif !important;
   font-size: 0.9em;

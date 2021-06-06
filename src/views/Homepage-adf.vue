@@ -5,7 +5,7 @@
         fluid
         grid-list-md
         text-xs-center
-        class="d-flex justify-center"
+        class="d-flex justify-center addBackground"
       >
         <v-layout row wrap align-center class="d-flex justify-center">
           <v-flex class="d-flex justify-center">
@@ -16,7 +16,7 @@
                   <v-card
                     class="mt-4 mx-auto"
                     max-width="280"
-                    :elevation="hover ? 16 : 2"
+                    :elevation="hover ? 16 : 16"
                     :class="{ 'on-hover': hover }"
                     height="300"
                   >
@@ -48,7 +48,6 @@
                       <v-radio-group
                         v-model="radiosOutAdf"
                         @change="OutBoundAdf"
-                        mandatory
                       >
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
@@ -101,7 +100,7 @@
                   <v-card
                     class="mt-4 mx-auto"
                     max-width="280"
-                    :elevation="hover ? 16 : 2"
+                    :elevation="hover ? 16 : 16"
                     :class="{ 'on-hover': hover }"
                     height="300"
                   >
@@ -130,11 +129,7 @@
                         وارد عام
                       </div>
 
-                      <v-radio-group
-                        mandatory
-                        v-model="radiosInAdf"
-                        @change="InBoundAdf"
-                      >
+                      <v-radio-group v-model="radiosInAdf" @change="InBoundAdf">
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
                             <div>
@@ -188,7 +183,7 @@
                   <v-card
                     class="mt-4 mx-auto"
                     max-width="280"
-                    :elevation="hover ? 16 : 2"
+                    :elevation="hover ? 16 : 16"
                     :class="{ 'on-hover': hover }"
                     height="300"
                   >
@@ -217,11 +212,7 @@
                         وارد نظام مراسلات
                       </div>
 
-                      <v-radio-group
-                        mandatory
-                        v-model="radiosInMur"
-                        @change="InBoundMur"
-                      >
+                      <v-radio-group v-model="radiosInMur" @change="InBoundMur">
                         <v-radio value="Week" color="#00802b">
                           <template v-slot:label>
                             <div>
@@ -275,7 +266,7 @@
                   <v-card
                     class="mt-4 mx-auto"
                     max-width="280"
-                    :elevation="hover ? 16 : 2"
+                    :elevation="hover ? 16 : 16"
                     :class="{ 'on-hover': hover }"
                     height="300"
                   >
@@ -305,7 +296,6 @@
                       </div>
 
                       <v-radio-group
-                        mandatory
                         v-model="radiosOutMur"
                         @change="OutBoundMur"
                       >
@@ -552,5 +542,14 @@ export default {
 }
 .radioGrups {
   font-size: 14px;
+}
+</style>
+
+<style scoped>
+.addBackground {
+  background: url("../assets/Background-adf.png");
+  background-size: 100% 100%;
+  background-position: center;
+  /* height: 100vh; */
 }
 </style>

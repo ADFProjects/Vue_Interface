@@ -588,16 +588,16 @@ export default {
   background-color: #f2f2f2 !important;
   font-weight: bold !important;
 }
+::v-deep .v-data-table td {
+  color: #595959 !important;
+  font-size: 12px !important;
+}
 ::v-deep th {
-  color: #262626 !important;
   font-weight: bold !important;
   opacity: 0.8 !important;
   letter-spacing: 0.3px;
 }
-::v-deep td {
-  color: #595959;
-  font-size: 1px;
-}
+
 .v-text-field >>> label {
   font-family: "Almarai", sans-serif !important;
   font-size: 0.9em;
