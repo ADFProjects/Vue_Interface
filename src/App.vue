@@ -21,8 +21,7 @@ export default {
   name: "App",
 
   data: () => ({
-    body:
-      "userName=Kfq9py7dk6PhoBgGQCQCZQ%3d%3d&password=9%2bFkJtsldJo5Q9OLbcxeeXeMUv%2bDReAIS3phB2VGxkw%3d#/&grant_type=password",
+    body: "userName=Kfq9py7dk6PhoBgGQCQCZQ%3d%3d&password=9%2bFkJtsldJo5Q9OLbcxeeXeMUv%2bDReAIS3phB2VGxkw%3d#/&grant_type=password",
     requestBody: "",
     username: "",
     password: "",
@@ -30,8 +29,8 @@ export default {
   }),
   mounted() {
     // get url, substring
-    var url =
-      "https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
+    var url ="https://intgr.adf.gov.sa/?CU=60D1dGxvi2wYkCIo5zkRSw%3d%3d&P=Is3eACCBzoC0bvcV4uPsnhNAS3NP5bGC1gx3JT5PMF4%3d#";
+    
     //window.location.href;
     this.username = url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
     this.password = url.substring(url.indexOf("&P=") + 3);
@@ -50,13 +49,13 @@ export default {
         localStorage.setItem("expired", new Date(resp.data[".expires"]));
         localStorage.setItem("refresh", resp.data.refresh_token);
         console.log(resp.data.access_token);
-      }).then(() => {
+      })
+      .then(() => {
         this.getLoginUserFunction();
       });
     // get permissions
     axios.defaults.headers.common["Authorization"] =
       "Bearer " + localStorage.getItem("token");
-
   },
   methods: {
     getLoginUserFunction() {
@@ -67,7 +66,6 @@ export default {
         .then((resp) => {
           localStorage.setItem("permissions", resp.data.Permissions);
           localStorage.setItem("username", resp.data.EmployeeUserName);
-
         })
         .then(() => {
           this.refreshToken(localStorage.getItem("expired"));
@@ -94,6 +92,7 @@ export default {
             localStorage.setItem("expired", new Date(resp.data[".expires"]));
             localStorage.setItem("refresh", resp.data.refresh_token);
             console.log("done refresh");
+            console.log(resp.data.access_token);
           });
       }
     },
@@ -101,17 +100,17 @@ export default {
 };
 </script>
 <style lang="scss">
-  @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400&display=swap');
- 
-  $font-family: 'Almarai', sans-serif;
-  .my-application {
-    .headline,
-    [class*='display-'],
-    [class*='text-'] {
-      color: #202020;
-      font-family: $font-family, sans-serif !important;
-      font-size: 16px !important;
-    }
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400&display=swap");
+
+$font-family: "Almarai", sans-serif;
+.my-application {
+  .headline,
+  [class*="display-"],
+  [class*="text-"] {
+    color: #202020;
     font-family: $font-family, sans-serif !important;
+    font-size: 16px !important;
   }
+  font-family: $font-family, sans-serif !important;
+}
 </style>

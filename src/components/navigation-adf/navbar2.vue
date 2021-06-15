@@ -50,13 +50,16 @@
                   <v-list-item-icon>
                     <v-list-item-title
                       class="my-application"
-                      style="color: #e6e6e6; font-size: 15px; float: center"
+                      style="color: #e6e6e6; font-size: 15px; float: center;"
                     >
                       {{ item.name }}
+                     
+                   
                       <v-icon
-                        style="float: right; padding-left: 55px; color: #f2f2f2"
+                        style="float: right; color: #f2f2f2; padding-left: 20px;"
                         >{{ item.icon }}</v-icon
                       >
+                   
                     </v-list-item-title>
                   </v-list-item-icon>
                 </v-list-item>
@@ -69,11 +72,11 @@
                 <v-list-item-icon>
                   <v-list-item-title
                     class="my-application"
-                    style="color: #e6e6e6; font-size: 15px"
+                    style="color: #e6e6e6; font-size: 15px;"
                   >
                     التقاريـر
                     <v-icon
-                      style="float: right; padding-left: 55px; color: #f2f2f2"
+                      style="float: right; color: #f2f2f2; padding-left: 20px;"
                       >mdi-arrow-up-bold-box-outline</v-icon
                     >
                   </v-list-item-title>
@@ -356,42 +359,48 @@ export default {
       group: null,
       model: 1,
       active: true,
-      menuItems: [
+     menuItems: [
         {
           name: "الإحصائيات",
           link: "/homepage",
-          permission: "",
+          permission: [],
           icon: "mdi-view-dashboard",
         },
         {
-          name: "صندوق الصادر",
-          link: "/outboundbox",
-          permission: "11S",
+          name: "صندوق الصادر العام",
+          link: "/publicOutboundbox",
+          permission: ["11S"],
+          icon: "mdi-folder",
+        },
+                {
+          name: "صندوق الصادر الداخلي",
+          link: "/internalOutboundbox",
+          permission: ["11S"],
           icon: "mdi-folder",
         },
 
         {
           name: "صندوق الوارد",
           link: "/inboundbox",
-          permission: "10S",
+          permission: ["10S"],
           icon: "mdi-folder",
         },
         {
           name: "إضافة صادر",
           link: "/outbound",
-          permission: "11A",
+          permission: ["11A"],
           icon: "mdi-email",
         },
         {
           name: "إضافة وارد",
           link: "/inbound",
-          permission: "10A",
+          permission: ["10A"],
           icon: "mdi-email",
         },
         {
           name: "استعـلام",
           link: "/inquire",
-          permission: "",
+          permission: ["13S", "12S"],
           icon: "mdi-help-box",
         },
       ],
@@ -423,14 +432,29 @@ export default {
       const [year, month, day] = date.split("-");
       return `${month}/${day}/${year}`;
     },
-    permissions(p) {
-      if (p.localeCompare("") == 0) {
-        return true;
-      } else if (localStorage.getItem("permissions").search(p) != -1) {
-        return true;
+    async permissions(p) {
+      var list = [];
+      for (var i = 0; i < p.length; i++) {
+        //if the page without permissions
+        if (p[i].localeCompare("") == 0) {
+          return true;
+        } else if (localStorage.getItem("permissions") == null) {
+          return false;
+        } else if (localStorage.getItem("permissions").search(p[i]) != -1) {
+          list.push(true);
+        } else {
+          // route to denied access
+          list.push(false);
+        }
+      }
+      if (list.length > 1) {
+        if (!(list[0] || list[1])) {
+          return false;
+        } else {
+          return true;
+        }
       } else {
-        // route to denied access
-        return false;
+        return list[0];
       }
     },
 
