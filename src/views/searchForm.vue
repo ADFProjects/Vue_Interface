@@ -183,7 +183,7 @@ export default {
         RelatedPhone: null,
         Subject: null,
         Dept: null,
-        Geha: "صندوق",
+        Geha: null,
         ImportanceVal: null,
         ConfidentialVal: null,
         IOboundType: null,

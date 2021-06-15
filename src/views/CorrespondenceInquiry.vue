@@ -1,14 +1,15 @@
 <template>
   <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
-      <v-main>
-        <v-container>
+    <v-app id="inspire" class="my-application  addBackground">
+      <v-main class="my-application">
+        <v-container class="my-application">
           <v-app-bar
+          elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
-            class="mb-1"
+            class="mb-1 my-application"
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -20,31 +21,26 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>الإستعلام عن المعاملة</span>
+             <span class="my-application">الإستعلام عن المعاملة</span>
             </v-tooltip>
             <div>
               <p
-                class="my-10 font-weight-medium"
-                style="
-                  font-size: 20px;
-                  color: #e6e6e6;
-                  margin: 15px;
-                  margin-left: 8px;
-                "
+                 class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
               >
                 إستعلام
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
             >
               المعاملات الواردة والصادرة
             </p>
           </v-app-bar>
           <v-card>
-            <v-form>
+            <v-form class="my-application elevation-10">
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
@@ -82,18 +78,20 @@
                       label="الإسم"
                       v-model="ename"
                       outlined
+                      class="my-application"
                     ></v-text-field>
                   </v-col>
                   <v-col>
                     <v-text-field
                       color="#28714e"
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الجوال"
                       :rules="rules.mobileNum"
                       placeholder="05xxxxxxxx"
                       v-model="phone"
                       outlined
+                      
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -102,7 +100,7 @@
                     <v-text-field
                       color="#28714e"
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الهوية الوطنية"
                       v-model="nid"
                       :rules="rules.nId"
@@ -116,6 +114,7 @@
                       v-model="email"
                       :rules="rules.email"
                       outlined
+                      class="my-application"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -124,7 +123,7 @@
                     <v-text-field
                       color="#28714e"
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم المعاملة"
                       v-model="id"
                       outlined
@@ -136,12 +135,14 @@
                       label="الموضوع"
                       v-model="title"
                       outlined
+                      class="my-application"
                     ></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                    class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingdepartments"
@@ -154,6 +155,7 @@
                   </v-col>
                   <v-col>
                     <v-autocomplete
+                    class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingentities"
@@ -168,6 +170,7 @@
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                    class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingcorrespondenceType"
@@ -180,6 +183,7 @@
                   </v-col>
                   <v-col>
                     <v-autocomplete
+                    class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingobjectiveClass"
@@ -194,6 +198,7 @@
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                    class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingimportance"
@@ -206,6 +211,7 @@
                   </v-col>
                   <v-col>
                     <v-autocomplete
+                    class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingconfidentiality"
@@ -219,6 +225,7 @@
                 </v-row>
                 <v-row>
                   <v-menu
+                  class="my-application"
                     ref="menu"
                     v-model="menu"
                     :close-on-content-click="false"
@@ -230,6 +237,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
+                      class="my-application"
                         color="#28714e"
                         v-model="dateRangeText"
                         label="الفترة الزمنية"
@@ -239,6 +247,7 @@
                       ></v-text-field>
                     </template>
                     <v-date-picker
+                    class="my-application"
                       color="#28714e"
                       v-model="dates"
                       style="opacity: 0.9 !important"
@@ -249,7 +258,7 @@
                 </v-row>
               </v-container>
               <v-container>
-                <div class="text-center">
+                <div class="text-center my-application">
                   <v-btn
                     rounded
                     style="opacity: 0.9 !important"
@@ -260,7 +269,8 @@
                     width="200"
                   >
                     <router-link :to="to">
-                      <h5 class="my-10" style="color: white">بحث</h5>
+                      <h5  class="my-10 my-application"
+                        style="color: white; font-size: 14px">بحث</h5>
                     </router-link>
                   </v-btn>
                 </div>
@@ -601,15 +611,38 @@ export default {
   }, // end methodes
 };
 </script>
+
 <style lang="css" scoped>
+.v-radio >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.checkBoxs--text >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
 .v-text-field >>> label {
-  font-size: 20px;
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
   background-color: #404040;
+}
+</style>
+<style>
+.v-text-field input {
+  font-size: 0.9em;
+}
+</style>
+<style scoped>
+.addBackground {
+  background: url("../assets/Background-adf.png");
+  background-size: 100% 100%;
+  background-position: center;
+  /* height: 100vh; */
 }
 </style>

@@ -1,6 +1,10 @@
 <style lang="css" scoped>
+.v-text-field >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
@@ -9,6 +13,9 @@
 </style>
 
 <style>
+.v-text-field input {
+  font-size: 0.9em;
+}
 .inputNumber input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -58,6 +65,15 @@
   color: blue;
 }
 </style>
+
+<style scoped>
+.addBackground {
+  background: url("../assets/Background-adf.png");
+  background-size: 100% 100%;
+  background-position: center;
+  /* height: 100vh; */
+}
+</style>
 <template>
   <!--
                 ***  TO_DO: ***
@@ -67,11 +83,12 @@
     4. Arabic date display
     5. Direction rtl             DONE
   -->
-  <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
-      <v-main>
-        <v-container>
+  <div id="app" class="d-flex justify-center my-application">
+    <v-app id="inspire" class="my-application addBackground">
+      <v-main class="my-application">
+        <v-container class="my-application">
           <v-app-bar
+            elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
@@ -88,39 +105,39 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>عرض المعاملة</span>
+              <span class="my-application">عرض المعاملة</span>
             </v-tooltip>
 
-            <div>
+            <div class="my-application">
               <p
-                class="my-10 font-weight-medium"
-                style="
-                  font-size: 20px;
-                  color: #e6e6e6;
-                  margin: 15px;
-                  margin-left: 8px;
-                "
+                class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
               >
                 إستعراض
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
             >
               بيانات المعاملة
             </p>
           </v-app-bar>
 
           <v-card>
-            <v-form ref="form" v-model="valid" lazy-validations>
+            <v-form
+              class="my-application"
+              ref="form"
+              v-model="valid"
+              lazy-validations
+            >
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
                 :loader="waitingLoader"
               />
-              <v-container>
+              <v-container class="my-application">
                 <v-row>
                   <v-col v-show="toggleInbound">
                     <v-text-field
@@ -131,7 +148,7 @@
                       v-model="from"
                       outlined
                       required
-                      class="dir"
+                      class="dir my-application"
                     ></v-text-field>
                   </v-col>
                   <v-col v-show="toggle">
@@ -140,7 +157,7 @@
                       color="#28714e"
                       readonly
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       :label="idText"
                       v-model="IncidentNumber"
                       outlined
@@ -149,6 +166,7 @@
                   </v-col>
                   <v-col>
                     <v-menu
+                      class="my-application"
                       v-model="menu2"
                       :close-on-content-click="false"
                       :nudge-right="40"
@@ -159,6 +177,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
+                          class="my-application"
                           color="#28714e"
                           readonly
                           v-model="date"
@@ -175,8 +194,9 @@
               </v-container>
               <v-container>
                 <v-row>
-                  <v-col v-col v-show="toggle">
+                  <v-col v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       label="صادرة إلى"
@@ -190,7 +210,7 @@
                     <v-text-field
                       color="#28714e"
                       readonly
-                      type="number"
+                      type="number my-application"
                       class="inputNumber"
                       label="رقم الصادر من الجهة المرسلة"
                       v-model="outboundNumber"
@@ -205,6 +225,7 @@
                   <v-col>
                     <v-autocomplete
                       color="#28714e"
+                      class="my-application"
                       :loading="isLoadingdepartments"
                       :items="departments"
                       item-text="GehaName"
@@ -223,6 +244,7 @@
                 <v-row>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       label="درجة الأهمية"
@@ -233,6 +255,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       label="درجة السرية"
@@ -247,6 +270,7 @@
                 <v-row>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       label="نوع الخطاب"
@@ -257,6 +281,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       label="التصنيف الموضوعي"
@@ -272,6 +297,7 @@
                   <v-col cols="9">
                     <!--  the title should be "سري" when the type is confidential  -->
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       v-model="title"
@@ -285,6 +311,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       v-model="selectedCategory"
                       cols="1"
@@ -300,6 +327,7 @@
                 <v-row>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       label="الاسم"
@@ -313,7 +341,7 @@
                       readonly
                       type="number"
                       v-model="mobileNumber"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الجوال"
                       outlined
                       placeholder="05xxxxxxxx"
@@ -326,7 +354,7 @@
                       color="#28714e"
                       readonly
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الهوية الوطنية"
                       v-model="senderID"
                       outlined
@@ -334,6 +362,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       readonly
                       v-model="email"
@@ -344,13 +373,18 @@
                 </v-row>
               </v-container>
 
-              <v-card class="mx-auto text-center" v-if="filsUrls.length > 0">
+              <v-card
+                class="mx-auto text-center my-application"
+                v-if="filsUrls.length > 0"
+              >
                 <v-list>
                   <v-subheader>
                     <v-row style="font-weight: bold">
-                      <v-col> <h6>اسم المرفق</h6></v-col>
-                      <v-col> <h6>نوع المرفق</h6></v-col>
-                      <v-col> <h6>تصنيف المرفق</h6></v-col>
+                      <v-col> <h6 class="my-application">اسم المرفق</h6></v-col>
+                      <v-col> <h6 class="my-application">نوع المرفق</h6></v-col>
+                      <v-col>
+                        <h6 class="my-application">تصنيف المرفق</h6></v-col
+                      >
                     </v-row>
                   </v-subheader>
                   <v-list-item-group color="primary">
@@ -382,6 +416,7 @@
             <v-container>
               <!--  the title should be "سري" when the type is confidential  -->
               <v-textarea
+                class="my-application"
                 color="#28714e"
                 readonly
                 v-model="remarks"
@@ -392,11 +427,10 @@
                 label="الملاحظات"
               ></v-textarea>
             </v-container>
-
             <v-container v-show="toggleInbound" class="d-flex justify-center">
               <v-row>
                 <v-col v-show="toggleInbound">
-                  <div class="text-center">
+                  <div class="text-center my-application">
                     <v-btn
                       rounded
                       color="#39ac73"
@@ -406,7 +440,12 @@
                       width="200"
                       @click="sendOriginal = !sendOriginal"
                     >
-                      <h5 class="my-10" style="color: white">إرسال أصل</h5>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        إرسال أصل
+                      </h5>
                     </v-btn>
                   </div>
                 </v-col>
@@ -422,7 +461,58 @@
                       @click="resend"
                     >
                       <router-link :to="resendto">
-                        <h5 class="my-10" style="color: white">تسديد الوارد</h5>
+                        <h5
+                          class="my-10 my-application"
+                          style="color: white; font-size: 14px"
+                        >
+                          تسديد الوارد
+                        </h5>
+                      </router-link>
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-container v-show="false">
+              <div id="bc">
+                <div style="width: 100%">
+                  <div
+                    class="d-flex justify-center"
+                    style="display: table; margin: 0 auto"
+                  >
+                    <barcode
+                      v-bind:value="barcodeValue"
+                      width="1"
+                      height="30"
+                      :displayValue="false"
+                      fontSize="10"
+                    >
+                      فشل تحميل الباركود
+                    </barcode>
+                  </div>
+                </div>
+              </div>
+            </v-container>
+            <v-container class="d-flex justify-center">
+              <v-row v-show="!toggleInbound">
+                <v-col class="d-flex justify-center">
+                  <div>
+                    <v-btn
+                      rounded
+                      color="#28714e"
+                      style="opacity: 0.9 !important"
+                      dark
+                      large
+                      width="200"
+                      @click="print()"
+                    >
+                      <router-link :to="resendto">
+                        <h5
+                          class="my-10 my-application"
+                          style="color: white; font-size: 14px"
+                        >
+                          طباعة الباركود
+                        </h5>
                       </router-link>
                     </v-btn>
                   </div>
@@ -434,7 +524,12 @@
                 <v-col>
                   <div class="text-center">
                     <v-btn rounded color="red" dark large>
-                      <h5 class="white--text">إلغاء</h5>
+                      <h5
+                        class="white--text my-application"
+                        style="font-size: 14px"
+                      >
+                        إلغاء
+                      </h5>
                     </v-btn>
                   </div>
                 </v-col>
@@ -442,15 +537,21 @@
             </v-container>
             <v-container
               v-show="toggleInbound"
-              class="d-flex justify-center"
+              class="d-flex justify-center my-application"
               style="padding-left: 140px"
             >
-              <div class="mx-auto text-center">
-                <v-form ref="formOriginal" v-model="valid" lazy-validations>
-                  <v-row>
+              <div class="mx-auto text-center my-application">
+                <v-form
+                  ref="formOriginal"
+                  v-model="valid"
+                  lazy-validations
+                  class="my-application"
+                >
+                  <v-row class="my-application">
                     <v-col cols="1"></v-col>
                     <v-col v-show="sendOriginal">
                       <v-autocomplete
+                        class="my-application"
                         color="#28714e"
                         no-data-text="لايوجد بيانات"
                         :rules="[rules.required]"
@@ -465,6 +566,7 @@
                     </v-col>
                     <v-col v-show="sendOriginal" cols="6">
                       <v-textarea
+                        class="my-application"
                         color="#28714e"
                         height="55"
                         maxlength="500"
@@ -486,7 +588,12 @@
                           width="150"
                         >
                           <router-link :to="sendO">
-                            <h5 class="my-10" style="color: white">إرسال</h5>
+                            <h5
+                              class="my-10 my-application"
+                              style="color: white; font-size: 14px"
+                            >
+                              إرسال
+                            </h5>
                           </router-link>
                         </v-btn>
                       </router-link>
@@ -532,6 +639,7 @@ export default {
   },
   data: function () {
     return {
+      barcodeValue: "",
       sendO: "",
       resendto: "",
       id: "",
@@ -616,6 +724,30 @@ export default {
   },
 
   methods: {
+    print() {
+      const prtHtml = document.getElementById("bc").innerHTML;
+      // Open the print window
+      const WinPrint = window.open(
+        "",
+        "",
+        "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
+      );
+      WinPrint.document.write(`<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+  <div>
+    ${prtHtml}
+    </div>
+  </body>
+</html>`);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+    },
     resend() {
       var obj = {
         IncidentNumber: this.requestBody.IncidentNumber,
@@ -651,7 +783,7 @@ export default {
       console.log(this.filsUrls);
     },
     fillDepts(id) {
-      console.log("dep id :"+id);
+      console.log("dep id :" + id);
       this.copiesRequestBody.RelatedID = id;
       Vue.axios
         .post(
@@ -659,14 +791,11 @@ export default {
           this.copiesRequestBody
         )
         .then((resp) => {
-         var list = resp.data;
-      for (var i = 0; i < list.length; i++) {
-        this.toCopies.push(list[i].RecieverName);
-      }
-
+          var list = resp.data;
+          for (var i = 0; i < list.length; i++) {
+            this.toCopies.push(list[i].RecieverName);
+          }
         });
-
-
     },
     sendRequest() {
       this.isLoading = true;
@@ -678,8 +807,11 @@ export default {
       this.requestBody.GehaName = this.originalTo;
       this.requestBody.Details = this.remarksOrigin;
 
-      this.requestBody.RecieverUsername = localStorage.getItem("username");
-      this.requestBody.title = this.title;
+      this.requestBody.RecieverUsername = this.listSearchDep(
+        this.originalTo,
+        this.departments
+      ).ManagerUserName;
+      this.requestBody.title = "طلب تأكيد استلام الوارد رقم"+": "+ this.IncidentNumber +" - "+this.title;
 
       Vue.axios
         .post(
@@ -698,11 +830,15 @@ export default {
         });
     },
     fillData(data) {
-      this.date = data.OutboundGDate.substr(0, 10);
+      this.barcodeValue = data.IncidentNumber;
+      if (data.OutboundGDate) {
+        this.date = data.OutboundGDate.substr(0, 10);
+      } else {
+        this.date = data.RequestDate.substr(0, 10);
+      }
       this.by = data.SourceType;
       this.from = data.FromGeha;
       this.id = data.FromID;
-      this.to = data.ToGeha;
       this.title = data.IOboundSubject;
       this.email = data.RelatedEmail;
       this.remarks = data.IOboundRemarks;
@@ -715,6 +851,7 @@ export default {
       this.selectedObjectiveClass = data.txt7;
       this.selectedCategory = data.IOboundClassification;
       this.requestBody.IncidentNumber = data.IncidentNumber;
+      this.IncidentNumber = data.IncidentNumber;
       if (data.IOboundClassification == "Copy") {
         this.selectedCategory = "صورة";
       }
@@ -724,21 +861,22 @@ export default {
 
       this.fillAttatchment(data.RelatedAtt);
       this.fillDepts(data.Id);
-      console.log(data.SourceType);
       if (data.SourceType % 2 != 0) {
         // رقم صادر الصندوق
-        console.log("وارد");
         this.outboundNumber = data.OutboundDocNo;
         this.toggle = false;
         this.idText = "رقم الوارد";
       } else {
         this.idText = "رقم الصادر";
         this.toggleInbound = false;
-        console.log("صادر");
         this.toggle = true;
         // رقم وارد الصندوق و رقم صادر الجهة المرسلة
         this.outboundNumber = data.OutboundDocNo;
-        this.IncidentNumber = data.IncidentNumber;
+      }
+      if (this.toggleInbound) {
+        this.to = data.SelectedManagerName;
+      } if (this.toggle) {
+        this.to = data.ToGeha;
       }
     },
     validate() {

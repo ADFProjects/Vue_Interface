@@ -2,12 +2,7 @@
   <div id="app" class="d-flex justify-center my-application">
     <v-app id="inspire" class="my-application addBackground">
       <v-main class="my-application">
-        <v-container class="my-application">
-          <loading
-            :active="isLoading"
-            :is-full-page="fullPage"
-            :loader="waitingLoader"
-          />
+        <v-container>
           <v-app-bar
             elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
@@ -16,18 +11,22 @@
             dark
             class="mb-1 my-application"
           >
-          
             <v-tooltip bottom>
               <template #activator="{ on }">
+                <loading
+                  :active="isLoading"
+                  :is-full-page="fullPage"
+                  :loader="waitingLoader"
+                />
                 <v-img
                   v-on="on"
-                  src="~@/assets/InboundsBox-adf.png"
+                  src="~@/assets/OutboundsBox-adf.png"
                   alt="InboundImage"
                   max-height="100"
                   max-width="60"
                 ></v-img>
               </template>
-              <span class="my-application">صندوق البريد الوارد</span>
+              <span class="my-application">صندوق البريد الصادر العام</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -93,7 +92,7 @@
               style="font-weight: bold; color: #595959"
               :header-props="{ sortIcon: null }"
               :headers="headers"
-              :items="allInboundsBox"
+              :items="allOutboundsBox"
               :search="search"
               item-key="ID"
               :items-per-page="10"
@@ -102,24 +101,13 @@
               class="elevation-10 my-application"
               :footer-props="{
                 itemsPerPageOptions: [5, 10, 15, 25],
-                'items-per-page-text': 'عدد المعاملات الواردة في الصفحة:',
-                showFirstLastPage: true,
+                pageText: '',
                 pageText: 'من {0}-{1} إلى {2}',
+                showFirstLastPage: true,
+                'items-per-page-text': 'عدد المعاملات الصادرة في الصفحة:',
                 //'items-per-page-all-text': 'الكل',
               }"
             >
-              <!-- <template slot="headers" scope="props">
-                <tr>
-                  <th
-                    class="my-application"
-                    v-for="header in props.headers"
-                    :key="header.text"
-                  >
-                    fghghg {{ header.text }}
-                  </th>
-                </tr>
-              </template> -->
-
               <template v-slot:item="{ item }" class="my-application">
                 <tr
                   id="rowCols"
@@ -133,18 +121,18 @@
                     <td class="my-application" id="tdAll">
                       <v-chip
                         id="tdAll"
-                        class="my-application"
                         :color="getColor(item.ResponseStatusName)"
                         dark
+                        class="my-application"
                       >
                         {{ item.ResponseStatusName }}
                       </v-chip>
                     </td>
                   </template>
 
-                  <v-tooltip bottom :disabled="item.IOboundSubject.length < 32">
+                  <v-tooltip bottom :disabled="item.IOboundSubject.length < 30">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate my-application" id="tdAll">
+                      <td id="tdAll" v-on="on" class="truncate my-application">
                         {{ item.IOboundSubject }}
                       </td>
                     </template>
@@ -153,36 +141,27 @@
                     }}</span>
                   </v-tooltip>
 
-                  <v-tooltip bottom :disabled="item.OutboundDocNo.length < 9">
+                  <v-tooltip bottom :disabled="item.ToGeha.length < 35">
                     <template #activator="{ on }">
-                      <td v-on="on" class="truncate my-application" id="tdAll">
-                        {{ item.OutboundDocNo }}
+                      <td id="tdAll" v-on="on" class="truncate my-application">
+                        {{ item.ToGeha }}
                       </td>
                     </template>
                     <span class="text-truncate ml-1 mr-1 my-application">{{
-                      item.OutboundDocNo
+                      item.ToGeha
                     }}</span>
                   </v-tooltip>
-
-                  <v-tooltip bottom :disabled="item.FromGeha.length < 30">
-                    <template #activator="{ on }">
-                      <td v-on="on" class="truncate my-application" id="tdAll">
-                        {{ item.FromGeha }}
-                      </td>
-                    </template>
-                    <span class="text-truncate ml-1 mr-1 my-application">{{
-                      item.FromGeha
-                    }}</span>
-                  </v-tooltip>
-
-                  <td class="my-application" id="tdAll">
+                  <td id="tdAll" class="my-application">
                     {{ item.RequestDate_Ar }}
                   </td>
                 </tr>
               </template>
+
               <template v-slot:no-data>
                 <v-alert
+                  id="tdAll"
                   :value="true"
+                  class="my-application"
                   color="#339966"
                   border="top"
                   colored-border
@@ -190,10 +169,10 @@
                   elevation="6"
                   height="70"
                   style="
-                      margin-top: 20px;
-                      padding-left: 40px;
-                      padding-top: 25px;
-                      color: #595959;
+                    margin-top: 20px;
+                    padding-left: 40px;
+                    padding-top: 25px;
+                    color: #595959;
                   "
                 >
                   <span class="my-application">
@@ -208,11 +187,12 @@
                   :options="options"
                   @update:options="updateOptions"
                   :items-per-page-options="[5, 10, 15, 25]"
-                  items-per-page-text="عدد المعاملات الواردة في الصفحة:"
+                  items-per-page-text="عدد المعاملات الصادرة في الصفحة:"
                   pageText="من {0}-{1} إلى {2}"
                   showFirstLastPage
                 />
               </template>
+
               <v-alert
                 id="tdAll"
                 slot="no-results"
@@ -223,11 +203,7 @@
                 type="error"
                 elevation="6"
                 height="70"
-                style="
-                   color: #595959;
-                    margin-top: 15px;
-                    padding-top: 25px;
-                "
+                style="color: #595959; margin-top: 15px; padding-top: 25px"
               >
                 <span class="my-application">
                   بحثك عن " {{ search }} " لم يعثر على نتائج.
@@ -235,7 +211,7 @@
               </v-alert>
 
               <!-- <template v-slot:[`item.ResponseStatusName`]="{ item }">
-                <v-chip :color="getColor(item.ResponseStatusName)" dark >
+                <v-chip :color="getColor(item.ResponseStatusName)" dark>
                   {{ item.ResponseStatusName }}
                 </v-chip>
               </template> -->
@@ -251,7 +227,6 @@
       </v-main>
     </v-app>
   </div>
-  <!-- </v-toolbar> -->
 </template>
 <script src="https://unpkg.com/v-tooltip"></script>
 <script src="js/jsPDF-1.5.0/dist/jspdf.debug.js"></script>
@@ -282,21 +257,21 @@ export default {
     return {
       isLoading: true,
       overlay: true,
-      AdfInboundsBox: [],
-      MurInboundsBox: [],
-      allInboundsBox: [],
+      AdfOutboundsBox: [],
+      MurOutboundsBox: [],
+      allOutboundsBox: [],
       search: "",
       sortDesc: true,
-      testAdfInboundsBox: {
-        SourceType: 1, //        MurInboundsBox = 1,        MursalatOut = 2,        AdfInboundsBox = 3,        AdfOut = 4,
+      testAdfOutboundsBox: {
+        SourceType: 2, //        MursalatIn = 1,        MursalatOut = 2,        AdfIn = 3,        AdfOut = 4,
         RequesterDept: "",
         RequesterUser: "", //"mohamed.fawzy"
         SenderType: "", // GOVT , البريد السعودي ؟؟؟
         pageindex: 0,
         pageSize: 100,
       },
-      testMurInboundsBox: {
-        SourceType: 3, //        MurInboundsBox = 1,        MursalatOut = 2,        AdfInboundsBox = 3,        AdfOut = 4,
+      testMurOutboundsBox: {
+        SourceType: 4, //        MursalatIn = 1,        MursalatOut = 2,        AdfIn = 3,        AdfOut = 4,
         RequesterDept: "",
         RequesterUser: "", //"mohamed.fawzy"
         SenderType: "", // GOVT , البريد السعودي ؟؟؟
@@ -311,60 +286,11 @@ export default {
           sortable: true,
           value: "IncidentNumber",
         },
+
         { text: "حالة المعاملة", value: "ResponseStatusName", align: "center" },
         { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
-        { text: "رقم صادر الجهة", value: "OutboundDocNo", align: "center" },
-        { text: "الجهة الموردة", value: "FromGeha", align: "center" },
+        { text: "الجهة الصادرة", value: "ToGeha", align: "center" },
         { text: "تاريخ المعاملة", value: "RequestDate_Ar", align: "center" },
-      ],
-      // for Test:
-      response: [
-        {
-          ID: 386,
-          InboundDocNo: 209900276,
-          IOboundSubject:
-            "سري - الإدارة العامة للتربية والتعليم بمنطقة القصيم رقم 8888888 تاريخ 1442-08-02",
-          Status: 1,
-          RequesterID: 4106,
-          RequesterName: "عبدالرحمن بن علي بن سعد الشمراني",
-          RequesterUserName: "abdulrahman.ali",
-          RequestDate: "2021-03-15T12:09:10.673",
-          SelectedManager: "suliman.aldawish",
-          SelectedManagerName: "مكتب نائب المدير العام للماليه",
-          ImportanceVal: "L",
-          ConfidentialVal: "S",
-          FromGeha: "الإدارة العامة للتربية والتعليم بمنطقة القصيم",
-          FromID: "9988",
-          ToGeha: "صندوق التنمية الزراعية",
-          TotID: "127000",
-          LastTimeAllowed: null,
-          DeliveryType: "M",
-          DeliveryBy: null,
-          InboundDocNo: null,
-          OutboundDocNo: "8888888",
-          IOboundType: "Item02",
-          InboundGDate: null,
-          OutboundGDate: null,
-          InboundHDate: null,
-          OutboundHDate: "1442-08-02",
-          IOboundSubject: "سري",
-          IOboundCategory: "Management",
-          IOboundRemarks: "7777",
-          IOboundGDueDate: null,
-          IOboundHDueDate: null,
-          IOboundClassification: "Original",
-          EndDate: null,
-          ResType: 2,
-          SenderType: "",
-          SourceType: 3,
-          RelatedID: "0000000000",
-          RelatedName: ",n,jjn",
-          RelatedEmail: "ra@gmail.com",
-          RelatedIDType: "ID",
-          RelatedPhone: "0599999999",
-          ResponseStatus: "Accepted",
-          ResponseStatusName: "في انتظار تأكيد الاستلام",
-        },
       ],
     };
   },
@@ -372,35 +298,34 @@ export default {
     Vue.axios
       .post(
         "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
-        this.testAdfInboundsBox
+        this.testAdfOutboundsBox
       )
       .then((resp) => {
-        this.AdfInboundsBox = resp.data;
-        this.allInboundsBox = this.allInboundsBox.concat(resp.data);
-        console.log(this.allInboundsBox.length);
+        this.AdfOutboundsBox = resp.data;
+        this.allOutboundsBox = this.allOutboundsBox.concat(resp.data);
+        console.log(this.allOutboundsBox.length);
       });
-    //     Vue.axios
-    // .post("https://emp.adf.gov.sa/cms7514254/api/cms/Search", this.testAdfInboundsBox)
-    // .then((resp) => {
-    //   this.AdfInboundsBox = resp.data;
-    //   this.allInboundsBox = resp.data;
-    //   console.log(resp.data);
-    // });
+
     Vue.axios
       .post(
         "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
-        this.testMurInboundsBox
+        this.testMurOutboundsBox
       )
       .then((resp) => {
-        this.MurInboundsBox = resp.data;
-        this.allInboundsBox = this.allInboundsBox.concat(resp.data);
-        console.log(this.allInboundsBox.length);
+        this.MurOutboundsBox = resp.data;
+        this.allOutboundsBox = this.allOutboundsBox.concat(resp.data);
+        console.log(this.allOutboundsBox.length);
         this.isLoading = !this.isLoading;
         this.overlay = !this.overlay;
       });
   },
 
   methods: {
+    handleClick(item) {
+      console.log(item);
+      // this.highlightClickedRow();
+      // this.viewDetails(event);
+    },
     navigate(item) {
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
@@ -419,7 +344,6 @@ export default {
           this.navigate(resp.data);
         });
     },
-
     getColor(ResponseStatusName) {
       if (ResponseStatusName == "تحت الإجراء") return "#b3e6cc";
       else if (ResponseStatusName == "في انتظار تأكيد الاستلام")
@@ -455,13 +379,6 @@ export default {
 </style>
 
 <style lang="css" scoped>
-::v-deep th .my-application {
-  color: rgb(36, 224, 193) !important;
-  font-weight: bold !important;
-  opacity: 0.8 !important;
-  letter-spacing: 0.3px;
-  font-family: "Almarai", sans-serif;
-}
 ::v-deep .v-data-table-header th {
   background-color: #f2f2f2 !important;
   font-weight: bold !important;
@@ -476,16 +393,6 @@ export default {
   color: #595959;
   font-size: 1px;
 }
-.truncate {
-  max-width: 1vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.checkBoxs--text >>> label {
-  font-family: "Almarai", sans-serif !important;
-  font-size: 0.9em;
-}
 .v-text-field >>> label {
   font-family: "Almarai", sans-serif !important;
   font-size: 0.9em;
@@ -496,6 +403,12 @@ export default {
   pointer-events: auto;
   color: white;
   background-color: #404040;
+}
+.truncate {
+  max-width: 1vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 

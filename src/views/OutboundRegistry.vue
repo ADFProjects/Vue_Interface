@@ -83,6 +83,14 @@
   font-size: 16px;
 }
 </style>
+<style scoped>
+.addBackground {
+  background: url("../assets/Background-adf.png");
+  background-size: 100% 100%;
+  background-position: center;
+  /* height: 100vh; */
+}
+</style>
 <template>
   <!--
                 ***  TO_DO: ***
@@ -93,10 +101,11 @@
     5. Direction rtl             DONE
   -->
   <div id="app" class="d-flex justify-center my-application">
-    <v-app id="inspire">
+    <v-app id="inspire" class="addBackground my-application">
       <v-main>
         <v-container>
           <v-app-bar
+            elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
@@ -134,7 +143,7 @@
 
           <v-card>
             <v-form
-              class="my-application"
+              class="my-application elevation-10"
               ref="form"
               v-model="valid"
               lazy-validations
@@ -233,12 +242,42 @@
                       :items="entities"
                       item-text="Name"
                       label="صادرة إلى"
+                      @change="otherSelection()"
                       :rules="rules.required"
                       v-model="to"
                       outlined
                       required
                       class="dir"
                       :readonly="recivedData != null"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col v-show="other">
+                    <v-text-field
+                      color="#28714e"
+                      label="اسم الجهة"
+                      :rules="rules.requiredIf"
+                      outlined
+                      v-model="otherTo"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-autocomplete
+                      class="my-application"
+                      color="#28714e"
+                      no-data-text="لايوجد بيانات"
+                      :loading="isLoadingdepartments"
+                      :items="departments"
+                      item-text="GehaName"
+                      label="نسخة إلى"
+                      v-model="toCopies"
+                      outlined
+                      deletable-chips
+                      multiple
+                      small-chips
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
@@ -598,6 +637,12 @@
                       >
                         فشل تحميل الباركود
                       </barcode>
+                      <div style="font-size: 15px; direction: rtl">
+                        {{ dateBc.substr(0, 10) }}
+                      </div>
+                      <div style="font-size: 15px; direction: rtl">
+                        عدد المرفقات: {{ filsUrls.length }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -658,7 +703,8 @@ axios.defaults.headers.common["Authorization"] =
 const d = uq();
 const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
-const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const pattern =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default {
   components: {
@@ -667,6 +713,10 @@ export default {
   },
   data: function () {
     return {
+      toCopies: "",
+      other: false,
+      otherTo: "",
+      dateBc: new Date().toLocaleString(),
       printer_off: true,
       doprint: true,
       checkbox: true,
@@ -777,15 +827,17 @@ export default {
         RelatedAtt: [],
         SenderType: "",
         PreviousNo: "",
-
+RelatedGehat: [],
         cssText: "width: 189px;height: 172px;",
       },
       rules: {
+        requiredIf: [(value) => (this.other && !value ? "مطلوب" : true)],
         required: [(value) => !!value || "مطلوب"],
         counterTitle: [(value) => value.length > 0 && value.length <= 500],
         counterDescription: [(value) => value.length <= 500],
         nId: [
           (v) => (v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true),
+          (v) => (this.other && !v ? "مطلوب" : true),
         ],
         mobileNum: [
           (v) =>
@@ -884,6 +936,18 @@ export default {
   },
 
   methods: {
+    addDepartmentsList() {
+      for (let i = 0; i < this.toCopies.length; i++) {
+        this.requestBody.RelatedGehat.push({
+          Name: this.listSearchDep(this.toCopies[i], this.departments).GehaName,
+          Type: 2,
+          Text6: "COPY",
+          Value: this.listSearchDep(this.toCopies[i], this.departments)
+            .ManagerUserName,
+        });
+      }
+      console.log(this.toCopies);
+    },
     print() {
       const prtHtml = document.getElementById("bc").innerHTML;
       // Open the print window
@@ -895,9 +959,22 @@ export default {
       WinPrint.document.write(`<!DOCTYPE html>
 <html>
   <head>
+    <style>
+    body{
+      padding: 0;
+      margin: 0;
+    }
+    @media print {
+      #bc {
+        padding-bottom: 10px;
+        zoom: 1;
+        transform: rotate(180deg);
+      }
+    }
+    </style>
   </head>
   <body>
-  <div>
+    <div id="bc">
     ${prtHtml}
     </div>
   </body>
@@ -941,10 +1018,9 @@ export default {
         this.requestBody.DeliveryBy = "spoIn";
       } else if ($event.localeCompare(this.sendwaySPO[1]) == 0) {
         this.requestBody.DeliveryBy = "spoOut";
+      } else {
+        this.requestBody.DeliveryBy = "spoOut";
       }
-       else {
-         this.requestBody.DeliveryBy = "spoOut";
-       }
     },
     deliveryCompany($event) {
       console.log($event);
@@ -1062,7 +1138,11 @@ export default {
       this.requestBody.RequestDate = new Date().toLocaleString();
       this.requestBody.OutboundHDate = this.date;
 
-      this.requestBody.ToGeha = this.to;
+      if (this.other) {
+        this.requestBody.ToGeha = this.otherTo;
+      } else {
+        this.requestBody.ToGeha = this.to;
+      }
 
       this.requestBody.RelatedEmail = this.email;
       this.requestBody.RelatedName = this.senderName;
@@ -1103,6 +1183,7 @@ export default {
       ).GehaName;
       this.sendWayVerfication();
       this.addAttatchmentToRequest();
+      this.addDepartmentsList();
     },
     sendRequest() {
       console.log("request body");
@@ -1128,7 +1209,7 @@ export default {
             this.$refs.form.reset();
             this.resetAttatchement();
             this.$router.push({
-              name: "outboundbox", //use name for router push
+              name: "publicOutboundbox", //use name for router push
             });
           } else {
             this.showAlterFailureMessage(resp.data.ErrorCode);
@@ -1231,6 +1312,13 @@ export default {
         this.title = "";
       }
     },
+    otherSelection() {
+      if (this.to.localeCompare("اخرى") == 0) {
+        this.other = true;
+      } else {
+        this.other = false;
+      }
+    },
   }, //End of Methodes
   watch: {
     loader() {
@@ -1251,7 +1339,7 @@ export default {
   },
 };
 </script>
-<style>
+<style >
 .text {
   font-size: 12px;
   margin: 0;

@@ -1,9 +1,18 @@
 <style lang="css" scoped>
+.v-radio >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
+.checkBoxs--text >>> label {
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
+}
 .v-text-field >>> label {
-  font-size: 20px;
+  font-family: "Almarai", sans-serif !important;
+  font-size: 0.9em;
 }
 .v-tooltip__content {
-  font-size: 16px !important;
+  font-size: 14px !important;
   opacity: 0.8 !important;
   pointer-events: auto;
   color: white;
@@ -11,6 +20,9 @@
 }
 </style>
 <style>
+.v-text-field input {
+  font-size: 0.9em;
+}
 .inputNumber input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -60,6 +72,14 @@
   color: blue;
 }
 </style>
+<style scoped>
+.addBackground {
+  background: url("../assets/Background-adf.png");
+  background-size: 100% 100%;
+  background-position: center;
+  /* height: 100vh; */
+}
+</style>
 <template>
   <!--
                 ***  TO_DO: ***
@@ -69,16 +89,17 @@
     4. Arabic date display
     5. Direction rtl             DONE
   -->
-  <div id="app" class="d-flex justify-center">
-    <v-app id="inspire">
-      <v-main>
-        <v-container>
+  <div id="app" class="d-flex justify-center my-application">
+    <v-app id="inspire" class="addBackground my-application">
+      <v-main class="my-application">
+        <v-container class="my-application">
           <v-app-bar
+            elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
-            class="mb-1"
+            class="mb-1 my-application"
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
@@ -90,32 +111,32 @@
                   max-width="40"
                 ></v-img>
               </template>
-              <span>إضافة وارد</span>
+              <span class="my-application">إضافة وارد</span>
             </v-tooltip>
 
             <div>
               <p
-                class="my-10 font-weight-medium"
-                style="
-                  font-size: 20px;
-                  color: #e6e6e6;
-                  margin: 15px;
-                  margin-left: 8px;
-                "
+                class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
               >
                 تسجيل
               </p>
             </div>
 
             <p
-              class="my-10 font-weight-medium"
-              style="opacity: 0.6 !important; font-size: 19px; padding-top: 1px"
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
             >
               المعاملة الواردة
             </p>
           </v-app-bar>
           <v-card>
-            <v-form ref="form" v-model="valid" lazy-validations>
+            <v-form
+              class="my-application elevation-10"
+              ref="form"
+              v-model="valid"
+              lazy-validations
+            >
               <loading
                 :active="isLoading"
                 :is-full-page="fullPage"
@@ -123,7 +144,9 @@
               />
               <v-container>
                 <v-card>
-                  <v-card-title class="grey--text text--darken-2">
+                  <v-card-title
+                    class="grey--text text--darken-2 my-application"
+                  >
                     واردة عبر :</v-card-title
                   >
                   <v-container>
@@ -131,6 +154,7 @@
                       <v-row>
                         <v-col v-for="n in sendway" :key="n">
                           <v-radio
+                            class="my-application"
                             :label="n"
                             :value="n"
                             color="#28714e"
@@ -143,7 +167,9 @@
               </v-container>
               <v-container v-show="commpanyToggle">
                 <v-card>
-                  <v-card-title class="grey--text text--darken-2">
+                  <v-card-title
+                    class="grey--text text--darken-2 my-application"
+                  >
                     شركة الشحن :</v-card-title
                   >
                   <v-container>
@@ -157,6 +183,7 @@
                             :label="n"
                             :value="n"
                             color="#28714e"
+                            class="my-application"
                           ></v-radio>
                         </v-col>
                       </v-row>
@@ -173,14 +200,24 @@
                       :items="entities"
                       item-text="Name"
                       label="واردة من"
+                      @change="otherSelection()"
                       :loading="isLoadingentities"
                       :rules="rules.required"
                       v-model="from"
                       outlined
                       required
                       no-data-text="لايوجد بيانات"
-                      class="dir"
+                      class="dir my-application"
                     ></v-autocomplete>
+                  </v-col>
+                  <v-col v-show="other">
+                    <v-text-field
+                      color="#28714e"
+                      label="اسم الجهة"
+                      :rules="rules.requiredIfOther"
+                      outlined
+                      v-model="otherTo"
+                    ></v-text-field>
                   </v-col>
                   <v-col>
                     <v-menu
@@ -191,9 +228,11 @@
                       offset-y
                       min-width="auto"
                       color="#28714e"
+                      class="my-application"
                     >
-                      <template v-slot:activator="{ on, attrs }" v-show="false">
+                      <template v-slot:activator="{ on, attrs }">
                         <v-text-field
+                          class="my-application"
                           color="#28714e"
                           v-model="date"
                           label="بتاريخ"
@@ -204,6 +243,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
+                        class="my-application"
                         color="#28714e"
                         :max="date"
                         v-model="date"
@@ -217,6 +257,7 @@
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingdepartments"
@@ -234,7 +275,7 @@
                     <v-text-field
                       color="#28714e"
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الصادر من الجهة المرسلة"
                       :rules="rules.required"
                       v-model="outboundNumber"
@@ -248,6 +289,7 @@
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingdepartments"
@@ -263,11 +305,11 @@
                   </v-col>
                 </v-row>
               </v-container>
-
               <v-container>
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingimportance"
@@ -282,6 +324,7 @@
                   </v-col>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingconfidentiality"
@@ -301,6 +344,7 @@
                 <v-row>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingcorrespondenceType"
@@ -315,6 +359,7 @@
                   </v-col>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingobjectiveClass"
@@ -334,6 +379,7 @@
                   <v-col cols="9">
                     <!--  the title should be "سري" when the type is confidential  -->
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       v-model="title"
                       :rules="rules.counterTitle"
@@ -348,6 +394,7 @@
                   </v-col>
                   <v-col>
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingcategory"
@@ -367,6 +414,7 @@
                 <v-row>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       label="الاسم"
                       outlined
@@ -378,7 +426,7 @@
                       color="#28714e"
                       type="number"
                       v-model="mobileNumber"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الجوال"
                       :rules="rules.mobileNum"
                       outlined
@@ -391,7 +439,7 @@
                     <v-text-field
                       color="#28714e"
                       type="number"
-                      class="inputNumber"
+                      class="inputNumber my-application"
                       label="رقم الهوية الوطنية / السجل التجاري / الإقامة"
                       v-model="senderID"
                       :rules="rules.nId"
@@ -400,6 +448,7 @@
                   </v-col>
                   <v-col>
                     <v-text-field
+                      class="my-application"
                       color="#28714e"
                       v-model="email"
                       :rules="rules.email"
@@ -434,6 +483,7 @@
                     <v-row>
                       <v-col cols="7">
                         <v-file-input
+                          class="my-application"
                           color="#28714e"
                           v-model="input"
                           accept=".png, .jpg, .jpeg, .gif, .pdf , .bmp, .tif , .doc , .docx , .xls , .xlsx , "
@@ -446,6 +496,7 @@
                       </v-col>
                       <v-col>
                         <v-autocomplete
+                          class="my-application"
                           color="#28714e"
                           no-data-text="لايوجد بيانات"
                           :loading="isLoadingattatchmentType"
@@ -461,6 +512,7 @@
                       </v-col>
                       <v-col>
                         <v-autocomplete
+                          class="my-application"
                           color="#28714e"
                           no-data-text="لايوجد بيانات"
                           :loading="isLoadingattatchmentCategory"
@@ -493,26 +545,35 @@
                       border="left"
                       color="teal"
                       outlined
-                      class="multi-line"
+                      class="multi-line my-application"
                     >
                       {{ message }}
                     </v-alert>
 
                     <v-card
-                      class="mx-auto text-center"
+                      class="mx-auto text-center my-application"
                       v-if="filsUrls.length > 0"
                     >
                       <v-list>
                         <v-subheader>
                           <v-row>
                             <v-col lg="1"></v-col>
-                            <v-col> <h5>اسم المرفق</h5></v-col>
-                            <v-col> <h5>نوع المرفق</h5></v-col>
-                            <v-col> <h5>تصنيف المرفق</h5></v-col>
+                            <v-col>
+                              <h5 class="my-application">اسم المرفق</h5></v-col
+                            >
+                            <v-col>
+                              <h5 class="my-application">نوع المرفق</h5></v-col
+                            >
+                            <v-col>
+                              <h5 class="my-application">
+                                تصنيف المرفق
+                              </h5></v-col
+                            >
                           </v-row>
                         </v-subheader>
                         <v-list-item-group color="primary">
                           <v-list-item
+                            class="my-application"
                             v-for="(file, index) in filsUrls"
                             :key="file"
                           >
@@ -562,6 +623,7 @@
               <v-container>
                 <!--  the title should be "سري" when the type is confidential  -->
                 <v-textarea
+                  class="my-application"
                   color="#28714e"
                   v-model="remarks"
                   :rules="rules.counterDescription"
@@ -576,6 +638,7 @@
                 <v-row>
                   <v-col cols="2">
                     <v-checkbox
+                      class="checkBoxs--text my-application"
                       rounded
                       color="#28714e"
                       v-model="doSendOrigin"
@@ -586,6 +649,7 @@
                   </v-col>
                   <v-col v-show="sendOriginal">
                     <v-autocomplete
+                      class="my-application"
                       color="#28714e"
                       no-data-text="لايوجد بيانات"
                       :loading="isLoadingdepartments"
@@ -600,6 +664,7 @@
                   </v-col>
                   <v-col v-show="sendOriginal">
                     <v-textarea
+                      class="my-application"
                       color="#28714e"
                       height="55"
                       maxlength="500"
@@ -614,6 +679,7 @@
               </v-container>
               <v-container>
                 <v-checkbox
+                  class="my-application checkBoxs--text"
                   rounded
                   color="#28714e"
                   v-model="doSendSMS"
@@ -632,7 +698,12 @@
                       @click="validate"
                       width="200"
                     >
-                      <h5 class="my-10" style="color: white">إرسال</h5>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        إرسال
+                      </h5>
                     </v-btn>
                   </router-link>
                 </div>
@@ -679,7 +750,8 @@ axios.defaults.headers.common["Authorization"] =
 //const today = d.format("yyyy-MM-dd", "en");
 
 //Email pattern
-const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const pattern =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default {
   components: {
@@ -687,6 +759,8 @@ export default {
   },
   data: function () {
     return {
+      other: false,
+      otherTo: "",
       doSendOrigin: false,
       doSendSMS: false,
       sendO: "",
@@ -787,8 +861,7 @@ export default {
         DestNumber: "",
         RelatedAtt: [],
         SenderType: "",
-        RelatedGehat: [
-        ],
+        RelatedGehat: [],
       },
       sendOriginRequestBody: {
         RecieverUsername: "",
@@ -796,15 +869,16 @@ export default {
         Details: "",
         GehaCode: 1,
         GehaName: "",
-        IncidentNumber: 1000212,
+        IncidentNumber: "",
       },
       sendSmsRequestBody: {
         MobileNo: "",
         Message: "",
       },
-       
+
       emailRules: [(v) => !!v || "Email is required"],
       rules: {
+        requiredIfOther: [(value) => (this.other && !value ? "مطلوب" : true)],
         requiredIf: [(value) => (this.sendOriginal && !value ? "مطلوب" : true)],
         requiredIfSms: [(value) => (this.doSendSMS && !value ? "مطلوب" : true)],
         required: [(value) => !!value || "مطلوب"],
@@ -813,6 +887,7 @@ export default {
         nId: [
           (v) => (v.length > 0 && v.length != 10 ? "الرقم غير صحيح" : true),
           (v) => (this.doSendSMS && !v ? "مطلوب" : true),
+          (v) => (this.other && !v ? "مطلوب" : true),
         ],
         mobileNum: [
           (v) => (this.doSendSMS && !v ? "مطلوب" : true),
@@ -904,10 +979,11 @@ export default {
     addDepartmentsList() {
       for (let i = 0; i < this.toCopies.length; i++) {
         this.requestBody.RelatedGehat.push({
-          Name: this.listSearchDep(this.toCopies[i], this.departments).GehaName ,
+          Name: this.listSearchDep(this.toCopies[i], this.departments).GehaName,
           Type: 2,
-          Text6: "COPY" ,
-          Value: this.listSearchDep(this.toCopies[i], this.departments).ManagerUserName
+          Text6: "COPY",
+          Value: this.listSearchDep(this.toCopies[i], this.departments)
+            .ManagerUserName,
         });
       }
       console.log(this.toCopies);
@@ -915,15 +991,20 @@ export default {
     sendSMS(id) {
       console.log("sms to be sent");
 
-     // var sms1 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية برقم مرجعي:"+id+"\n"+"وسيتم التواصل معكم قريباً";
-      var sms2 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية بالرقم المرجعي :"+"\n"+id+".";
+      // var sms1 = "عزيزي العميل، \n"+ "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية برقم مرجعي:"+id+"\n"+"وسيتم التواصل معكم قريباً";
+      var sms2 =
+        "عزيزي العميل، \n" +
+        "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية بالرقم المرجعي :" +
+        "\n" +
+        id +
+        ".";
 
       this.sendSmsRequestBody.MobileNo = this.mobileNumber;
       this.sendSmsRequestBody.Message = sms2;
       Vue.axios
         .post(
           "https://emp.adf.gov.sa/cms7514254/api/cms/SendSMS",
-          this.sendSmsRequestBody,
+          this.sendSmsRequestBody
         )
         .then((resp) => {
           console.log("sms sent");
@@ -1035,7 +1116,11 @@ export default {
       this.requestBody.OutboundDocNo = this.outboundNumber;
       this.requestBody.RequestDate = new Date().toLocaleString();
       this.requestBody.OutboundGDate = this.date;
-      this.requestBody.FromGeha = this.from;
+      if (this.other) {
+        this.requestBody.FromGeha = this.otherTo;
+      } else {
+        this.requestBody.FromGeha = this.from;
+      }
 
       this.requestBody.FromID = this.listSearch(this.from, this.entities);
 
@@ -1113,7 +1198,7 @@ export default {
         });
     },
     sendOriginRequest(incidentNumber) {
-      this.isLoading = true;
+      this.sendOriginRequestBody.IncidentNumber = incidentNumber;
       this.sendOriginRequestBody.GehaCode = this.listSearchDep(
         this.originalTo,
         this.departments
@@ -1121,16 +1206,21 @@ export default {
       this.sendOriginRequestBody.GehaName = this.originalTo;
       this.sendOriginRequestBody.Details = this.remarksOrigin;
 
-      this.sendOriginRequestBody.RecieverUsername = localStorage.getItem(
-        "username"
-      );
-      this.sendOriginRequestBody.title = this.title;
-      this.sendOriginRequestBody.IncidentNumber = incidentNumber;
+      this.sendOriginRequestBody.RecieverUsername = this.listSearchDep(
+        this.originalTo,
+        this.departments
+      ).ManagerUserName;
+      this.sendOriginRequestBody.title =
+        "طلب تأكيد استلام الوارد رقم" +
+        ": " +
+        incidentNumber +
+        " - " +
+        this.title;
 
       Vue.axios
         .post(
           "https://emp.adf.gov.sa/cms7514254/api/cms/ConfirmInboundReceive",
-          this.requestBody
+          this.sendOriginRequestBody
         )
         .then((resp) => {
           this.isLoading = false;
@@ -1230,6 +1320,13 @@ export default {
       } else {
         this.titleValid = false;
         this.title = "";
+      }
+    },
+    otherSelection() {
+      if (this.from.localeCompare("اخرى") == 0) {
+        this.other = true;
+      } else {
+        this.other = false;
       }
     },
   }, //End of Methodes
