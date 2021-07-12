@@ -1,0 +1,982 @@
+{
+	"info": {
+		"_postman_id": "8c508093-c623-44d6-af06-31b91286cc7a",
+		"name": "cms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get lookups",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=13",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"GetCMSLookups"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get depts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/GetDept?DeptType=1",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"GetDept"
+					],
+					"query": [
+						{
+							"key": "DeptType",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadfile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": null,
+							"type": "file"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/FileManager/UploadFile?k=cms",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"FileManager",
+						"UploadFile"
+					],
+					"query": [
+						{
+							"key": "k",
+							"value": "cms"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ADFCategory\":null,\"ADFInbox\":null,\"Attachements\":null,\"AudittrailsList\":null,\"Confidential\":null,\"ConfidentialVal\":\"N\",\"DeliveryBy\":null,\"DeliveryType\":\"M\",\"DestNumber\":\"4900\",\"Details\":null,\"EndDate\":null,\"FromGeha\":\"الإدارة العامة للتربية والتعليم بمنطقة القصيم\",\"FromID\":\"9988\",\"GehaCode\":null,\"GehaName\":null,\"IOboundCategory\":\"Penal\",\"IOboundClassification\":\"Original\",\"IOboundGDueDate\":null,\"IOboundHDueDate\":null,\"IOboundRemarks\":\"ddd\",\"IOboundSubject\":\"trtr\",\"IOboundType\":\"Item04\",\"Id\":0,\"Importance\":null,\"ImportanceVal\":\"L\",\"InboundDocNo\":null,\"InboundGDate\":null,\"InboundHDate\":null,\"IncidentNumber\":0,\"IsFax\":false,\"LastTimeAllowed\":null,\"MainTypeID\":0,\"OutboundDocNo\":\"434\",\"OutboundGDate\":null,\"OutboundHDate\":\"1442-09-08\",\"PreviousDate\":null,\"PreviousDate2\":null,\"PreviousNo\":null,\"PreviousRecord\":null,\"PreviousTo\":null,\"RejectionCode\":null,\"RejectionDate\":null,\"RejectionReason\":null,\r\n\r\n\"RelatedGehat\":[{\"Name\":\"مكتب نائب المدير العام للاستثمارات\",\"Type\":2,\"Text6\":\"COPY\",\"Value\":\"maher.albayyat\"},\r\n{\"Name\":\"مكتب نائب المدير العام للاستثمارات\",\"Type\":2,\"Text6\":\"COPY\",\"Value\":\"mohamed.fawzy\"},\r\n{\"Name\":\"مكتب dsdsds المدير العام للاستثمارات\",\"Type\":2,\"Text6\":\"COPY\",\"Value\":\"atta.radwan\"}\r\n]\r\n\r\n,\"RelatedEmail\":\"\",\"RelatedID\":\"\",\"RelatedIDType\":\"ID\",\"RelatedName\":\"\",\"RelatedPhone\":\"\",\"RequestDate\":\"2021-04-20T13:01:30\",\"RequesterID\":4106,\"RequesterName\":null,\"RequesterUserName\":null,\"ResType\":0,\"ResponseErrorCode\":null,\"ResponseErrorMessage\":null,\"ResponseStatus\":null,\"SelectedManager\":\"abdulaziz.alissa\",\"SelectedManagerName\":\"مكتب نائب المدير العام للمخاطر والأمن السيبراني\",\"SenderType\":\"\",\"SourceType\":3,\"Status\":1,\"Tile\":null,\"ToGeha\":\"صندوق التنمية الزراعية\",\"TotID\":\"127000\",\"txt1\":null,\"txt2\":null,\"txt3\":null,\"txt4\":null,\"txt5\":null,\"txt6\":null,\"txt7\":null}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/save",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"RepType\": 0,\r\n\"ConfidentialVal\": \"S\",\r\n\"Dept\": \"4500\",\r\n\"Geha\": \"6283\",\r\n\"IOboundType\": \"Item02\",\r\n\"IOboundCategory\": \"Financial\",\r\n\"ImportanceVal\": \"L\",\r\n\"IncidentNumber\": \"123\",\r\n\"RelatedEmail\": \"raghad@gmail.com\",\r\n\"RelatedID\": \"1111111111\",\r\n\"RelatedName\": \"raghad\",\r\n\"RelatedPhone\": \"0582990070\",\r\n\"SourceType\": 3,\r\n\"Subject\": \"سري\",\r\n\"end\": \"06/02/2021\",\r\n\"query\": null,\r\n\"start\": \"06/02/2021\",\r\n\"status\": 1,\r\n\"pageSize\": 100,\r\n\"pageindex\": 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "outbound",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"RepType\": 0,\r\n\"ConfidentialVal\": \"S\",\r\n\"Dept\": \"4500\",\r\n\"Geha\": \"6283\",\r\n\"IOboundType\": \"Item02\",\r\n\"IOboundCategory\": \"Financial\",\r\n\"ImportanceVal\": \"L\",\r\n\"IncidentNumber\": \"123\",\r\n\"RelatedEmail\": \"raghad@gmail.com\",\r\n\"RelatedID\": \"1111111111\",\r\n\"RelatedName\": \"raghad\",\r\n\"RelatedPhone\": \"0582990070\",\r\n\"SourceType\": 3,\r\n\"Subject\": \"سري\",\r\n\"end\": \"06/02/2021\",\r\n\"query\": null,\r\n\"start\": \"06/02/2021\",\r\n\"status\": 1,\r\n\"pageSize\": 100,\r\n\"pageindex\": 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users list",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"RepType\": 0,\r\n\"ConfidentialVal\": \"S\",\r\n\"Dept\": \"4500\",\r\n\"Geha\": \"6283\",\r\n\"IOboundType\": \"Item02\",\r\n\"IOboundCategory\": \"Financial\",\r\n\"ImportanceVal\": \"L\",\r\n\"IncidentNumber\": \"123\",\r\n\"RelatedEmail\": \"raghad@gmail.com\",\r\n\"RelatedID\": \"1111111111\",\r\n\"RelatedName\": \"raghad\",\r\n\"RelatedPhone\": \"0582990070\",\r\n\"SourceType\": 3,\r\n\"Subject\": \"سري\",\r\n\"end\": \"06/02/2021\",\r\n\"query\": null,\r\n\"start\": \"06/02/2021\",\r\n\"status\": 1,\r\n\"pageSize\": 100,\r\n\"pageindex\": 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "request info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID=496",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"GetCms"
+					],
+					"query": [
+						{
+							"key": "ReqID",
+							"value": "496"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "الوارد الصادر",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n    \"SourceType\": 2,//        MursalatIn = 1,        MursalatOut = 2,        AdfIn = 3,        AdfOut = 4,\r\n     \"RequesterDept\": \"\", \r\n     \"RequesterUser\": \"\" , //\"mohamed.fawzy\"\r\n     \"SenderType\": \"\", // GOVT , البريد السعودي ؟؟؟\r\n    \"pageindex\": 0,\r\n    \"pageSize\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSequense",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RepType\": 0,\r\n    \"SourceType\": 2,\r\n    \"query\": null,\r\n    \"IncidentNumber\": 0,\r\n    \"RelatedID\": null,\r\n    \"start\": null,\r\n    \"end\": null,\r\n    \"status\": 0,\r\n    \"RelatedName\": null,\r\n    \"RelatedEmail\": null,\r\n    \"RelatedPhone\": null,\r\n    \"Subject\": null,\r\n    \"Dept\": null,\r\n    \"Geha\": \"صندوق\",\r\n    \"ImportanceVal\": null,\r\n    \"ConfidentialVal\": null,\r\n    \"IOboundType\": null,\r\n    \"IOboundClassification\": null,\r\n    \"pageindex\": 0,\r\n    \"pageSize\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/GetSequense?type=2",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"GetSequense"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "التقارير",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RepType\": 1,\r\n     \"start\": \"2021-03-01\",\r\n     \"end\": \"2021-03-31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "استلام الوارد",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RecieverUsername\": \"mohamed.fawzy\",\r\n    \"title\": \"طلب تأكيد استلام الوارد رقم 34343 \",\r\n    \"Details\": \"ملاحظات ب\",\r\n    \"GehaCode\": 1452,\r\n    \"GehaName\": \"ادارة المالية\",\r\n    \"IncidentNumber\": 1000212\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa//cms7514254/api/cms/ConfirmInboundReceive",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"",
+						"cms7514254",
+						"api",
+						"cms",
+						"ConfirmInboundReceive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "main page",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RepType\": 4,\r\n     \"start\": \"2021-03-01\",\r\n     \"end\": \"2021-03-31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " userName=Kfq9py7dk6PhoBgGQCQCZQ%3d%3d&password=9%2bFkJtsldJo5Q9OLbcxeeXeMUv%2bDReAIS3phB2VGxkw%3d#/&grant_type=password",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cmstoken",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cmstoken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " grant_type=refresh_token&\r\n refresh_token=h6eNCNjkSJevSvo47t1VnfnGWb8n5xFySgCOWzUOf8MRdYwexKrtIJ9WsVOQyh_kaeuLhdB_7mUbFRhMlJv0KsXf_W6G1ufkbPg2FrcOL3wFiOSXBZW02iZgTWE9ZzRwUTESfCFl1OpggQcBNZO_hlvKrZ3S6C55xDd_4E53C-rhw8tXBUOjeYlqbPtTKPG-bKd699kKwFJWCYaTDUgz4NPJI2zMtgrHQp1ZAGKVollyzGJEyVcVOhP0yphUGIo6i1qUBn_0KrTWLtUmqaX5Ow3LyLtmeyy988QJCbUPyG2dXvwU7chmhnz2fXZtOykugIV_xaQ3SY456aMfN0en_g",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://adf-testintgr01/cms7514254/api/cmstoken",
+					"protocol": "http",
+					"host": [
+						"adf-testintgr01"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cmstoken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLoginUser",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "_dx8SlNMlO_UQZYuwIfyt1qgQQVktyvJsSl894MJeOPalGviGHU23hDOqp1FhQx4226gLq91uAGZtA6jtwE_CeAonGyEDSOQfK_NGvCWx1A4m5ZICxB732KK_jPJEbw9YG7tOwtESUyy65yknXZS2esI6m82YOnrG8XpgHGt3GPYl6__JwFJxI0II_nwmhjmJFJB8T58BnN-c102D_Z_jcv7M-Kq9Fzwf5t1FrOwUncnelsvUXIrU0jumw8Nw19W2hP6X68fwmEzisgAoG7N4rAih1deo_RXouBWyqFPJcc92R5uH6rsS_y6JawfP0iqF5WNbYWj34tGTHOBm1auoIE2UdJORFHn9QhgjFhx0F5Ti6T467Xd2rBkb1J77dc7AXJ2mEHcTfo4HYfM34vsoMwY2P-U0hvrICN1LfQHYEc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"GetLoginUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sms",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"MobileNo\": \"0580093315\",\r\n    \"Message\": \"test\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/SendSMS",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"SendSMS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Copy list",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"RepType\": 5,// copy\r\n        \"RelatedID\": 1814 // request ID\r\n      }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "report",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"RepType\": 0,\r\n    \"ConfidentialVal\": null,\r\n    \"Dept\": null,\r\n    \"Geha\": null,\r\n    \"IOboundType\": null,\r\n    \"IOboundCategory\": null,\r\n    \"ImportanceVal\": null,\r\n    \"IncidentNumber\": null,\r\n    \"RelatedEmail\": null,\r\n    \"RelatedID\": null,\r\n    \"RelatedName\": null,\r\n    \"RelatedPhone\": null,\r\n    \"SourceType\": 4,\r\n    \"Subject\": null,\r\n    \"end\": null,\r\n    \"query\": null,\r\n    \"start\": null,\r\n    \"status\": 2,\r\n    \"pageSize\": 100,\r\n    \"pageindex\": 0,\r\n    \"SenderType\": \"SPO\",\r\n    \"DeliveryBy\": \"spoin\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"Search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SavePermission",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "ClientKey",
+						"value": "ADFFE1165rDDfTYR",
+						"type": "text"
+					},
+					{
+						"key": "ClientID",
+						"value": "Contest01",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"Username\": \"mohamed.fawzy\",\r\n\"Permissions\": \"S\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emp.adf.gov.sa/cms7514254/api/cms/SavePermission",
+					"protocol": "https",
+					"host": [
+						"emp",
+						"adf",
+						"gov",
+						"sa"
+					],
+					"path": [
+						"cms7514254",
+						"api",
+						"cms",
+						"SavePermission"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "JvrHABQu9Du3PwMjon4Q3ayY4HKlPW4kcgP8SynpqZLAKfeWXOiSI2Wg9WS7l8B4quE0k7_EbeMXT3WI246JqYuifmHvmexoV3Ltn0uAfqj7W2jd-DMWe-XYVU6M3OLRZOWWDq804K9kduOVU0LzSerQBEVF52HcQM8jPzCWxiaf5gnL7QAGf1KRqORzCjqJXBk5X8uPap6nEyb-z146uSu2ocEUcYSjfGurEERbE883kl7CcJyr5ay5-hnQHkFWP4wEkPtgNBwunKBBndQzaKrdLeue3K7doiMohIJ5LAvHVjnZqRIZU1yyARUrAHnAmKJCfghpu5hAXHHg1ywUuARN0y8tWqBy0fRgXaHqznP5PsfKmGcsqieiNe-Rbn3lz4sN-o1Z1a-sMP-9ZLKajh8dG2UmzDpbRwuUs7B8EGiPBs31iLXk57i-whbm54BR",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -139,10 +139,10 @@
                   elevation="6"
                   height="70"
                   style="
-                      margin-top: 20px;
-                      padding-left: 40px;
-                      padding-top: 25px;
-                      color: #595959;
+                    margin-top: 20px;
+                    padding-left: 40px;
+                    padding-top: 25px;
+                    color: #595959;
                   "
                 >
                   <span class="my-application">
@@ -159,11 +159,7 @@
                 type="error"
                 elevation="6"
                 height="70"
-                style="
-                 color: #595959;
-                  margin-top: 15px;
-                  padding-top: 25px;
-                "
+                style="color: #595959; margin-top: 15px; padding-top: 25px"
               >
                 <span class="my-application">
                   بحثك عن " {{ search }} " لم يعثر على نتائج.
@@ -238,28 +234,27 @@ export default {
 
       OutBoundReportsIn: {
         RepType: 0,
-        SourceType: 4,
-        query: null,
-        IncidentNumber: 0,
-        RelatedID: null,
-        start: null,
-        end: null,
-        status: 0,
-        RelatedName: null,
-        RelatedEmail: null,
-        RelatedPhone: null,
-        Subject: null,
-        Dept: null,
-        Geha: "صندوق",
-        ImportanceVal: null,
         ConfidentialVal: null,
+        Dept: null,
+        Geha: null,
         IOboundType: null,
-        IOboundClassification: null,
-        pageindex: 0,
+        IOboundCategory: null,
+        ImportanceVal: null,
+        IncidentNumber: null,
+        RelatedEmail: null,
+        RelatedID: null,
+        RelatedName: null,
+        RelatedPhone: null,
+        SourceType: 4,
+        Subject: null,
+        end: null,
+        query: null,
+        start: null,
+        status: 2,
         pageSize: 100,
+        pageindex: 0,
         SenderType: "SPO",
         DeliveryBy: "spoIn",
-        TotalCount: null,
       },
 
       GetSequensePdf1: {
@@ -512,10 +507,7 @@ export default {
         });
         var dataString = "التاريخ:" + "  " + date;
         doc.setFontSize(12).text(dataString, 16, 40);
-        doc
-          .setLineWidth(1.5)
-          .setDrawColor(89, 89, 89)
-          .line(0, 80, 900, 80);
+        doc.setLineWidth(1.5).setDrawColor(89, 89, 89).line(0, 80, 900, 80);
         doc.setFontSize(12).text(245, 96, "بيان بالبريد الصادر - داخل المدينة");
       }
 

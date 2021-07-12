@@ -360,6 +360,12 @@ export default {
       model: 1,
       active: true,
      menuItems: [
+               {
+          name: "الصلاحيات",
+          link: "/permissions",
+          permission: ["9"],
+          icon: "mdi-view-dashboard",
+        },
         {
           name: "الإحصائيات",
           link: "/homepage",
@@ -411,7 +417,8 @@ export default {
       this.drawer = true;
     },
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     reports(type) {
       //window.location.reload();

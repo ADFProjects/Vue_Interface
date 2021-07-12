@@ -752,7 +752,6 @@ axios.defaults.headers.common["Authorization"] =
 //Email pattern
 const pattern =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 export default {
   components: {
     Loading,
@@ -906,7 +905,8 @@ export default {
     };
   }, //data end
   mounted() {
-    Vue.axios
+
+     Vue.axios
       .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=1")
       .then((resp) => {
         this.objectiveClass = resp.data;
@@ -954,7 +954,6 @@ export default {
         this.attatchmentCategory = resp.data;
         this.isLoadingattatchmentCategory = false;
       });
-
     Vue.axios
       .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=7")
       .then((resp) => {
@@ -976,6 +975,29 @@ export default {
   },
 
   methods: {
+    getUserConnections() {
+      var obj = this.$store.getters.getLists;
+
+      this.objectiveClass = obj.objectiveList;
+      this.isLoadingobjectiveClass = false;
+      this.confidentiality = obj.confidentialityList;
+      this.isLoadingconfidentiality = false;
+      this.entities = obj.gehatList;
+      this.isLoadingentities = false;
+      this.importance = obj.importanceList;
+      this.isLoadingimportance = false;
+      this.category = obj.categoryList;
+      this.isLoadingcategory = false;
+      this.correspondenceType = obj.typesList;
+      this.isLoadingcorrespondenceType = false;
+      this.attatchmentType = obj.attachmentTypeList;
+      this.isLoadingattatchmentType = false;
+      this.attatchmentCategory = obj.attachmentCategotyList;
+      this.isLoadingattatchmentCategory = false;
+      this.departments = obj.depList;
+      this.isLoadingdepartments = false;
+    },
+
     addDepartmentsList() {
       for (let i = 0; i < this.toCopies.length; i++) {
         this.requestBody.RelatedGehat.push({

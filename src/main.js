@@ -10,7 +10,9 @@ import OutboundRegistry from './views/OutboundRegistry';
 import InboundRegistry from './views/InboundRegistry';
 import viewInquire from './views/Search-adf';
 import inboundbox from './views/InboundsBox-adf';
-import outboundbox from './views/OutboundsBox-adf';
+import publicOutboundbox from './views/PublicOutboundsBox-adf';
+import internalOutboundbox from './views/InternalOutboundsBox-adf';
+
 //import saudipostreport from './views/SaudiPost-adf';
 import sortReports from './views/SortOutBounds-adf';
 import saudipostreportIn from './views/OutBoundReportsIn';
@@ -20,41 +22,35 @@ import saudipostreportSmsa from './views/OutBoundReportsSmsa';
 import saudipostreportManualDelivery from './views/OutBoundReportsManualDelivery';
 import homepage from './views/Homepage-adf';
 import alter from './views/alter';
+import permissions from './views/Permissions' ;
+import store from "./store/store";
+
 
 
 import viewCorrespondence from './views/viewCorrespondence';
 
 import config from './config.json';
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import * as TastyBurgerButton from 'vue-tasty-burgers';
-import Vuex from 'vuex'
 
 import VueHtmlToPaper from 'vue-html-to-paper';
+import Vuex from 'vuex';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-const options = {
-  specs: [
-    'fullscreen=no',
-    'titlebar=no',
-    'scrollbars=no'
-  ],
-  styles: [
-    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-    'https://unpkg.com/kidlat-css/css/kidlat.css'
-  ]
-}
 
-Vue.use(VueHtmlToPaper, options);
+
+Vue.use(Vuex);
+
 
 // or, using the defaults with no stylesheet
 Vue.use(VueHtmlToPaper);
 
-Vue.use(Vuex)
 
 Vue.use(TastyBurgerButton);
 // Make BootstrapVue available throughout your project
@@ -88,9 +84,14 @@ const routes = [
     component: inboundbox,
   },
   {
-    path: '/outboundbox',
-    name: 'outboundbox',
-    component: outboundbox,
+    path: '/publicOutboundbox',
+    name: 'publicOutboundbox',
+    component: publicOutboundbox,
+  },
+  {
+    path: '/internalOutboundbox',
+    name: 'internalOutboundbox',
+    component: internalOutboundbox,
   },
   // {
   //   path: '/saudipostreport',
@@ -137,12 +138,17 @@ const routes = [
     name: 'alter',
     component: alter,
   },
+  {
+    path: '/permissions',
+    name: 'permissions',
+    component: permissions,
+  },
+  
   //why it is not working?
   // otherwise redirect to home 
   //{ path: '*', redirect: homepage }
   //question
 ]
-
 
 Vue.config.productionTip = false
 
@@ -150,10 +156,13 @@ const router = new VueRouter({
   base: '/cms/',
   routes
 })
+router.replace({ path: 'homepage', redirect: '/homepage' })
 
 new Vue({
   vuetify,
   router,
+  store,
+
   render: h => h(App)
 }).$mount('#app')
 

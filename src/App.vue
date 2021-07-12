@@ -15,6 +15,7 @@ Vue.use(VueAxios, axios);
 
 axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
 axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
+axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // for POST requests
 
 export default {
   components: {},
@@ -28,10 +29,12 @@ export default {
     refreshRequestBody: "grant_type=refresh_token& refresh_token=",
   }),
   mounted() {
+    //https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/
     // get url, substring
-    var url ="https://intgr.adf.gov.sa/?CU=60D1dGxvi2wYkCIo5zkRSw%3d%3d&P=Is3eACCBzoC0bvcV4uPsnhNAS3NP5bGC1gx3JT5PMF4%3d#";
-    
-    //window.location.href;
+    var url = window.location.href;
+       //"https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
+
+     
     this.username = url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
     this.password = url.substring(url.indexOf("&P=") + 3);
     this.requestBody =
@@ -40,6 +43,7 @@ export default {
       "&password=" +
       this.password +
       "&grant_type=password";
+
     // get token request
 
     Vue.axios
@@ -48,24 +52,27 @@ export default {
         localStorage.setItem("token", resp.data.access_token);
         localStorage.setItem("expired", new Date(resp.data[".expires"]));
         localStorage.setItem("refresh", resp.data.refresh_token);
-        console.log(resp.data.access_token);
+        console.log("token generated");
       })
       .then(() => {
         this.getLoginUserFunction();
       });
     // get permissions
-    axios.defaults.headers.common["Authorization"] =
-      "Bearer " + localStorage.getItem("token");
+    this.getLoginUserFunction();
+ 
   },
   methods: {
     getLoginUserFunction() {
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("token");
       Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser")
+        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser", {
+          crossDomain: true,
+        })
         .then((resp) => {
           localStorage.setItem("permissions", resp.data.Permissions);
           localStorage.setItem("username", resp.data.EmployeeUserName);
+          console.log(localStorage.getItem("permissions"));
         })
         .then(() => {
           this.refreshToken(localStorage.getItem("expired"));
@@ -100,7 +107,31 @@ export default {
 };
 </script>
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@300;400&display=swap");
+@font-face {
+  font-family: "Almarai";
+  src: url("assets/fonts/Almarai-Regular.eot");
+  src: url("~@/assets/fonts/Almarai-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("~@/assets/fonts/Almarai-Regular.woff2") format("font-woff2"),
+    url("~@/assets/fonts/Almarai-Regular.woff") format("font-woff"),
+    url("~@/assets/fonts/Almarai-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Almarai";
+  src: url("~@/assets/fonts/Almarai-Bold.eot");
+  src: url("~@/assets/fonts/Almarai-Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("~@/assets/fonts/Almarai-Bold.woff2") format("font-woff2"),
+    url("~@/assets/fonts/Almarai-Bold.woff") format("font-woff"),
+    url("~@/assets/fonts/Almarai-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
 
 $font-family: "Almarai", sans-serif;
 .my-application {

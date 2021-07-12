@@ -10,6 +10,7 @@
   "dependencies": {
     "@koumoul/vjsf": "^1.20.0",
     "@koumoul/vuetify-jsonschema-form": "^0.36.4",
+    "@mdi/font": "^5.9.55",
     "@umalqura/core": "^0.0.7",
     "axios": "^0.21.1",
     "babel-install": "^2.1.0",
@@ -22,6 +23,7 @@
     "jsbarcode": "^3.11.3",
     "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.5.14",
+    "material-design-icons-iconfont": "^6.1.0",
     "popper.js": "^1.16.1",
     "print-js": "^1.6.0",
     "v-tooltip": "^2.1.3",
