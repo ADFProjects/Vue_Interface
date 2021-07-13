@@ -445,7 +445,7 @@ export default {
         //if the page without permissions
         if (p[i].localeCompare("") == 0) {
           return true;
-        } else if (localStorage.getItem("permissions") == null) {
+        } else if (localStorage.getItem("permissions") == null || localStorage.getItem("permissions").localeCompare("") == 0) {
           return false;
         } else if (localStorage.getItem("permissions").search(p[i]) != -1) {
           list.push(true);

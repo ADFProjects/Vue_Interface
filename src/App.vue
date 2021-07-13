@@ -31,10 +31,9 @@ export default {
   mounted() {
     //https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/
     // get url, substring
-    var url = window.location.href;
-       //"https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
+    var url = //window.location.href;
+      "https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
 
-     
     this.username = url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
     this.password = url.substring(url.indexOf("&P=") + 3);
     this.requestBody =
@@ -52,14 +51,13 @@ export default {
         localStorage.setItem("token", resp.data.access_token);
         localStorage.setItem("expired", new Date(resp.data[".expires"]));
         localStorage.setItem("refresh", resp.data.refresh_token);
-        console.log("token generated");
+        console.log(resp.data.access_token);
       })
       .then(() => {
         this.getLoginUserFunction();
       });
     // get permissions
     this.getLoginUserFunction();
- 
   },
   methods: {
     getLoginUserFunction() {

@@ -427,9 +427,9 @@
                 label="الملاحظات"
               ></v-textarea>
             </v-container>
-            <v-container v-show="toggleInbound" class="d-flex justify-center">
-              <v-row>
-                <v-col v-show="toggleInbound">
+            <v-container class="d-flex justify-center">
+              <v-row v-show="toggleInbound">
+                <v-col>
                   <div class="text-center my-application">
                     <v-btn
                       rounded
@@ -449,8 +449,8 @@
                     </v-btn>
                   </div>
                 </v-col>
-                <v-col v-show="toggleInbound">
-                  <div class="text-right">
+                <v-col>
+                  <div class="text-center">
                     <v-btn
                       rounded
                       color="#28714e"
@@ -460,14 +460,32 @@
                       width="200"
                       @click="resend"
                     >
-                      <router-link :to="resendto">
-                        <h5
-                          class="my-10 my-application"
-                          style="color: white; font-size: 14px"
-                        >
-                          تسديد الوارد
-                        </h5>
-                      </router-link>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        تسديد الوارد
+                      </h5>
+                    </v-btn>
+                  </div>
+                </v-col>
+                <v-col>
+                  <div class="text-center my-application">
+                    <v-btn
+                      rounded
+                      color="#d11a2a"
+                      style="opacity: 0.9 !important"
+                      dark
+                      large
+                      width="200"
+                      @click="deleteCorrespondence()"
+                    >
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        حذف
+                      </h5>
                     </v-btn>
                   </div>
                 </v-col>
@@ -495,8 +513,8 @@
             </v-container>
             <v-container class="d-flex justify-center">
               <v-row v-show="!toggleInbound">
-                <v-col class="d-flex justify-center">
-                  <div>
+                <v-col>
+                  <div class="text-left">
                     <v-btn
                       rounded
                       color="#28714e"
@@ -506,29 +524,31 @@
                       width="200"
                       @click="print()"
                     >
-                      <router-link :to="resendto">
-                        <h5
-                          class="my-10 my-application"
-                          style="color: white; font-size: 14px"
-                        >
-                          طباعة الباركود
-                        </h5>
-                      </router-link>
+                      <h5
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
+                      >
+                        طباعة الباركود
+                      </h5>
                     </v-btn>
                   </div>
                 </v-col>
-              </v-row>
-            </v-container>
-            <v-container v-show="false">
-              <v-row>
                 <v-col>
-                  <div class="text-center">
-                    <v-btn rounded color="red" dark large>
+                  <div class="text-right">
+                    <v-btn
+                      rounded
+                      color="#d11a2a"
+                      style="opacity: 0.9 !important"
+                      dark
+                      large
+                      width="200"
+                      @click="deleteCorrespondence()"
+                    >
                       <h5
-                        class="white--text my-application"
-                        style="font-size: 14px"
+                        class="my-10 my-application"
+                        style="color: white; font-size: 14px"
                       >
-                        إلغاء
+                        حذف
                       </h5>
                     </v-btn>
                   </div>
@@ -621,6 +641,7 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import VueBarcode from "vue-barcode";
 
 Vue.use(VueAxios, axios);
 
@@ -636,6 +657,7 @@ const today = d.format("yyyy-MM-dd", "en");
 export default {
   components: {
     Loading,
+    barcode: VueBarcode,
   },
   data: function () {
     return {
@@ -655,6 +677,11 @@ export default {
         GehaCode: 1,
         GehaName: "ادارة المالية",
         IncidentNumber: 1000212,
+      },
+      cancelRequestBody: {
+        Username: "raghad.alshaalan",
+        Comments: "deleted",
+        incidentNumber: "209900444",
       },
       copiesRequestBody: {
         RepType: 5, // copy
@@ -724,6 +751,32 @@ export default {
   },
 
   methods: {
+    deleteCorrespondence() {
+      var to = "";
+      if (this.toggleInbound) {
+        to = "inboundbox";
+      } else {
+        to = "outboundbox";
+      }
+
+      this.isLoading = true;
+      this.requestBody.Username = localStorage.getItem("username");
+      this.requestBody.incidentNumber = this.IncidentNumber;
+      Vue.axios
+        .get(
+          "https://emp.adf.gov.sa/cms7514254/api/CancelRequest",
+          this.cancelRequestBody
+        )
+        .then((resp) => {
+          this.showAlterDeletionSuccessMessage();
+          this.$router.push({
+            name: to, //use name for router push
+          });
+          console.log(resp.data);
+          console.log("deleted succcessfully");
+        });
+        this.isLoading = false;
+    },
     print() {
       const prtHtml = document.getElementById("bc").innerHTML;
       // Open the print window
@@ -735,9 +788,22 @@ export default {
       WinPrint.document.write(`<!DOCTYPE html>
 <html>
   <head>
+    <style>
+    body{
+      padding: 0;
+      margin: 0;
+    }
+    @media print {
+      #bc {
+        padding-bottom: 10px;
+        zoom: 1;
+        transform: rotate(180deg);
+      }
+    }
+    </style>
   </head>
   <body>
-  <div>
+    <div id="bc">
     ${prtHtml}
     </div>
   </body>
@@ -811,7 +877,12 @@ export default {
         this.originalTo,
         this.departments
       ).ManagerUserName;
-      this.requestBody.title = "طلب تأكيد استلام الوارد رقم"+": "+ this.IncidentNumber +" - "+this.title;
+      this.requestBody.title =
+        "طلب تأكيد استلام الوارد رقم" +
+        ": " +
+        this.IncidentNumber +
+        " - " +
+        this.title;
 
       Vue.axios
         .post(
@@ -875,7 +946,8 @@ export default {
       }
       if (this.toggleInbound) {
         this.to = data.SelectedManagerName;
-      } if (this.toggle) {
+      }
+      if (this.toggle) {
         this.to = data.ToGeha;
       }
     },
@@ -890,6 +962,17 @@ export default {
       this.$fire({
         title: "تم التسجيل ",
         text: "تم تسجيل طلب إرسال أصل بنجاح",
+        type: "success",
+        confirmButtonText: "إغلاق",
+      }).then((r) => {
+        console.log(r.value);
+      });
+    },
+
+    showAlterDeletionSuccessMessage() {
+      this.$fire({
+        title: "تم الحذف ",
+        text: "تم حذف المعاملة بنجاح",
         type: "success",
         confirmButtonText: "إغلاق",
       }).then((r) => {

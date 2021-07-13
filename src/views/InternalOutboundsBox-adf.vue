@@ -342,7 +342,7 @@ export default {
     },
     navigate(item) {
       this.$router.push({
-        name: "viewCorrespondence", //use name for router push
+        name: "viewOutboundCorrespondence", //use name for router push
         params: { data: item },
       });
     },

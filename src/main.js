@@ -24,6 +24,7 @@ import homepage from './views/Homepage-adf';
 import alter from './views/alter';
 import permissions from './views/Permissions' ;
 import store from "./store/store";
+import viewOutboundCorrespondence from './views/viewOutboundCorrespondence'
 
 
 
@@ -77,6 +78,11 @@ const routes = [
     path: '/viewCorrespondence',
     name: 'viewCorrespondence',
     component: viewCorrespondence,
+  },
+  {
+    path: '/viewOutboundCorrespondence',
+    name: 'viewOutboundCorrespondence',
+    component: viewOutboundCorrespondence,
   },
   {
     path: '/inboundbox',
