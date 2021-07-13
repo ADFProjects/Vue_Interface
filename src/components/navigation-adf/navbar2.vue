@@ -156,41 +156,6 @@
                     </h6>
                   </v-col>
                 </v-col>
-                <!-- ------------------------------------------------------ -->
-                <!-- <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
-                  class="subheading font-weight-bold text-center my-14"
-                  style="font-size: 16px"
-                  @click="reports('Inbox')"
-                >
-                  <v-img
-                    id="rowCols"
-                    src="~@/assets/Offices-adf.png"
-                    alt="بيان صادر - الفروع والمكاتب والمؤسسات"
-                    style="
-                      border-radius: 29px;
-                      border-top-left-radius: 45px;
-                      border-top-right-radius: 45px;
-                     right:90px;
-                    "
-                    max-height="90"
-                    max-width="90"
-                  ></v-img>
-                  <h6
-                    id="rowCols"
-                    class="my-7"
-                    style="color: #4d4d4d; font-weight: bold;"
-                  >
-                    بيان بالبريد الصادر
-                    <br />
-                    <h6 id="rowCols" style="color:#b37700;" class="my-2">
-                      صندوق البريد
-                    </h6>
-                  </h6>
-                </v-col> -->
-                <!-- ------------------------------------------------------ -->
                 <v-col
                   cols="12"
                   sm="6"
@@ -363,50 +328,50 @@ export default {
                {
           name: "الصلاحيات",
           link: "/permissions",
-          permission: ["9"],
+          permission: 9,
           icon: "mdi-view-dashboard",
         },
         {
           name: "الإحصائيات",
           link: "/homepage",
-          permission: [],
+          permission: -1,
           icon: "mdi-view-dashboard",
         },
         {
           name: "صندوق الصادر العام",
           link: "/publicOutboundbox",
-          permission: ["11S"],
+          permission: 2,
           icon: "mdi-folder",
         },
                 {
           name: "صندوق الصادر الداخلي",
           link: "/internalOutboundbox",
-          permission: ["11S"],
+          permission: 2,
           icon: "mdi-folder",
         },
 
         {
           name: "صندوق الوارد",
           link: "/inboundbox",
-          permission: ["10S"],
+          permission: 1,
           icon: "mdi-folder",
         },
         {
           name: "إضافة صادر",
           link: "/outbound",
-          permission: ["11A"],
+          permission: 2,
           icon: "mdi-email",
         },
         {
           name: "إضافة وارد",
           link: "/inbound",
-          permission: ["10A"],
+          permission: 1,
           icon: "mdi-email",
         },
         {
           name: "استعـلام",
           link: "/inquire",
-          permission: ["13S", "12S"],
+          permission: [3,4],
           icon: "mdi-help-box",
         },
       ],

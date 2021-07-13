@@ -23,7 +23,7 @@ import saudipostreportManualDelivery from './views/OutBoundReportsManualDelivery
 import homepage from './views/Homepage-adf';
 import alter from './views/alter';
 import permissions from './views/Permissions' ;
-import store from "./store/store";
+import {store} from "./store/store";
 import viewOutboundCorrespondence from './views/viewOutboundCorrespondence'
 
 

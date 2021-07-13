@@ -491,26 +491,32 @@
                 </v-col>
               </v-row>
             </v-container>
-            <v-container v-show="false">
-              <div id="bc">
-                <div style="width: 100%">
-                  <div
-                    class="d-flex justify-center"
-                    style="display: table; margin: 0 auto"
-                  >
-                    <barcode
-                      v-bind:value="barcodeValue"
-                      width="1"
-                      height="30"
-                      :displayValue="false"
-                      fontSize="10"
+             <v-container v-show="false">
+                <div id="bc">
+                  <div style="width: 100%">
+                    <div
+                      class="d-flex justify-center"
+                      style="display: table; margin: 0 auto"
                     >
-                      فشل تحميل الباركود
-                    </barcode>
+                      <barcode
+                        v-bind:value="barcodeValue"
+                        width="1"
+                        height="30"
+                        :displayValue="false"
+                        fontSize="10"
+                      >
+                        فشل تحميل الباركود
+                      </barcode>
+                      <div style="font-size: 15px; direction: rtl">
+                        {{ dateBc.substr(0, 10) }}
+                      </div>
+                      <div style="font-size: 15px; direction: rtl">
+                        عدد المرفقات: {{ filsUrls.length }}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </v-container>
+              </v-container>
             <v-container class="d-flex justify-center">
               <v-row v-show="!toggleInbound">
                 <v-col>
@@ -662,6 +668,7 @@ export default {
   data: function () {
     return {
       barcodeValue: "",
+      dateBc: new Date().toLocaleString(),
       sendO: "",
       resendto: "",
       id: "",
