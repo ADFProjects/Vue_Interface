@@ -5,7 +5,7 @@
         <v-container fluid>
           <!-- <v-container fluid> -->
           <v-app-bar
-              elevation="20"
+            elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
@@ -25,10 +25,25 @@
               <span class="my-application">الإستعلام عن المعاملة</span>
             </v-tooltip>
 
+            <div>
+              <p
+                class="my-10 font-weight-medium my-application"
+                style="color: #e6e6e6; margin: 15px; margin-left: 8px"
+              >
+                إستعلام
+              </p>
+            </div>
+
+            <p
+              class="my-10 font-weight-medium my-application"
+              style="opacity: 0.6 !important; padding-top: 1px"
+            >
+              المعاملات
+            </p>
+
             <v-tooltip bottom>
               <template #activator="{ on }">
                 <v-text-field
-
                   v-on="on"
                   v-model="search"
                   clearable
@@ -38,10 +53,10 @@
                   prepend-inner-icon="mdi-magnify"
                   label="البحث"
                   class="mx-4 my-application"
-                 style="font-size: 16px; font-weight: bold; width: 420px"
+                  style="font-size: 16px; font-weight: bold; width: 420px"
                 ></v-text-field>
               </template>
-               <span class="my-application"
+              <span class="my-application"
                 >البحث بإستخدام جميع خانات المعاملة</span
               >
             </v-tooltip>
@@ -55,7 +70,7 @@
                 hide-details
                 :items="keys"
                 prepend-inner-icon="mdi-magnify"
-                style="font-weight: bold; font-size: 16px"
+                style="font-weight: bold; font-size: 16px; width: 1000px"
                 label="فزر باستخدام"
                 class="my-application"
               ></v-select>
@@ -74,7 +89,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
-                  <span class="my-application">ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأحدث إلى الأقدم</span
+                  >
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on }">
@@ -88,7 +105,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
-                  <span class="my-application">ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأقدم إلى الأحدث</span
+                  >
                 </v-tooltip>
               </v-btn-toggle>
             </template>
@@ -96,18 +115,20 @@
 
           <v-data-iterator
             style="font-weight: bold; color: #4d4d4d"
-            :items="items"
+            :items="keys"
             :items-per-page.sync="itemsPerPage"
             :page.sync="page"
             :search="search"
             sort-by="IncidentNumber"
             :sort-desc="sortDesc"
-            class="elevation-10 my-application"
+            class="elevation-5 my-application"
             :footer-props="{
               itemsPerPageOptions: [5, 10, 15, 25],
-              pageText: '',
+
               'items-per-page-all-text': 'الكل',
               'items-per-page-text': 'عدد المعاملات في الصفحة:',
+              showFirstLastPage: true,
+              pageText: 'من {0}-{1} إلى {2}',
             }"
           >
             <template v-slot:no-data>
@@ -121,9 +142,9 @@
                 elevation="6"
                 style="top: 20px; padding-top: 25px; color: #595959"
               >
-              <span class=" my-application">
-                الصندوق فارغ، لا يوجد معاملات لعرضها هنا.
-              </span>
+                <span class="my-application">
+                  الصندوق فارغ، لا يوجد معاملات لعرضها هنا.
+                </span>
               </v-alert>
             </template>
 
@@ -136,15 +157,15 @@
               type="error"
               elevation="6"
               style="
-                   text-align: center;
+                text-align: center;
                 top: 20px;
                 padding-top: 25px;
                 color: #595959;
-                  "
+              "
             >
-            <span class="my-application">
-              بحثك عن "{{ search }}" لم يعثر على نتائج.
-            </span>
+              <span class="my-application">
+                بحثك عن "{{ search }}" لم يعثر على نتائج.
+              </span>
             </v-alert>
             <!--  probs has been removed -->
             <template v-slot:default>
@@ -161,13 +182,16 @@
                   <v-card
                     @click="searchbyid(item.ID)"
                     class="elevation-5 flex d-flex flex-column my-application"
-                    style="border-radius: 10px;"
+                    style="border-radius: 10px"
                   >
                     <v-card-title
                       style="background-color: #f2f2f2"
                       class="subheading font-weight-bold my-application"
                     >
-                      <span  style="padding-left: 10px; font-size: 16px" class="my-application">
+                      <span
+                        style="padding-left: 10px; font-size: 16px"
+                        class="my-application"
+                      >
                         رقم المعاملة |
                       </span>
                       <span
@@ -183,7 +207,8 @@
                     <div class="body-1 my-application">
                       <v-list dense>
                         <v-list-item v-for="key in keys" :key="key.text">
-                          <v-list-item-content class="my-application"
+                          <v-list-item-content
+                            class="my-application"
                             :class="{
                               'light-green lighten-5': sortBy === key.text,
                             }"
@@ -205,16 +230,18 @@
                                 v-on="on"
                                 class="truncate align-end my-application"
                                 :class="{
-                                  'light-green lighten-5 my-application': sortBy === key.text,
+                                  'light-green lighten-5 my-application':
+                                    sortBy === key.text,
                                 }"
-                                 style="font-size: 12px"
+                                style="font-size: 12px"
                               >
                                 {{ item[key.id].substr(0, 10) }}
                               </v-list-item-content>
                             </template>
-                            <span class="text-truncate ml-1 mr-1 my-application">{{
-                              item[key.id]
-                            }}</span>
+                            <span
+                              class="text-truncate ml-1 mr-1 my-application"
+                              >{{ item[key.id] }}</span
+                            >
                           </v-tooltip>
                         </v-list-item>
                       </v-list>
@@ -259,7 +286,7 @@ export default {
       keys: [
         {
           text: "التاريخ",
-          id: "OutboundGDate",
+          id: "OutboundHDate",
         },
         {
           text: "الموضوع",
@@ -277,110 +304,6 @@ export default {
           text: "نوع الخطاب",
           id: "txt6",
         },
-
-      ],
-      items: [
-        {
-          name: "رقم المعاملة #1235",
-
-          التاريخ: "22/22/2021",
-          الموضوع: "خطاب وارد من جهة خارجية",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "vvvvvر..",
-        },
-        {
-          name: "رقم المعاملة #1236",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1237",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1234",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1238",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1239",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1210",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1211",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1212",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
-        {
-          name: "رقم المعاملة #1213",
-          التاريخ: "01/02/2021",
-          الموضوع: "خطاب وارد داخلي",
-          "درجة الأهمية": "مهم",
-          "درجة السرية": "سري جدا",
-          "نوع الخطاب": "شكوى",
-          المرفقات: 3,
-          الملاحظات: "يجب توقيع المدير..",
-        },
       ],
     };
   },
@@ -394,7 +317,7 @@ export default {
     searchbyid(id) {
       console.log(id);
       Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID="+id)
+        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCms?ReqID=" + id)
         .then((resp) => {
           this.navigate(resp.data);
         });
@@ -432,7 +355,6 @@ export default {
 </style>
 
 <style lang="css" scoped>
-
 .v-text-field >>> label {
   font-family: "Almarai", sans-serif !important;
   font-size: 0.9em;

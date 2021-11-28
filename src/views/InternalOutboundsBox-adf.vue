@@ -13,11 +13,11 @@
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
-                <loading
+                <!-- <loading
                   :active="isLoading"
                   :is-full-page="fullPage"
                   :loader="waitingLoader"
-                />
+                /> -->
                 <v-img
                   v-on="on"
                   src="~@/assets/OutboundsBox-adf.png"
@@ -98,13 +98,12 @@
               :items-per-page="10"
               sort-by="IncidentNumber"
               :sort-desc="sortDesc"
-              class="elevation-10 my-application"
+              class="my-application"
               :footer-props="{
                 itemsPerPageOptions: [5, 10, 15, 25],
-                pageText: '',
                 pageText: 'من {0}-{1} إلى {2}',
                 showFirstLastPage: true,
-                'items-per-page-text': 'عدد المعاملات الصادرة في الصفحة:',
+                'items-per-page-text': 'عدد المعاملات في الصفحة:',
                 //'items-per-page-all-text': 'الكل',
               }"
             >
@@ -130,7 +129,7 @@
                     </td>
                   </template>
 
-                  <v-tooltip bottom :disabled="item.IOboundSubject.length < 30">
+                  <v-tooltip bottom :disabled="item.IOboundSubject.length < 20">
                     <template #activator="{ on }">
                       <td id="tdAll" v-on="on" class="truncate my-application">
                         {{ item.IOboundSubject }}
@@ -141,16 +140,12 @@
                     }}</span>
                   </v-tooltip>
 
-                  <v-tooltip bottom :disabled="item.GehaName.length < 35">
-                    <template #activator="{ on }">
-                      <td id="tdAll" v-on="on" class="truncate my-application">
-                        {{ item.GehaName }}
-                      </td>
-                    </template>
-                    <span class="text-truncate ml-1 mr-1 my-application">{{
-                      item.GehaName
-                    }}</span>
-                  </v-tooltip>
+                  <td id="tdAll" class="truncate my-application">
+                    {{ item.FromGeha }}
+                  </td>
+                  <td id="tdAll" class="truncate my-application">
+                    {{ item.SelectedManagerName }}
+                  </td>
                   <td id="tdAll" class="my-application">
                     {{ item.RequestDate_Ar }}
                   </td>
@@ -187,7 +182,7 @@
                   :options="options"
                   @update:options="updateOptions"
                   :items-per-page-options="[5, 10, 15, 25]"
-                  items-per-page-text="عدد المعاملات الصادرة في الصفحة:"
+                  items-per-page-text="عدد المعاملات في الصفحة:"
                   pageText="من {0}-{1} إلى {2}"
                   showFirstLastPage
                 />
@@ -255,7 +250,9 @@ axios.defaults.headers.post["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST reque
 export default {
   data() {
     return {
-      isLoading: true,
+      // isLoading: true,
+      // fullPage: true,
+      // waitingLoader: "bars",
       overlay: true,
       AdfOutboundsBox: [],
       MurOutboundsBox: [],
@@ -284,14 +281,14 @@ export default {
         pageSize: 100,
         pageindex: 0,
       },
-      testMurOutboundsBox: {
-        SourceType: 4, //        MursalatIn = 1,        MursalatOut = 2,        AdfIn = 3,        AdfOut = 4,
-        RequesterDept: "",
-        RequesterUser: "", //"mohamed.fawzy"
-        SenderType: "", // GOVT , البريد السعودي ؟؟؟
-        pageindex: 0,
-        pageSize: 100,
-      },
+      // testMurOutboundsBox: {
+      //   SourceType: 4, //        MursalatIn = 1,        MursalatOut = 2,        AdfIn = 3,        AdfOut = 4,
+      //   RequesterDept: "",
+      //   RequesterUser: "", //"mohamed.fawzy"
+      //   SenderType: "", // GOVT , البريد السعودي ؟؟؟
+      //   pageindex: 0,
+      //   pageSize: 100,
+      // },
 
       headers: [
         {
@@ -303,7 +300,8 @@ export default {
 
         { text: "حالة المعاملة", value: "ResponseStatusName", align: "center" },
         { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
-        { text: "الإدارة/الجهة الصادرة", value: "GehaName", align: "center" },
+        { text: "الجهة الواردة", value: "FromGeha", align: "center" },
+        { text: "الإدارة الصادرة", value: "SelectedManagerName", align: "center" },
         { text: "تاريخ المعاملة", value: "RequestDate_Ar", align: "center" },
       ],
     };
@@ -318,20 +316,22 @@ export default {
         this.AdfOutboundsBox = resp.data;
         this.allOutboundsBox = this.allOutboundsBox.concat(resp.data);
         console.log(this.allOutboundsBox.length);
-      });
-
-    Vue.axios
-      .post(
-        "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
-        this.testMurOutboundsBox
-      )
-      .then((resp) => {
-        this.MurOutboundsBox = resp.data;
-        this.allOutboundsBox = this.allOutboundsBox.concat(resp.data);
-        console.log(this.allOutboundsBox.length);
-        this.isLoading = !this.isLoading;
+        // this.isLoading = !this.isLoading;
         this.overlay = !this.overlay;
       });
+
+    // Vue.axios
+    //   .post(
+    //     "https://emp.adf.gov.sa/cms7514254/api/cms/Search",
+    //     this.testMurOutboundsBox
+    //   )
+    //   .then((resp) => {
+    //     this.MurOutboundsBox = resp.data;
+    //     this.allOutboundsBox = this.allOutboundsBox.concat(resp.data);
+    //     console.log(this.allOutboundsBox.length);
+    //     this.isLoading = !this.isLoading;
+    //     this.overlay = !this.overlay;
+    //   });
   },
 
   methods: {
@@ -341,8 +341,13 @@ export default {
       // this.viewDetails(event);
     },
     navigate(item) {
+      // 1 outbound
+      // 2 inner outbound
+      // 3 inbound
+
+      item.viewType = 2;
       this.$router.push({
-        name: "viewOutboundCorrespondence", //use name for router push
+        name: "viewCorrespondence", //use name for router push
         params: { data: item },
       });
     },
@@ -389,6 +394,7 @@ export default {
   font-size: 16px !important;
   background-color: #f2f2f2;
   font-weight: bold;
+  font-family: "Almarai", sans-serif !important;
 }
 </style>
 
@@ -405,7 +411,7 @@ export default {
 }
 ::v-deep td {
   color: #595959;
-  font-size: 1px;
+  font-size: 12px;
 }
 .v-text-field >>> label {
   font-family: "Almarai", sans-serif !important;

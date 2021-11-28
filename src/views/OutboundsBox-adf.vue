@@ -4,7 +4,7 @@
       <v-main>
         <v-container>
           <v-app-bar
-            style="border-radius: 4px;opacity: 0.9 !important;"
+            style="border-radius: 4px; opacity: 0.9 !important"
             width="1160"
             color="#28714e"
             dark
@@ -25,7 +25,7 @@
                   max-width="60"
                 ></v-img>
               </template>
-              <span class="my-application">صندوق البريد الصادر</span>
+              <span class="my-application">صندوق البريداااا الصادر</span>
             </v-tooltip>
 
             <v-tooltip bottom>
@@ -43,7 +43,9 @@
                   style="font-size: 16px; font-weight: bold"
                 ></v-text-field>
               </template>
-              <span class="my-application">البحث بإستخدام جميع خانات المعاملة</span>
+              <span class="my-application"
+                >البحث بإستخدام جميع خانات المعاملة</span
+              >
             </v-tooltip>
 
             <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -60,7 +62,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-down</v-icon>
                     </v-btn>
                   </template>
-                  <span class="my-application">ترتيب المعاملات من الأحدث إلى الأقدم</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأحدث إلى الأقدم</span
+                  >
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on }">
@@ -74,7 +78,9 @@
                       <v-icon style="color: #28714e">mdi-arrow-up</v-icon>
                     </v-btn>
                   </template>
-                  <span class="my-application">ترتيب المعاملات من الأقدم إلى الأحدث</span>
+                  <span class="my-application"
+                    >ترتيب المعاملات من الأقدم إلى الأحدث</span
+                  >
                 </v-tooltip>
               </v-btn-toggle>
             </template>
@@ -91,7 +97,7 @@
               :items-per-page="10"
               sort-by="IncidentNumber"
               :sort-desc="sortDesc"
-              class="elevation-2 my-application"
+              class="my-application"
               :footer-props="{
                 itemsPerPageOptions: [5, 10, 15, 25],
                 pageText: '',
@@ -102,11 +108,22 @@
               }"
             >
               <template v-slot:item="{ item }" class="my-application">
-                <tr id="rowCols" @click="searchbyid(item)" class="text-center my-application">
-                  <td class="my-application" id="tdAll" >{{ item.IncidentNumber }}</td>
+                <tr
+                  id="rowCols"
+                  @click="searchbyid(item)"
+                  class="text-center my-application"
+                >
+                  <td class="my-application" id="tdAll">
+                    {{ item.IncidentNumber }}
+                  </td>
                   <template class="my-application" id="tdAll">
                     <td class="my-application" id="tdAll">
-                      <v-chip id="tdAll" :color="getColor(item.ResponseStatusName)" dark class="my-application">
+                      <v-chip
+                        id="tdAll"
+                        :color="getColor(item.ResponseStatusName)"
+                        dark
+                        class="my-application"
+                      >
                         {{ item.ResponseStatusName }}
                       </v-chip>
                     </td>
@@ -125,19 +142,23 @@
 
                   <v-tooltip bottom :disabled="item.ToGeha.length < 35">
                     <template #activator="{ on }">
-                      <td id="tdAll" v-on="on" class="truncate my-application">{{ item.ToGeha }}</td>
+                      <td id="tdAll" v-on="on" class="truncate my-application">
+                        {{ item.ToGeha }}
+                      </td>
                     </template>
                     <span class="text-truncate ml-1 mr-1 my-application">{{
                       item.ToGeha
                     }}</span>
                   </v-tooltip>
-                  <td id="tdAll" class="my-application">{{ item.RequestDate_Ar }}</td>
+                  <td id="tdAll" class="my-application">
+                    {{ item.RequestDate_Ar }}
+                  </td>
                 </tr>
               </template>
 
               <template v-slot:no-data>
                 <v-alert
-                id="tdAll"
+                  id="tdAll"
                   :value="true"
                   class="my-application"
                   color="#339966"
@@ -171,7 +192,7 @@
               </template>
 
               <v-alert
-              id="tdAll"
+                id="tdAll"
                 slot="no-results"
                 :value="true"
                 border="top"
@@ -307,6 +328,10 @@ export default {
       // this.viewDetails(event);
     },
     navigate(item) {
+       // 1 outbound
+      // 2 inner outbound
+      // 3 inbound
+      item.viewType = 1;
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
         params: { data: item },

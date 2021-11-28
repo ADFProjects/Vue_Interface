@@ -1,171 +1,80 @@
-import axios from "axios";
-import VueAxios from "vue-axios";
-import Vue from 'vue';
-//then you use Vuex
-Vue.use(VueAxios, axios);
-
-
-// API header
-
-axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
-axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
-axios.defaults.headers.common["Authorization"] =
-    "Bearer " + localStorage.getItem("token");
-//methods to call each the apis and assaign data to each list in savedSingleUserConnections
-// saveCurrentCorrespondence to check if empty or not 
-const saveCurrentCorrespondence = () => {
-
-
-
-    // state.currentCorrespondence = correspondence;
+export const ADD_IMPORTANCE_LIST = (state, list) => {
+    state.importanceList = list;
+    state.importanceListFlag = true;
 };
-const saveSearchedList = (state, sea) => { state.searchedList = sea; };
+export const ADD_GEHAT_LIST = (state, list) => {
+    state.gehatList = list;
+    state.gehatListFlag = true;
+};
+export const ADD_MURASLAT_GEHAT_LIST = (state, list) => {
+    state.muraslatGehatList = list;
+    state.muraslatGehatListFlag = true;
+};
+export const ADD_DEP_LIST = (state, list) => {
+    state.depList = list;
+    state.depListFlag = true;
+};
+export const ADD_CONFIDENTIALITY_LIST = (state, list) => {
+    state.confidentialityList = list;
+    state.confidentialityListFlag = true;
+};
+export const ADD_CATEGORY_LIST = (state, list) => {
+    state.categoryList = list;
+    state.categoryListFlag = true;
+};
+export const ADD_TYPES_LIST = (state, list) => {
+    state.typesList = list;
+    state.typesListFlag = true;
+};
+export const ADD_OBJECTIVE_LIST = (state, list) => {
+    state.objectiveList = list;
+    state.objectiveListFlag = true;
+};
+export const ADD_ATTACHMENT_TYPE_LIST = (state, list) => {
+    state.attachmentTypeList = list;
+    state.attachmentTypeListFlag = true;
+};
+
+export const ADD_BRANCHES_LIST = (state, list) => {
+    state.branchesList = list;
+    state.branchesListFlag = true;
+};
+//const saveCurrentCorrespondence = () => {
+
+// state.currentCorrespondence = correspondence;
+
+//};
+//const saveSearchedList = (state, sea) => { state.searchedList = sea; };
 
 // call the api to save data
-const saveDepList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetDept?DeptType=1")
-        .then((resp) => {
-            state.savedData.depList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveDepList _______Error: " +
-                error
-            );
-        });
 
-};
-const saveGehatList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=80")
-        .then((resp) => {
-            state.savedData.gehatList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveGehatList _______Error: " +
-                error
-            );
-        });
-};
-const saveImportanceList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=4")
-        .then((resp) => {
-            state.savedData.importanceList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveImportanceList _______Error: " +
-                error
-            );
-        });
-};
-const saveConfidentialityList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=3")
-        .then((resp) => {
-            state.savedData.confidentialityList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveConfidentialityList _______Error: " +
-                error
-            );
-        });
-};
-const saveCategoryList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=2")
-        .then((resp) => {
-            state.savedData.categoryList = resp.data; // copy or origin
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveCategoryList _______Error: " +
-                error
-            );
-        });
-};
-const saveTypesList = (state) => {
-
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=11")
-        .then((resp) => {
-            state.savedData.typesList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveTypesList _______Error: " +
-                error
-            );
-        });
-};
-const saveObjectiveList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=1")
-        .then((resp) => {
-            state.savedData.objectiveList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveObjectiveList _______Error: " +
-                error
-            );
-        });
-};
-const saveAttachmentTypeList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=6")
-        .then((resp) => {
-            state.savedData.attachmentTypeList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveAttachmentTypeList _______Error: " +
-                error
-            );
-        });
-};
-const saveAttachmentCategotyList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=12")
-        .then((resp) => {
-            state.savedData.attachmentCategotyList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveAttachmentCategotyList _______Error: " +
-                error
-            );
-        });
-};
-const saveBranchesList = (state) => {
-    Vue.axios
-        .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetBranches")
-        .then((resp) => {
-            state.savedData.branchesList = resp.data;
-        }).catch((error) => {
-            console.log(
-                "Error ===>>> Store.js ______ saveBranchesList _______Error: " +
-                error
-            );
-        });
-};
 const setPermissions = (state, payload) => {
     state.permissions = payload;
     console.log("yaay");
     console.log(payload);
 };
-
+// By Abdullah 15-08-2021 -------- START
+const setPath = (state, payload) => {
+    state.path = payload;
+};
+const setName = (state, payload) => {
+    state.name = payload;
+    console.log("PayLoad Name: " + state.name)
+};
+// By Abdullah 15-08-2021 -------- END
 export default {
-    saveBranchesList,
-    saveAttachmentCategotyList,
-    saveAttachmentTypeList,
-    saveObjectiveList,
-    saveTypesList,
-    saveCategoryList,
-    saveConfidentialityList,
-    saveImportanceList,
-    saveGehatList,
-    saveDepList,
-    saveSearchedList,
-    saveCurrentCorrespondence,
+    ADD_BRANCHES_LIST,
+    ADD_ATTACHMENT_TYPE_LIST,
+    ADD_OBJECTIVE_LIST,
+    ADD_TYPES_LIST,
+    ADD_CONFIDENTIALITY_LIST,
+    ADD_IMPORTANCE_LIST,
+    ADD_GEHAT_LIST,
+    ADD_DEP_LIST,
+    ADD_CATEGORY_LIST,
+    //saveSearchedList,
+    //saveCurrentCorrespondence,
     setPermissions,
-
-
-
-
+    setPath,// By Abdullah 15-08-2021 -------- 
+    setName,// By Abdullah 15-08-2021 -------- 
 };

@@ -8,7 +8,55 @@
         class="d-flex justify-center addBackground"
       >
         <v-layout row wrap align-center class="d-flex justify-center">
-          <v-flex class="d-flex justify-center">
+          <v-flex>
+            <div>
+              <template>
+                <div class="systemManual my-3">
+                  <v-row align="center" justify="center">
+                    <v-col cols="12">
+                      <v-hover v-slot="{ hover }">
+                        <v-card
+                          :elevation="hover ? 12 : 2"
+                          class="mx-auto"
+                          height="100"
+                          width="450"
+                          style="
+                            background-color: #26734d;
+                            opacity: 0.8 !important;
+                          "
+                        >
+                          <v-responsive aspect-ratio="2">
+                            <v-card-text
+                              class="my-application my-5 text-center"
+                              style="color: white; font-size: 19px"
+                            >
+                              <span class="my-application">
+                                للإطلاع على دليل الإستخدام لنظام الاتصالات
+                                الإدارية
+                              </span>
+                            </v-card-text>
+                          </v-responsive>
+                        </v-card>
+                      </v-hover>
+                    </v-col>
+                  </v-row>
+                </div>
+                <div>
+                  <v-btn
+                    rounded
+                    color="#3d7f5f"
+                    dark
+                    class="divBtn"
+                    outlined
+                    href="/files/SystemGuide.pdf"
+                    download
+                    style="text-decoration: none"
+                  >
+                    <span class="my-application"> اضغط هنا </span>
+                  </v-btn>
+                </div>
+              </template>
+            </div>
             <v-row align="center" justify="center">
               <!-- --------------------------------------- -->
               <v-col cols="12" sm="6" class="my-5">
@@ -39,7 +87,12 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold my-application"
+                        class="
+                          text-center
+                          subheading
+                          font-weight-bold
+                          my-application
+                        "
                         style="color: #3d7f5f; font-size: 15px"
                       >
                         صادر عام
@@ -85,7 +138,12 @@
                       </v-radio-group>
                       <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 my-application"
+                        class="
+                          subheading
+                          font-weight-bold
+                          text-center
+                          my-2 my-application
+                        "
                         style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgOutBoundAdf }}
@@ -95,7 +153,7 @@
                 </v-hover>
               </v-col>
               <!-- --------------------------------------- -->
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" class="publicAndMur">
                 <v-hover v-slot="{ hover }" open-delay="200">
                   <v-card
                     class="mt-4 mx-auto"
@@ -123,7 +181,12 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold my-application"
+                        class="
+                          text-center
+                          subheading
+                          font-weight-bold
+                          my-application
+                        "
                         style="color: #3d7f5f; font-size: 15px"
                       >
                         وارد عام
@@ -167,7 +230,12 @@
 
                       <v-divider></v-divider>
                       <div
-                        class="subheading text-center my-2 my-application font-weight-bold"
+                        class="
+                          subheading
+                          text-center
+                          my-2 my-application
+                          font-weight-bold
+                        "
                         style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgInBoundAdf }}
@@ -206,7 +274,12 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold font-weight-bold my-application"
+                        class="
+                          text-center
+                          subheading
+                          font-weight-bold font-weight-bold
+                          my-application
+                        "
                         style="color: #3d7f5f; font-size: 15px"
                       >
                         وارد نظام مراسلات
@@ -250,7 +323,13 @@
 
                       <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 my-application font-weight-bold"
+                        class="
+                          subheading
+                          font-weight-bold
+                          text-center
+                          my-2 my-application
+                          font-weight-bold
+                        "
                         style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgInBoundMur }}
@@ -261,7 +340,7 @@
               </v-col>
 
               <!-- --------------------------------------- -->
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" class="publicAndMur">
                 <v-hover v-slot="{ hover }" open-delay="200">
                   <v-card
                     class="mt-4 mx-auto"
@@ -289,7 +368,12 @@
 
                     <v-card-text class="pt-0">
                       <div
-                        class="text-center subheading font-weight-bold my-application"
+                        class="
+                          text-center
+                          subheading
+                          font-weight-bold
+                          my-application
+                        "
                         style="color: #3d7f5f; font-size: 15px"
                       >
                         صادر نظام مراسلات
@@ -336,7 +420,13 @@
 
                       <v-divider></v-divider>
                       <div
-                        class="subheading font-weight-bold text-center my-2 my-application font-weight-bold"
+                        class="
+                          subheading
+                          font-weight-bold
+                          text-center
+                          my-2 my-application
+                          font-weight-bold
+                        "
                         style="color: #b37700; font-size: 14px"
                       >
                         عدد المعاملات {{ MsgOutBoundMur }}
@@ -542,6 +632,19 @@ export default {
 }
 .radioGrups {
   font-size: 14px;
+}
+.divBtn {
+  justify-content: center;
+  left: 340px;
+}
+.systemManual {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  right: 100px;
+}
+.publicAndMur {
+  right: 200px;
 }
 </style>
 

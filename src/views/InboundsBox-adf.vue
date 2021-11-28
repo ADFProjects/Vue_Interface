@@ -3,11 +3,11 @@
     <v-app id="inspire" class="my-application addBackground">
       <v-main class="my-application">
         <v-container class="my-application">
-          <loading
+          <!-- <loading
             :active="isLoading"
             :is-full-page="fullPage"
             :loader="waitingLoader"
-          />
+          /> -->
           <v-app-bar
             elevation="20"
             style="border-radius: 4px; opacity: 0.9 !important"
@@ -16,7 +16,6 @@
             dark
             class="mb-1 my-application"
           >
-          
             <v-tooltip bottom>
               <template #activator="{ on }">
                 <v-img
@@ -99,7 +98,7 @@
               :items-per-page="10"
               sort-by="IncidentNumber"
               :sort-desc="sortDesc"
-              class="elevation-10 my-application"
+              class="my-application"
               :footer-props="{
                 itemsPerPageOptions: [5, 10, 15, 25],
                 'items-per-page-text': 'عدد المعاملات الواردة في الصفحة:',
@@ -190,10 +189,10 @@
                   elevation="6"
                   height="70"
                   style="
-                      margin-top: 20px;
-                      padding-left: 40px;
-                      padding-top: 25px;
-                      color: #595959;
+                    margin-top: 20px;
+                    padding-left: 40px;
+                    padding-top: 25px;
+                    color: #595959;
                   "
                 >
                   <span class="my-application">
@@ -223,11 +222,7 @@
                 type="error"
                 elevation="6"
                 height="70"
-                style="
-                   color: #595959;
-                    margin-top: 15px;
-                    padding-top: 25px;
-                "
+                style="color: #595959; margin-top: 15px; padding-top: 25px"
               >
                 <span class="my-application">
                   بحثك عن " {{ search }} " لم يعثر على نتائج.
@@ -251,7 +246,6 @@
       </v-main>
     </v-app>
   </div>
-  <!-- </v-toolbar> -->
 </template>
 <script src="https://unpkg.com/v-tooltip"></script>
 <script src="js/jsPDF-1.5.0/dist/jspdf.debug.js"></script>
@@ -280,7 +274,9 @@ axios.defaults.headers.post["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST reque
 export default {
   data() {
     return {
-      isLoading: true,
+      // isLoading: true,
+      // fullPage: true,
+      // waitingLoader: "bars",
       overlay: true,
       AdfInboundsBox: [],
       MurInboundsBox: [],
@@ -395,13 +391,19 @@ export default {
         this.MurInboundsBox = resp.data;
         this.allInboundsBox = this.allInboundsBox.concat(resp.data);
         console.log(this.allInboundsBox.length);
-        this.isLoading = !this.isLoading;
+        // this.isLoading = !this.isLoading;
         this.overlay = !this.overlay;
       });
   },
 
   methods: {
     navigate(item) {
+       // 1 outbound
+      // 2 inner outbound
+      // 3 inbound
+
+      item.viewType = 3;
+      
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
         params: { data: item },
@@ -438,7 +440,7 @@ export default {
 
 <style lang="scss">
 #tdAll {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Almarai", sans-serif !important;
 }
 #rowCols:hover {
@@ -455,8 +457,7 @@ export default {
 </style>
 
 <style lang="css" scoped>
-::v-deep th .my-application {
-  color: rgb(36, 224, 193) !important;
+::v-deep th {
   font-weight: bold !important;
   opacity: 0.8 !important;
   letter-spacing: 0.3px;

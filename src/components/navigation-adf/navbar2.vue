@@ -1,33 +1,91 @@
 <template>
   <div>
-    <div class="appBar">
-      <div
-        class="innerAppBar"
-        :style="{ 'margin-right': drawer ? '256px' : '10px' }"
-      >
-        <div class="d-inline-block ml-5">
-          <tasty-burger-button
-            type="spin"
-            :active="active"
-            size="xs"
-            color="#e6e6e6"
-            active-color="#e6e6e6"
-            v-on:toggle="onToggle"
-          />
-        </div>
-        <div class="d-inline-block ml-4">
-          <router-link to="/homepage" style="text-decoration: none">
-            <img src="@/assets/ADF_LOGO.png" height="56px" width="56px" />
-          </router-link>
-        </div>
-        <div id="fonts" class="d-inline-block ml-4" style="color: #e6e6e6">
-          <h5 class="my-application" style="font-size: 16px">
-            نظام الاتصالات الإدارية
-          </h5>
+    <template>
+      <div class="appBar">
+        <div
+          class="innerAppBar"
+          :style="{ 'margin-right': drawer ? '256px' : '10px' }"
+        >
+          <div class="d-inline-block ml-5">
+            <tasty-burger-button
+              type="spin"
+              :active="active"
+              size="xs"
+              color="#e6e6e6"
+              active-color="#e6e6e6"
+              v-on:toggle="onToggle"
+            />
+          </div>
+
+          <div class="d-inline-block">
+            <!-- <router-link to="/homepage" style="text-decoration: none"> -->
+            <a
+              class="my-application"
+              href="https://emp.adf.gov.sa/cms.aspx"
+              target="_blank"
+              style="color: #e6e6e6; font-size: 15px; text-decoration: none"
+            >
+              <img
+                src="@/assets/ADF_LOGO.png"
+                height="56px"
+                width="65px"
+                style="padding-left: 10px"
+              />
+            </a>
+            <!-- </router-link> -->
+          </div>
+
+          <span
+            class="my-application d-inline-block my-4"
+            style="
+              position: absolute;
+              font-size: 17px;
+              color: #e6e6e6;
+              letter-spacing: 1.5px;
+            "
+          >
+            <a
+              class="my-application"
+              href="https://emp.adf.gov.sa/cms.aspx"
+              target="_blank"
+              style="color: #e6e6e6; font-size: 15px; text-decoration: none"
+            >
+              نظام الاتصالات الإدارية
+            </a>
+          </span>
+
+          <span
+            class="my-application EmpName my-1"
+            :items="posts"
+            style="color: #e6e6e6; position: absolute"
+          >
+            <!-- {{ posts.EmployeeName }} -->
+            {{ this.$store.state.name }}
+            <!-- By Abdullah 15-08-2021 -------- -->
+
+            <v-icon style="float: right; color: #e6e6e6; padding-left: 20px"
+              >mdi-account</v-icon
+            >
+          </span>
+
+          <span class="my-application innerGate my-1">
+            <a
+              class="my-application"
+              href="https://portal.adf.gov.sa/AR/pages/default.aspx"
+              target="_blank"
+              style="color: #e6e6e6; font-size: 15px; text-decoration: none"
+            >
+              البوابة الداخلية
+            </a>
+            <v-icon style="float: right; color: #e6e6e6; padding-left: 20px"
+              >mdi-home</v-icon
+            >
+          </span>
         </div>
       </div>
-    </div>
+    </template>
     <v-navigation-drawer
+      class="navDrawer"
       v-model="drawer"
       app
       right
@@ -39,32 +97,35 @@
       "
     >
       <v-list>
-        <v-list-item-group v-model="model" active-class="green darken-2">
+        <v-list-item-group v-model="model" active-class="green darken-4">
           <div class="nav-types">
             <div v-for="(item, i) in menuItems" :key="i">
               <router-link
-                :to="permissions(item.permission) ? item.link : '/alter'"
+                :to="
+                  permissions(item.permission) == 'YES' ? item.link : '/alter'
+                "
                 style="text-decoration: none"
               >
+                <!-- <router-link
+                :to="permissions(item.permission) ? item.link : '/alter'"
+                style="text-decoration: none"
+              > -->
                 <v-list-item style="height: 70px">
                   <v-list-item-icon>
                     <v-list-item-title
                       class="my-application"
-                      style="color: #e6e6e6; font-size: 15px; float: center;"
+                      style="color: #e6e6e6; font-size: 15px; float: center"
                     >
                       {{ item.name }}
-                     
-                   
+
                       <v-icon
-                        style="float: right; color: #f2f2f2; padding-left: 20px;"
+                        style="float: right; color: #f2f2f2; padding-left: 20px"
                         >{{ item.icon }}</v-icon
                       >
-                   
                     </v-list-item-title>
                   </v-list-item-icon>
                 </v-list-item>
               </router-link>
-              <hr />
             </div>
 
             <div>
@@ -72,17 +133,60 @@
                 <v-list-item-icon>
                   <v-list-item-title
                     class="my-application"
-                    style="color: #e6e6e6; font-size: 15px;"
+                    style="color: #e6e6e6; font-size: 15px"
                   >
                     التقاريـر
                     <v-icon
-                      style="float: right; color: #f2f2f2; padding-left: 20px;"
+                      style="float: right; color: #f2f2f2; padding-left: 20px"
+                      >mdi-dialpad</v-icon
+                    >
+                  </v-list-item-title>
+                </v-list-item-icon>
+              </v-list-item>
+            </div>
+            <div>
+              <v-list-item
+                link
+                style="height: 70px; text-decoration: none"
+                href="/files/SystemGuide.pdf"
+                target="_blank"
+              >
+                <v-list-item-icon
+                  href="/files/SystemGuide.pdf"
+                  target="_blank"
+                  style="text-decoration: none"
+                >
+                  <v-list-item-title
+                    class="my-application"
+                    style="
+                      color: #e6e6e6;
+                      font-size: 15px;
+                      text-decoration: none;
+                    "
+                    href="/files/SystemGuide.pdf"
+                  >
+                    <a
+                      class="my-application"
+                      href="/files/SystemGuide.pdf"
+                      download
+                      target="_blank"
+                      style="
+                        color: #e6e6e6;
+                        font-size: 15px;
+                        text-decoration: none;
+                      "
+                    >
+                      دليل النظام</a
+                    >
+
+                    <v-icon
+                      style="float: right; color: #f2f2f2; padding-left: 20px"
                       >mdi-arrow-up-bold-box-outline</v-icon
                     >
                   </v-list-item-title>
                 </v-list-item-icon>
               </v-list-item>
-              <hr />
+              <!-- <hr /> -->
             </div>
           </div>
         </v-list-item-group>
@@ -266,15 +370,17 @@
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
+                class="my-application"
                 style="
-                  font-size: 18px;
+                  font-size: 15px;
                   font-weight: bold;
                   color: #595959;
                   margin-top: 200px;
                 "
                 text
                 @click="dialog = !dialog"
-                >إغلاق</v-btn
+              >
+                <span class="my-application"> إغلاق </span></v-btn
               >
             </v-card-actions>
           </v-card>
@@ -314,22 +420,34 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
+import VueAxios from "vue-axios";
+import axios from "axios";
+
+Vue.use(VueAxios, axios);
+
+axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
+axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + localStorage.getItem("token");
+
 export default {
   data: function () {
     return {
       // Bottom navigation date
+      posts: [],
       date: new Date().toISOString().substr(0, 4),
       dialog: false,
       drawer: true,
       group: null,
       model: 1,
       active: true,
-     menuItems: [
-               {
+      menuItems: [
+        {
           name: "الصلاحيات",
           link: "/permissions",
           permission: 9,
-          icon: "mdi-view-dashboard",
+          icon: "mdi-key",
         },
         {
           name: "الإحصائيات",
@@ -343,7 +461,7 @@ export default {
           permission: 2,
           icon: "mdi-folder",
         },
-                {
+        {
           name: "صندوق الصادر الداخلي",
           link: "/internalOutboundbox",
           permission: 2,
@@ -371,7 +489,7 @@ export default {
         {
           name: "استعـلام",
           link: "/inquire",
-          permission: [3,4],
+          permission: [3, 4],
           icon: "mdi-help-box",
         },
       ],
@@ -383,6 +501,15 @@ export default {
     },
   },
   mounted() {
+    Vue.axios
+      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser")
+      .then((response) => {
+        console.log("username");
+        this.posts = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
   methods: {
     reports(type) {
@@ -404,29 +531,48 @@ export default {
       const [year, month, day] = date.split("-");
       return `${month}/${day}/${year}`;
     },
-    async permissions(p) {
-      var list = [];
-      for (var i = 0; i < p.length; i++) {
-        //if the page without permissions
-        if (p[i].localeCompare("") == 0) {
-          return true;
-        } else if (localStorage.getItem("permissions") == null || localStorage.getItem("permissions").localeCompare("") == 0) {
-          return false;
-        } else if (localStorage.getItem("permissions").search(p[i]) != -1) {
-          list.push(true);
-        } else {
-          // route to denied access
-          list.push(false);
+    // async permissions(p) {
+    //   var list = [];
+    //   for (var i = 0; i < p.length; i++) {
+    //     //if the page without permissions
+    //     if (p[i].localeCompare("") == 0) {
+    //       return true;
+    //     } else if (
+    //       localStorage.getItem("permissions") == null ||
+    //       localStorage.getItem("permissions").localeCompare("") == 0
+    //     ) {
+    //       return false;
+    //     } else if (localStorage.getItem("permissions").search(p[i]) != -1) {
+    //       list.push(true);
+    //     } else {
+    //       // route to denied access
+    //       list.push(false);
+    //     }
+    //   }
+    //   if (list.length > 1) {
+    //     if (!(list[0] || list[1])) {
+    //       return false;
+    //     } else {
+    //       return true;
+    //     }
+    //   } else {
+    //     return list[0];
+    //   }
+    // },
+    permissions(p) {
+      if (this.$store.state.permissions != null) {
+        for (var i = 0; i < this.$store.state.permissions.length; i++) {
+          if (
+            this.$store.state.permissions[i] == p ||
+            p == -1 ||
+            this.$store.state.permissions[i] == p[0] ||
+            this.$store.state.permissions[i] == p[1]
+          ) {
+            console.log(this.$store.state.permissions[i]);
+            return "YES";
+          }
         }
-      }
-      if (list.length > 1) {
-        if (!(list[0] || list[1])) {
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        return list[0];
+        return "NO";
       }
     },
 
@@ -438,6 +584,40 @@ export default {
 </script>
 
 <style>
+.navDrawer {
+  overflow: hidden !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.navDrawer ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.cmsSystem {
+  position: fixed;
+  font-size: 17px;
+  color: white;
+  top: 29px;
+  letter-spacing: 0.5px;
+}
+
+.EmpName {
+  position: fixed;
+  font-size: 15px;
+  color: white;
+  top: 20px;
+  right: 80%;
+  letter-spacing: 0.5px;
+}
+.innerGate {
+  position: absolute;
+  font-size: 15px;
+  color: white;
+  top: 20px;
+  right: 71%;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+}
 .textTop {
   font-size: 15px;
   color: #595959;
@@ -485,8 +665,6 @@ hr {
   cursor: pointer;
 }
 </style>
-
-
 
 <style lang="css" scoped>
 .checkBoxs--text >>> label {

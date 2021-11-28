@@ -13,11 +13,11 @@
           >
             <v-tooltip bottom>
               <template #activator="{ on }">
-                <loading
+                <!-- <loading
                   :active="isLoading"
                   :is-full-page="fullPage"
                   :loader="waitingLoader"
-                />
+                /> -->
                 <v-img
                   v-on="on"
                   src="~@/assets/OutboundsBox-adf.png"
@@ -98,10 +98,9 @@
               :items-per-page="10"
               sort-by="IncidentNumber"
               :sort-desc="sortDesc"
-              class="elevation-10 my-application"
+              class="my-application"
               :footer-props="{
                 itemsPerPageOptions: [5, 10, 15, 25],
-                pageText: '',
                 pageText: 'من {0}-{1} إلى {2}',
                 showFirstLastPage: true,
                 'items-per-page-text': 'عدد المعاملات الصادرة في الصفحة:',
@@ -255,7 +254,9 @@ axios.defaults.headers.post["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST reque
 export default {
   data() {
     return {
-      isLoading: true,
+      // isLoading: true,
+      // fullPage: true,
+      // waitingLoader: "bars",
       overlay: true,
       AdfOutboundsBox: [],
       MurOutboundsBox: [],
@@ -315,7 +316,7 @@ export default {
         this.MurOutboundsBox = resp.data;
         this.allOutboundsBox = this.allOutboundsBox.concat(resp.data);
         console.log(this.allOutboundsBox.length);
-        this.isLoading = !this.isLoading;
+        // this.isLoading = !this.isLoading;
         this.overlay = !this.overlay;
       });
   },
@@ -327,6 +328,10 @@ export default {
       // this.viewDetails(event);
     },
     navigate(item) {
+      // 1 outbound
+      // 2 inner outbound
+      // 3 inbound
+      item.viewType = 1;
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
         params: { data: item },
@@ -375,6 +380,7 @@ export default {
   font-size: 16px !important;
   background-color: #f2f2f2;
   font-weight: bold;
+  font-family: "Almarai", sans-serif !important;
 }
 </style>
 
@@ -391,7 +397,7 @@ export default {
 }
 ::v-deep td {
   color: #595959;
-  font-size: 1px;
+  font-size: 12px;
 }
 .v-text-field >>> label {
   font-family: "Almarai", sans-serif !important;
