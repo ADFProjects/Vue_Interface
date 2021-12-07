@@ -328,13 +328,13 @@ export default {
       // this.viewDetails(event);
     },
     navigate(item) {
-      // 1 outbound
+         // 1 outbound
       // 2 inner outbound
       // 3 inbound
       item.viewType = 1;
+      this.$store.commit("SET_CURRENT", item);
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
-        params: { data: item },
       });
     },
     searchbyid(item) {

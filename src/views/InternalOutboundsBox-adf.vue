@@ -301,7 +301,11 @@ export default {
         { text: "حالة المعاملة", value: "ResponseStatusName", align: "center" },
         { text: "موضوع المعاملة", value: "IOboundSubject", align: "center" },
         { text: "الجهة الواردة", value: "FromGeha", align: "center" },
-        { text: "الإدارة الصادرة", value: "SelectedManagerName", align: "center" },
+        {
+          text: "الإدارة الصادرة",
+          value: "SelectedManagerName",
+          align: "center",
+        },
         { text: "تاريخ المعاملة", value: "RequestDate_Ar", align: "center" },
       ],
     };
@@ -346,9 +350,9 @@ export default {
       // 3 inbound
 
       item.viewType = 2;
+      this.$store.commit("SET_CURRENT", item);
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
-        params: { data: item },
       });
     },
     searchbyid(item) {

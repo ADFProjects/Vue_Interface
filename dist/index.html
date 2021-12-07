@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/ADF_LOGO.png"><title>نظام الاتصالات الإدارية - صندوق التنمية الزراعية</title><style>* {
+      font-family: 'Roboto';
+    }</style><link href="/js/chunk-2d216214.7163b552.js" rel="prefetch"><link href="/js/chunk-2d216257.256ee085.js" rel="prefetch"><link href="/js/chunk-59647500.a4ec7d7d.js" rel="prefetch"><link href="/css/app.a8036843.css" rel="preload" as="style"><link href="/css/chunk-vendors.f88afb15.css" rel="preload" as="style"><link href="/js/app.49111c94.js" rel="preload" as="script"><link href="/js/chunk-vendors.4ff3b997.js" rel="preload" as="script"><link href="/css/chunk-vendors.f88afb15.css" rel="stylesheet"><link href="/css/app.a8036843.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but cmd doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script src="/js/chunk-vendors.4ff3b997.js"></script><script src="/js/app.49111c94.js"></script></body><script>localStorage.clear(); // To Clear LocalStorage --> if we enter by using a different Username & Password
+  var url = window.location.href;
+  var checkURL = new String(url.substring(url.indexOf("CU=") + 3, url.indexOf("&P=")));
+  var ca = document.cookie.split(';');
+  var a = "";
+  var b = "";
+  if (ca.length > 1) {
+    a = document.cookie.split('; ').find(x => x.startsWith("usrCms" + '='));
+    b = document.cookie.split('; ').find(x => x.startsWith("pasCms" + '='));
+
+    // for (var i = 0; i < ca.length; i++) {
+    //   //var c = ca[i];
+    //   a = ca[0].substring(9);
+    //   b = ca[1].substring(10);
+    // }
+    if (a != "ht" && a != "" && a != undefined && a != null) {
+      console.log("sss");
+    }
+  } else {
+    if (url != "http://localhost:8080/#/homepage") {
+      if (checkURL != "ht") {
+        console.log("Index.html =" + checkURL);
+        document.cookie = "usrCms =" + url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
+        document.cookie = "pasCms =" + url.substring(url.indexOf("&P=") + 3, url.indexOf("#"));
+        window.location = "http://localhost:8080/#/homepage";
+      }
+      else {
+        window.location = "http://localhost:8080/#/alter";
+        console.log("Else....");
+      }
+    } else {
+      console.log("Because URL is Correct, index page is doing nothing....")
+      console.log("And gives the control to beforeEach in main.js....")
+
+    }
+  }</script></html>

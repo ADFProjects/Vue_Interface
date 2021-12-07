@@ -319,7 +319,6 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import VueSimpleAlert from "vue-simple-alert";
 Vue.use(VueSimpleAlert, { reverseButtons: true });
-
 Vue.use(VTooltip);
 export default {
   components: {
@@ -420,7 +419,6 @@ export default {
         this.isLoadingDep = false;
         this.departmentList = resp.data;
       });
-
     Vue.axios
       .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetBranches")
       .then((resp) => {
@@ -483,7 +481,6 @@ export default {
     getEmplyee(depId, secId) {
       this.empToggle = true;
       this.isLoading = true;
-
       Vue.axios
         .post(
           "https://emp.adf.gov.sa/cms7514254/api/cms/GetEmployeePermission",
@@ -527,7 +524,6 @@ export default {
         if (this.changeList[i].p.indexOf(5) != -1) {
           p = p.concat("15S;");
         }
-
         Vue.axios
           .post("https://emp.adf.gov.sa/cms7514254/api/cms/SavePermission", {
             Username: this.changeList[i].name,
@@ -563,7 +559,6 @@ export default {
               p.push(5);
             }
           }
-
           this.employeesList.push({
             name: list[i].EmployeeName,
             model: p,
@@ -611,7 +606,6 @@ export default {
   font-family: "Almarai", sans-serif !important;
   font-size: 0em;
 }
-
 ::v-deep .v-data-table-header th {
   background-color: #f2f2f2 !important;
   font-weight: bold !important;
@@ -719,7 +713,6 @@ export default {
     transform: rotate(360deg);
   }
 }
-
 .v-autocomplete-content {
   direction: rtl;
   color: blue;

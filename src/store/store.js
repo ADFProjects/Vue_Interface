@@ -10,80 +10,143 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         //JSON OBJ with name of GET methodes in ACTION and ITs FLAG
+
+
+        username: "",
+        password: "",
+        permissionsApiList: [
+            {
+                method: "getBranchesList",
+                flag: "branchesListFlag",
+                name: "",
+                loading: "isLoadingBranch"
+            }, {
+                method: "getDepList",
+                flag: "depListFlag",
+                name: "departments",
+                loading: "isLoadingdepartments"
+            },
+
+        ],
+        inquireyApiList: [{
+            method: "getImportanceList",
+            flag: "importanceListFlag",
+            name: "importance",
+            loading: "isLoadingimportance"
+        },
+        {
+            method: "getDepList",
+            flag: "depListFlag",
+            name: "departments",
+            loading: "isLoadingdepartments"
+        },
+        {
+            method: "getGehatList",
+            flag: "gehatListFlag",
+            name: "entities",
+            loading: "isLoadingentities"
+        },
+        {
+            method: "getConfidentialityList",
+            flag: "confidentialityListFlag",
+            name: "confidentiality",
+            loading: "isLoadingconfidentiality"
+        },
+        {
+            method: "getTypesList",
+            flag: "typesListFlag",
+            name: "correspondenceType",
+            loading: "isLoadingcorrespondenceType"
+        },
+        {
+            method: "getObjectiveList",
+            flag: "objectiveListFlag",
+            name: "objectiveClass",
+            loading: "isLoadingobjectiveClass"
+        },],
         ApiList: [
             {
                 method: "getImportanceList",
                 flag: "importanceListFlag",
-                name: "importance"
+                name: "importance",
+                loading: "isLoadingimportance"
             },
             {
                 method: "getDepList",
                 flag: "depListFlag",
-                name: "departments"
+                name: "departments",
+                loading: "isLoadingdepartments"
             },
             {
                 method: "getGehatList",
                 flag: "gehatListFlag",
-                name: "entities"
+                name: "entities",
+                loading: "isLoadingentities"
             },
             {
                 method: "getMuraslatGehatList",
                 flag: "muraslatGehatListFlag",
-                name: "entitiesM"
+                name: "entitiesM",
+                loading: "entitiesM"
             },
             {
                 method: "getConfidentialityList",
                 flag: "confidentialityListFlag",
-                name: "confidentiality"
+                name: "confidentiality",
+                loading: "isLoadingconfidentiality"
             },
             {
                 method: "getCategoryList",
                 flag: "categoryListFlag",
-                name: "category"
+                name: "category",
+                loading: "isLoadingcategory"
             },
             {
                 method: "getTypesList",
                 flag: "typesListFlag",
-                name: "correspondenceType"
+                name: "correspondenceType",
+                loading: "isLoadingcorrespondenceType"
             },
             {
                 method: "getObjectiveList",
                 flag: "objectiveListFlag",
-                name: "objectiveClass"
+                name: "objectiveClass",
+                loading: "isLoadingobjectiveClass"
             },
             {
                 method: "getAttachmentTypeList",
                 flag: "attachmentTypeListFlag",
-                name: "attatchmentType"
+                name: "attatchmentType",
+                loading: "isLoadingattatchmentType"
             },
             {
                 method: "getAttachmentCategotyList",
                 flag: "attachmentCategotyListFlag",
-                name: "attatchmentCategory"
+                name: "attatchmentCategory",
+                loading: "isLoadingattatchmentCategory"
             },
-           /* {
-                method: "getBranchesList",
-                flag: "branchesListFlag",
-                name: ""
-            },*/
         ],
+        reSend: {},
         currentCorrespondence: {},
         searchedList: [],
         permissions: null,
         path: null,// By Abdullah 15-08-2021 -------- 
         name: null,// By Abdullah 15-08-2021 -------- 
         //Lists
-        importanceList: {},
-        depList: {},
-        gehatList: {},
-        muraslatGehatList: {},
-        confidentialityList: {},
-        categoryList: {},
-        typesList: {},
-        objectiveList: {},
-        attachmentTypeList: {},
-        attachmentCategotyList: {},
-        branchesList: {},
+        employeeList: [],
+        importanceList: [],
+        depList: [],
+        gehatList: [],
+        muraslatGehatList: [],
+        confidentialityList: [],
+        categoryList: [],
+        typesList: [],
+        objectiveList: [],
+        attachmentTypeList: [],
+        attachmentCategotyList: [],
+        branchesList: [],
+        officesList: [],
+        sectionsList: [],
         //Lists Flag
         importanceListFlag: false,
         depListFlag: false,
@@ -96,10 +159,6 @@ export const store = new Vuex.Store({
         attachmentTypeListFlag: false,
         attachmentCategotyListFlag: false,
         branchesListFlag: false,
-
-
-
-
     },
     actions,
     getters,

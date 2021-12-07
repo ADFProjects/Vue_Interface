@@ -390,7 +390,6 @@ export default {
       .then((resp) => {
         this.MurInboundsBox = resp.data;
         this.allInboundsBox = this.allInboundsBox.concat(resp.data);
-        console.log(this.allInboundsBox.length);
         // this.isLoading = !this.isLoading;
         this.overlay = !this.overlay;
       });
@@ -398,15 +397,13 @@ export default {
 
   methods: {
     navigate(item) {
-       // 1 outbound
+      // 1 outbound
       // 2 inner outbound
       // 3 inbound
-
       item.viewType = 3;
-      
+      this.$store.commit('SET_CURRENT', item);
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
-        params: { data: item },
       });
     },
     searchbyid(item) {

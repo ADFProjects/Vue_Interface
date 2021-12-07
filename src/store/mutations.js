@@ -34,10 +34,37 @@ export const ADD_ATTACHMENT_TYPE_LIST = (state, list) => {
     state.attachmentTypeList = list;
     state.attachmentTypeListFlag = true;
 };
-
+export const ADD_ATTACHMENT_CATEGORY_LIST = (state, list) => {
+    state.attachmentCategotyList = list;
+    state.attachmentCategotyListFlag = true;
+};
 export const ADD_BRANCHES_LIST = (state, list) => {
     state.branchesList = list;
     state.branchesListFlag = true;
+};
+export const ADD_OFFICE_LIST = (state, list) => {
+    state.officesList = list;
+};
+export const ADD_SECTIONS_LIST = (state, list) => {
+    state.sectionsList = list;
+};
+export const ADD_EMPLOYEE_LIST = (state, list) => {
+    state.employeeList = list;
+};
+export const SET_CURRENT = (state, payload) => {
+    state.currentCorrespondence = payload;
+};
+export const SET_SEARCHED_LIST = (state, payload) => {
+    state.searchedList = payload;
+};
+export const SET_RESEND = (state, payload) => {
+    state.reSend = payload;
+};
+export const SET_USERNAME = (state, payload) => {
+    state.username = payload;
+};
+export const SET_PASSWORD = (state, payload) => {
+    state.password = payload;
 };
 //const saveCurrentCorrespondence = () => {
 
@@ -50,7 +77,6 @@ export const ADD_BRANCHES_LIST = (state, list) => {
 
 const setPermissions = (state, payload) => {
     state.permissions = payload;
-    console.log("yaay");
     console.log(payload);
 };
 // By Abdullah 15-08-2021 -------- START
@@ -59,12 +85,21 @@ const setPath = (state, payload) => {
 };
 const setName = (state, payload) => {
     state.name = payload;
-    console.log("PayLoad Name: " + state.name)
 };
 // By Abdullah 15-08-2021 -------- END
 export default {
+    SET_USERNAME,
+    SET_PASSWORD,
+    SET_RESEND,
+    SET_SEARCHED_LIST,
+    SET_CURRENT,
+    ADD_EMPLOYEE_LIST,
+    ADD_SECTIONS_LIST,
+    ADD_OFFICE_LIST,
+    ADD_MURASLAT_GEHAT_LIST,
     ADD_BRANCHES_LIST,
     ADD_ATTACHMENT_TYPE_LIST,
+    ADD_ATTACHMENT_CATEGORY_LIST,
     ADD_OBJECTIVE_LIST,
     ADD_TYPES_LIST,
     ADD_CONFIDENTIALITY_LIST,

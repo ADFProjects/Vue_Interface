@@ -158,7 +158,7 @@
                     واردة عبر :</v-card-title
                   >
                   <v-container>
-                    <v-radio-group v-model="rowType" >
+                    <v-radio-group v-model="rowType">
                       <v-row>
                         <v-col v-for="n in sendway" :key="n">
                           <v-radio
@@ -181,9 +181,7 @@
                     شركة الشحن :</v-card-title
                   >
                   <v-container>
-                    <v-radio-group
-                      v-model="rowdeliveryCo"
-                    >
+                    <v-radio-group v-model="rowdeliveryCo">
                       <v-row>
                         <v-col v-for="n in deliveryCo" :key="n">
                           <v-radio
@@ -819,6 +817,35 @@ export default {
   components: {
     Loading,
   },
+  computed: {
+    departments() {
+      return this.$store.state.depList;
+    },
+    entities() {
+      return this.$store.state.gehatList;
+    },
+    importance() {
+      return this.$store.state.importanceList;
+    },
+    confidentiality() {
+      return this.$store.state.confidentialityList;
+    },
+    correspondenceType() {
+      return this.$store.state.typesList;
+    },
+    objectiveClass() {
+      return this.$store.state.objectiveList;
+    },
+    category() {
+      return this.$store.state.categoryList;
+    },
+    attatchmentType() {
+      return this.$store.state.attachmentTypeList;
+    },
+    attatchmentCategory() {
+      return this.$store.state.attachmentCategotyList;
+    },
+  },
   data: function () {
     return {
       userID: "",
@@ -854,17 +881,7 @@ export default {
       progressInfos: [],
       message: "",
       fileInfos: [],
-      objectiveClass: [],
-      entities: [],
       checkNums: ["رقم الهوية الوطنية / الإقامة", "رقم السجل التجاري"],
-      confidentiality: [],
-      importance: [],
-      category: [],
-      correspondenceType: [],
-      attatchmentType: [],
-      attatchmentCategory: [],
-      attatchmentExtention: [],
-      departments: [],
       isLoadingobjectiveClass: true,
       isLoadingentities: true,
       isLoadingconfidentiality: true,
@@ -987,98 +1004,16 @@ export default {
     };
   }, //data end
   mounted() {
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=1")
-      .then((resp) => {
-        this.objectiveClass = resp.data;
-        this.isLoadingobjectiveClass = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=3")
-      .then((resp) => {
-        this.confidentiality = resp.data;
-        this.isLoadingconfidentiality = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=80")
-      .then((resp) => {
-        this.entities = resp.data;
-        this.isLoadingentities = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=4")
-      .then((resp) => {
-        this.importance = resp.data;
-        this.isLoadingimportance = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=2")
-      .then((resp) => {
-        this.category = resp.data; // copy or origin
-        this.isLoadingcategory = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=11")
-      .then((resp) => {
-        this.correspondenceType = resp.data;
-        this.isLoadingcorrespondenceType = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=6")
-      .then((resp) => {
-        this.attatchmentType = resp.data;
-        this.isLoadingattatchmentType = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=12")
-      .then((resp) => {
-        this.attatchmentCategory = resp.data;
-        this.isLoadingattatchmentCategory = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=7")
-      .then((resp) => {
-        this.attatchmentExtention = resp.data;
-        this.isLoadingattatchmentExtention = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=2")
-      .then((resp) => {
-        this.category = resp.data;
-        this.isLoadingcategory = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetDept?DeptType=1")
-      .then((resp) => {
-        this.departments = resp.data;
-        this.isLoadingdepartments = false;
-      });
+    var list = this.$store.state.ApiList;
+    for (var i = 0; i < list.length; i++) {
+      if (!this.$store.state[list[i].flag]) {
+        this.$store.dispatch(list[i].method);
+      }
+      this.$set(this, list[i].loading, false);
+    }
   },
 
   methods: {
-    getUserConnections() {
-      var obj = this.$store.getters.getLists;
-
-      this.objectiveClass = obj.objectiveList;
-      this.isLoadingobjectiveClass = false;
-      this.confidentiality = obj.confidentialityList;
-      this.isLoadingconfidentiality = false;
-      this.entities = obj.gehatList;
-      this.isLoadingentities = false;
-      this.importance = obj.importanceList;
-      this.isLoadingimportance = false;
-      this.category = obj.categoryList;
-      this.isLoadingcategory = false;
-      this.correspondenceType = obj.typesList;
-      this.isLoadingcorrespondenceType = false;
-      this.attatchmentType = obj.attachmentTypeList;
-      this.isLoadingattatchmentType = false;
-      this.attatchmentCategory = obj.attachmentCategotyList;
-      this.isLoadingattatchmentCategory = false;
-      this.departments = obj.depList;
-      this.isLoadingdepartments = false;
-    },
-
     addDepartmentsList() {
       for (let i = 0; i < this.toCopies.length; i++) {
         this.requestBody.RelatedGehat.push({
@@ -1254,7 +1189,7 @@ export default {
         this.to,
         this.departments
       ).GehaName;
-     //سجل تجاري او هوية وطنية
+      //سجل تجاري او هوية وطنية
 
       if (this.commercialNumber) {
         // 1-> سجل تجاري
@@ -1379,7 +1314,7 @@ export default {
         type: "success",
         confirmButtonText: "إغلاق",
         confirmButtonColor: "#28714e",
-      })
+      });
     },
     showAlterFailureMessage(code) {
       this.$fire({
@@ -1389,8 +1324,7 @@ export default {
         defaultText: "yyy",
         timer: 3000,
         confirmButtonText: "إغلاق",
-      })
-      
+      });
     },
     showAlterWarningMessage() {
       this.$fire({
@@ -1405,8 +1339,7 @@ export default {
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
-
-this.sendRequest();
+          this.sendRequest();
         }
       });
     },
@@ -1430,7 +1363,7 @@ this.sendRequest();
         this.other = false;
       }
     },
-   checkNumbers(value) {
+    checkNumbers(value) {
       if (value.localeCompare("رقم الهوية الوطنية / الإقامة") == 0) {
         this.numberId = true;
         this.commercialNumber = false;
@@ -1443,7 +1376,7 @@ this.sendRequest();
     },
   }, //End of Methodes
   watch: {
-        selectedConfid(newValue, oldValue) {
+    selectedConfid(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.confidentialTitle(newValue);
       }

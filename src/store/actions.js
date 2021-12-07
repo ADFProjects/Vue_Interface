@@ -8,13 +8,13 @@ axios.defaults.headers.common["Authorization"] =
     "Bearer " + localStorage.getItem("token");
 
 
-    // API url as Const
-    const lookupsUrl = "baseUrlGetCMSLookups?type=";
-    const baseUrl = "https://emp.adf.gov.sa/cms7514254/api/cms/";
+// API url as Const
+const lookupsUrl = "https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=";
+const baseUrl = "https://emp.adf.gov.sa/cms7514254/api/cms/";
 
-    // APIs GET LIST ------- START
+// APIs GET LIST ------- START
 export const getImportanceList = ({ commit }) => {
-    axios.get(lookupsUrl+"4")
+    axios.get(lookupsUrl + "4")
         .then((resp) => {
             commit('ADD_IMPORTANCE_LIST', resp.data);
         }).catch((error) => {
@@ -26,7 +26,7 @@ export const getImportanceList = ({ commit }) => {
 
 }
 export const getDepList = ({ commit }) => {
-    axios.get(baseUrl+"GetDept?DeptType=1")
+    axios.get(baseUrl + "GetDept?DeptType=1")
         .then((resp) => {
             commit('ADD_DEP_LIST', resp.data);
         }).catch((error) => {
@@ -38,7 +38,7 @@ export const getDepList = ({ commit }) => {
 
 }
 export const getGehatList = ({ commit }) => {
-    axios.get(lookupsUrl+"80")
+    axios.get(lookupsUrl + "80")
         .then((resp) => {
             commit('ADD_GEHAT_LIST', resp.data);
         }).catch((error) => {
@@ -50,7 +50,7 @@ export const getGehatList = ({ commit }) => {
 
 }
 export const getMuraslatGehatList = ({ commit }) => {
-    axios.get(lookupsUrl+"80")
+    axios.get(lookupsUrl + "13")
         .then((resp) => {
             commit('ADD_MURASLAT_GEHAT_LIST', resp.data);
         }).catch((error) => {
@@ -62,7 +62,7 @@ export const getMuraslatGehatList = ({ commit }) => {
 
 }
 export const getConfidentialityList = ({ commit }) => {
-    axios.get(lookupsUrl+"3")
+    axios.get(lookupsUrl + "3")
         .then((resp) => {
             commit('ADD_CONFIDENTIALITY_LIST', resp.data);
         }).catch((error) => {
@@ -74,7 +74,7 @@ export const getConfidentialityList = ({ commit }) => {
 
 }
 export const getCategoryList = ({ commit }) => {
-    axios.get(lookupsUrl+"2")
+    axios.get(lookupsUrl + "2")
         .then((resp) => {
             commit('ADD_CATEGORY_LIST', resp.data);
         }).catch((error) => {
@@ -86,7 +86,7 @@ export const getCategoryList = ({ commit }) => {
 
 }
 export const getTypesList = ({ commit }) => {
-    axios.get(lookupsUrl+"11")
+    axios.get(lookupsUrl + "11")
         .then((resp) => {
             commit('ADD_TYPES_LIST', resp.data);
         }).catch((error) => {
@@ -98,7 +98,7 @@ export const getTypesList = ({ commit }) => {
 
 }
 export const getObjectiveList = ({ commit }) => {
-    axios.get(lookupsUrl+"1")
+    axios.get(lookupsUrl + "1")
         .then((resp) => {
             commit('ADD_OBJECTIVE_LIST', resp.data);
         }).catch((error) => {
@@ -110,7 +110,7 @@ export const getObjectiveList = ({ commit }) => {
 
 }
 export const getAttachmentTypeList = ({ commit }) => {
-    axios.get(lookupsUrl+"6")
+    axios.get(lookupsUrl + "6")
         .then((resp) => {
             commit('ADD_ATTACHMENT_TYPE_LIST', resp.data);
         }).catch((error) => {
@@ -122,9 +122,9 @@ export const getAttachmentTypeList = ({ commit }) => {
 
 }
 export const getAttachmentCategotyList = ({ commit }) => {
-    axios.get(lookupsUrl+"12")
+    axios.get(lookupsUrl + "12")
         .then((resp) => {
-            commit('ADD_CATEGORY_LIST', resp.data);
+            commit('ADD_ATTACHMENT_CATEGORY_LIST', resp.data);
         }).catch((error) => {
             console.log(
                 "Error ===>>> Store.js ______ getAttachmentCategotyList _______Error: " +
@@ -134,7 +134,7 @@ export const getAttachmentCategotyList = ({ commit }) => {
 
 }
 export const getBranchesList = ({ commit }) => {
-    axios.get(baseUrl+"GetBranches")
+    axios.get(baseUrl + "GetBranches")
         .then((resp) => {
             commit('ADD_BRANCHES_LIST', resp.data);
         }).catch((error) => {
@@ -146,7 +146,55 @@ export const getBranchesList = ({ commit }) => {
 
 }
 // APIs GET LIST ------- END
+
+// APIs POST LIST ------- END
+export const getOfficesList = ({ commit }, id) => {
+    axios.post(baseUrl + "GetOffices", {
+        DebId: id
+    })
+        .then((resp) => {
+            commit('ADD_OFFICE_LIST', resp.data);
+        }).catch((error) => {
+            console.log(
+                "Error ===>>> Store.js ______ getOfficesList _______Error: " +
+                error
+            );
+        });
+
+}
+export const getSectionsList = ({ commit }, id) => {
+    axios.post(baseUrl + "GetSectionsByDeprtmentId", {
+        DebId: id,
+    })
+        .then((resp) => {
+            commit('ADD_SECTIONS_LIST', resp.data);
+        }).catch((error) => {
+            console.log(
+                "Error ===>>> Store.js ______ getSectionsList _______Error: " +
+                error
+            );
+        });
+
+}
+export const getEmployeeList = ({ commit }, depId, secId) => {
+    axios.post(baseUrl + "GetEmployeePermission", {
+        DebId: depId,
+        SectionId: secId,
+    })
+        .then((resp) => {
+            commit('ADD_EMPLOYEE_LIST', resp.data);
+        }).catch((error) => {
+            console.log(
+                "Error ===>>> Store.js ______ getEmployeeList _______Error: " +
+                error
+            );
+        });
+
+}
 export default {
+    getEmployeeList,
+    getSectionsList,
+    getOfficesList,
     getBranchesList,
     getAttachmentCategotyList,
     getAttachmentTypeList,

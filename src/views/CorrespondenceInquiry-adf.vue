@@ -334,12 +334,6 @@ export default {
       items: ["صندوق البيئة", "وزارة المالية", "وزارة الصحة"],
       menu: "",
       date: "",
-      objectiveClass: [],
-      entities: [],
-      confidentiality: [],
-      importance: [],
-      correspondenceType: [],
-      departments: [],
       dates: [],
       selectedConf: "",
       selectedImp: "",
@@ -408,44 +402,35 @@ export default {
     dateRangeText() {
       return this.dates.join(" ~ ");
     },
+    departments() {
+      return this.$store.state.depList;
+    },
+    entities() {
+      return this.$store.state.gehatList;
+    },
+    importance() {
+      return this.$store.state.importanceList;
+    },
+    confidentiality() {
+      return this.$store.state.confidentialityList;
+    },
+    correspondenceType() {
+      return this.$store.state.typesList;
+    },
+    objectiveClass() {
+      return this.$store.state.objectiveList;
+    },
   },
   mounted() {
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=1")
-      .then((resp) => {
-        this.objectiveClass = resp.data;
-        this.isLoadingobjectiveClass = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=3")
-      .then((resp) => {
-        this.confidentiality = resp.data;
-        this.isLoadingconfidentiality = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=80")
-      .then((resp) => {
-        this.entities = resp.data;
-        this.isLoadingentities = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=4")
-      .then((resp) => {
-        this.importance = resp.data;
-        this.isLoadingimportance = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetDept?DeptType=1")
-      .then((resp) => {
-        this.departments = resp.data;
-        this.isLoadingdepartments = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=11")
-      .then((resp) => {
-        this.correspondenceType = resp.data;
-        this.isLoadingcorrespondenceType = false;
-      });
+    //loop for API call
+    var list = this.$store.state.inquireyApiList;
+    for (var i = 0; i < list.length; i++) {
+      if (!this.$store.state[list[i].flag]) {
+        this.$store.dispatch(list[i].method);
+      }
+
+      this.$set(this, list[i].loading, false);
+    }
 
     if (this.permissions("13S") && this.permissions("12S")) {
       this.sendway = ["وارد", "صادر"];
@@ -527,10 +512,9 @@ export default {
             } else {
               this.response.viewType = 3; // وارد
             }
-
+            this.$store.commit("SET_SEARCHED_LIST", this.response);
             this.$router.push({
               name: "viewInquire", //use name for router push
-              params: { data: this.response },
             });
           }
         });

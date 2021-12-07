@@ -367,21 +367,6 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    <v-autocomplete
-                      color="#28714e"
-                      ref="selectNumber"
-                      :items="checkNums"
-                      item-text="Name"
-                      label="التحقق من البيانات عبر"
-                      v-model="selectNumber"
-                      outlined
-                      required
-                      class="dir my-application"
-                      no-data-text="لايوجد بيانات"
-                      readonly
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col>
                     <v-text-field
                       color="#28714e"
                       readonly
@@ -770,11 +755,16 @@ export default {
     Loading,
     barcode: VueBarcode,
   },
+  computed: {
+    data() {
+      return this.$store.state.currentCorrespondence;
+    },
+  },
   data: function () {
     return {
+      verficationToggle: false,
       labelText: "",
       checkNums: ["رقم الهوية الوطنية / الإقامة", "رقم السجل التجاري"],
-      data: {},
       toggleCopies: true,
       viewType1: false,
       viewType2: false,
@@ -826,8 +816,6 @@ export default {
       progressInfos: [],
       message: "",
       //Start of filed data
-
-      selectNumber: "",
       copy: "",
       toCopies: [],
       outbound: "",
@@ -865,26 +853,22 @@ export default {
         this.departments = resp.data;
         this.isLoadingdepartments = false;
       });
-
-    let data = this.$route.params.data;
-    this.data = data;
-    this.fillData(data);
-    this.fillDepts(data.RelatedGehat);
-    this.checkNumbers(data.VerificationType);
+    this.fillData(this.data);
+    this.fillDepts(this.data.RelatedGehat);
+    this.checkNumbers(this.data.VerificationType);
   },
 
   methods: {
     checkNumbers(id) {
-
-      if(id){
-      if (id.localeCompare("1") == 0) {
-        this.labelText = "رقم الهوية الوطنية / الإقامة";
-        this.selectNumber = "رقم الهوية الوطنية / الإقامة";
-      }
-      if (id.localeCompare("2") == 0) {
-        this.labelText = "رقم السجل التجاري";
-        this.selectNumber = "رقم السجل التجاري";
-      }
+      if (id) {
+        this.verficationToggle = true;
+        if (id.localeCompare("1") == 0) {
+          this.labelText = "رقم الهوية الوطنية / الإقامة";
+        } else if (id.localeCompare("2") == 0) {
+          this.labelText = "رقم السجل التجاري";
+        }
+      } else {
+        this.labelText = "رقم السجل التجاري/ رقم الهوية الوطنية / الإقامة ";
       }
     },
     // deleteCorrespondence() {
@@ -995,17 +979,15 @@ export default {
           isReplay: true,
         };
       }
-      localStorage.setObject("obj", obj);
-
+      this.$store.commit("SET_RESEND", obj);
       this.$router.push({
-        name: "outbound", //use name for router push
-        params: { data: obj },
+        name: "resend", //use name for router push
       });
     },
     send() {
+      this.$store.commit("SET_RESEND", this.data);
       this.$router.push({
-        name: "outbound", //use name for router push
-        params: { data: this.data },
+        name: "resend", //use name for router push
       });
     },
     listSearchDep(nameKey, myArray) {
@@ -1030,14 +1012,10 @@ export default {
       console.log(this.filsUrls);
     },
     fillDepts(list) {
-
       for (var i = 0; i < list.length; i++) {
         this.toCopies.push(list[i].Name);
       }
       this.isLoadingdepartmentsCopies = false;
-
-
-
     },
     sendRequest() {
       this.isLoading = true;
@@ -1099,12 +1077,13 @@ export default {
         this.outboundNumber = data.OutboundDocNo;
         this.idText = "رقم الوارد";
       }
-
+      console.log("G date: " + data.OutboundGDate);
+      console.log("H date: " + data.OutboundHDate);
       this.barcodeValue = data.IncidentNumber;
-      if (data.OutboundGDate) {
+      if (data.OutboundGDate !== null) {
         this.date = data.OutboundGDate.substr(0, 10);
       } else {
-        this.date = data.RequestDate.substr(0, 10);
+        this.date = data.OutboundHDate.substr(0, 10);
       }
       this.by = data.SourceType;
       this.from = data.FromGeha;

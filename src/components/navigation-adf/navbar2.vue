@@ -135,7 +135,7 @@
                     class="my-application"
                     style="color: #e6e6e6; font-size: 15px"
                   >
-                    التقاريـر
+                    تقارير البريد السعودي
                     <v-icon
                       style="float: right; color: #f2f2f2; padding-left: 20px"
                       >mdi-dialpad</v-icon
@@ -443,7 +443,7 @@ export default {
       model: 1,
       active: true,
       menuItems: [
-        {
+       {
           name: "الصلاحيات",
           link: "/permissions",
           permission: 9,
@@ -461,27 +461,27 @@ export default {
           permission: 2,
           icon: "mdi-folder",
         },
-        {
+      /*  {
           name: "صندوق الصادر الداخلي",
           link: "/internalOutboundbox",
           permission: 2,
           icon: "mdi-folder",
-        },
+        },*/
 
         {
-          name: "صندوق الوارد",
+          name: "صندوق الوارد العام",
           link: "/inboundbox",
           permission: 1,
           icon: "mdi-folder",
         },
         {
-          name: "إضافة صادر",
+          name: "إضافة صادر خارجي",
           link: "/outbound",
           permission: 2,
           icon: "mdi-email",
         },
         {
-          name: "إضافة وارد",
+          name: "إضافة وارد خارجي",
           link: "/inbound",
           permission: 1,
           icon: "mdi-email",
@@ -504,7 +504,6 @@ export default {
     Vue.axios
       .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetLoginUser")
       .then((response) => {
-        console.log("username");
         this.posts = response.data;
       })
       .catch((error) => {
@@ -568,7 +567,6 @@ export default {
             this.$store.state.permissions[i] == p[0] ||
             this.$store.state.permissions[i] == p[1]
           ) {
-            console.log(this.$store.state.permissions[i]);
             return "YES";
           }
         }

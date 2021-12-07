@@ -491,104 +491,89 @@ export default {
 
   methods: {
     OutBoundAdf() {
-      console.log(this.radiosOutAdf);
       if (this.radiosOutAdf == "Week") {
         for (var x = 0; x < this.week.length; x++) {
           if (this.week[x].Name == "صادر عام") {
             this.MsgOutBoundAdf = this.week[x].count;
-            console.log("Test week count - صادر عام");
-          }
+
+}
         }
       } else if (this.radiosOutAdf == "Month") {
         for (var i = 0; i < this.month.length; i++) {
           if (this.month[i].Name == "صادر عام") {
             this.MsgOutBoundAdf = this.month[i].count;
-            console.log("Test month count - صادر عام");
           }
         }
       } else if (this.radiosOutAdf == "Year") {
         for (var y = 0; y < this.year.length; y++) {
           if (this.year[y].Name == "صادر عام") {
             this.MsgOutBoundAdf = this.year[y].count;
-            console.log("Test year count - صادر عام");
           }
         }
       }
     },
 
     InBoundAdf() {
-      console.log(this.radiosInAdf);
       if (this.radiosInAdf == "Week") {
         for (var e = 0; e < this.week.length; e++) {
           if (this.week[e].Name == "وارد عام") {
             this.MsgInBoundAdf = this.week[e].count;
-            console.log("Test week count - وارد عام");
           }
         }
       } else if (this.radiosInAdf == "Month") {
         for (var i = 0; i < this.month.length; i++) {
           if (this.month[i].Name == "وارد عام") {
             this.MsgInBoundAdf = this.month[i].count;
-            console.log("Test month count - وارد عام");
           }
         }
       } else if (this.radiosInAdf == "Year") {
         for (var k = 0; k < this.year.length; k++) {
           if (this.year[k].Name == "وارد عام") {
             this.MsgInBoundAdf = this.year[k].count;
-            console.log("Test year count - وارد عام");
           }
         }
       }
     },
 
     OutBoundMur() {
-      console.log(this.radiosOutMur);
       if (this.radiosOutMur == "Week") {
         for (var i = 0; i < this.week.length; i++) {
           if (this.week[i].Name == "صادر نظام مراسلات") {
             this.MsgOutBoundMur = this.week[i].count;
-            console.log("Test week count - صادر نظام مراسلات");
           }
         }
       } else if (this.radiosOutMur == "Month") {
         for (var v = 0; v < this.month.length; v++) {
           if (this.month[v].Name == "صادر نظام مراسلات") {
             this.MsgOutBoundMur = this.month[v].count;
-            console.log("Test month count - صادر نظام مراسلات");
           }
         }
       } else if (this.radiosOutMur == "Year") {
         for (var n = 0; n < this.year.length; n++) {
           if (this.year[n].Name == "صادر نظام مراسلات") {
             this.MsgOutBoundMur = this.year[n].count;
-            console.log("Test year count - صادر نظام مراسلات");
           }
         }
       }
     },
 
     InBoundMur() {
-      console.log(this.radiosInMur);
       if (this.radiosInMur == "Week") {
         for (var i = 0; i < this.week.length; i++) {
           if (this.week[i].Name == "وارد نظام مراسلات") {
             this.MsgInBoundMur = this.week[i].count;
-            console.log("Test week count - وارد نظام مراسلات");
           }
         }
       } else if (this.radiosInMur == "Month") {
         for (var n = 0; i < this.month.length; n++) {
           if (this.month[n].Name == "وارد نظام مراسلات") {
             this.MsgInBoundMur = this.month[n].count;
-            console.log("Test month count - وارد نظام مراسلات");
           }
         }
       } else if (this.radiosInMur == "Year") {
         for (var z = 0; z < this.year.length; z++) {
           if (this.year[z].Name == "وارد نظام مراسلات") {
             this.MsgInBoundMur = this.year[z].count;
-            console.log("Test year count - وارد نظام مراسلات");
           }
         }
       }
@@ -599,7 +584,6 @@ export default {
       .post("https://emp.adf.gov.sa/cms7514254/api/cms/Search", this.requestDay)
       .then((resp) => {
         this.week = resp.data;
-        console.log(resp.data);
       });
 
     Vue.axios
@@ -609,7 +593,6 @@ export default {
       )
       .then((resp) => {
         this.month = resp.data;
-        console.log(resp.data);
       });
 
     Vue.axios
@@ -619,7 +602,6 @@ export default {
       )
       .then((resp) => {
         this.year = resp.data;
-        console.log(resp.data);
       });
   },
 };

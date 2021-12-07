@@ -253,7 +253,6 @@
                       outlined
                       required
                       class="dir"
-                      :readonly="recivedData != null"
                     ></v-autocomplete>
                   </v-col>
                   <v-col v-show="other">
@@ -634,25 +633,31 @@
                 ></v-checkbox>
               </v-container>
               <v-container>
-                <div class="text-center">
-                  <router-link to="" @click="overlay = !overlay">
-                    <v-btn
-                      rounded
-                      color="#3d7f5f"
-                      dark
-                      large
-                      @click="validate"
-                      width="200"
-                    >
-                      <h5
-                        class="my-10 my-application"
-                        style="color: white; font-size: 14px"
+
+                <v-row>
+                  <v-col>
+                  <div class="text-center">
+                    <router-link to="" @click="overlay = !overlay">
+                      <v-btn
+                        rounded
+                        color="#3d7f5f"
+                        dark
+                        large
+                        @click="validate"
+                        width="200"
                       >
-                        إرسال
-                      </h5>
-                    </v-btn>
-                  </router-link>
-                </div>
+                        <h5
+                          class="my-10 my-application"
+                          style="color: white; font-size: 14px"
+                        >
+                          إرسال
+                        </h5>
+                      </v-btn>
+                    </router-link>
+                  </div>
+                  </v-col>
+
+                </v-row>
               </v-container>
             </v-form>
             <div>
@@ -732,8 +737,35 @@ export default {
     barcode: VueBarcode,
   },
   computed: {
-    getApisList() {
-      return "computed";
+    departments() {
+      return this.$store.state.depList;
+    },
+    entities() {
+      return this.$store.state.gehatList;
+    },
+    importance() {
+      return this.$store.state.importanceList;
+    },
+    confidentiality() {
+      return this.$store.state.confidentialityList;
+    },
+    correspondenceType() {
+      return this.$store.state.typesList;
+    },
+    objectiveClass() {
+      return this.$store.state.objectiveList;
+    },
+    category() {
+      return this.$store.state.categoryList;
+    },
+    attatchmentType() {
+      return this.$store.state.attachmentTypeList;
+    },
+    attatchmentCategory() {
+      return this.$store.state.attachmentCategotyList;
+    },
+    recivedData() {
+      return this.$store.state.reSend;
     },
   },
   data: function () {
@@ -775,19 +807,10 @@ export default {
       progressInfos: [],
       message: "",
       fileInfos: [],
-      objectiveClass: [],
-      entities: [],
       checkNums: ["رقم الهوية الوطنية / الإقامة", "رقم السجل التجاري"],
       entitiesMerged: [],
       entitiesM: [],
-      confidentiality: [],
-      importance: [],
-      category: [],
-      correspondenceType: [],
-      attatchmentType: [],
-      attatchmentCategory: [],
       attatchmentExtention: [],
-      departments: [],
       isLoadingobjectiveClass: true,
       isLoadingentities: true,
       isLoadingconfidentiality: true,
@@ -801,7 +824,6 @@ export default {
       sendway: ["صادر عادي", "البريد السعودي", "شركات شحن"],
       sendwaySPO: ["داخلي", "خارجي"],
       deliveryCo: ["سمسا", "فيدكس"],
-      recivedData: "",
       //Start of filed data
       dep: "",
       from: "",
@@ -896,133 +918,18 @@ export default {
     };
   }, //data end
   mounted() {
-    // this.$store.getters.getLists.forEach((element) => console.log(element));
-   this.recivedData = this.$route.params.data;
-    if (this.recivedData) {
-      if (this.recivedData.isReplay) {
-        this.replay();
-      } else {
-        console.log("the data is");
-        console.log(this.recivedData);
-        this.fillData(this.recivedData);
+    //loop for API call
+    var list = this.$store.state.ApiList;
+    for (var i = 0; i < list.length; i++) {
+      if (!this.$store.state[list[i].flag]) {
+        this.$store.dispatch(list[i].method);
       }
-    }
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=1")
-      .then((resp) => {
-        this.objectiveClass = resp.data;
-        this.isLoadingobjectiveClass = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=3")
-      .then((resp) => {
-        this.confidentiality = resp.data;
-        this.isLoadingconfidentiality = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=80")
-      .then((resp) => {
-        this.entities = resp.data;
-        this.isLoadingentities = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=13")
-      .then((resp) => {
-        this.entitiesM = resp.data;
-        this.entitiesMerged = this.entitiesM;
-        this.isLoadingentities = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=4")
-      .then((resp) => {
-        this.importance = resp.data;
-        this.isLoadingimportance = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=2")
-      .then((resp) => {
-        this.category = resp.data; // copy or origin
-        this.isLoadingcategory = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=11")
-      .then((resp) => {
-        this.correspondenceType = resp.data;
-        this.isLoadingcorrespondenceType = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=6")
-      .then((resp) => {
-        this.attatchmentType = resp.data;
-        this.isLoadingattatchmentType = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetCMSLookups?type=12")
-      .then((resp) => {
-        this.attatchmentCategory = resp.data;
-        this.isLoadingattatchmentCategory = false;
-      });
-    Vue.axios
-      .get("https://emp.adf.gov.sa/cms7514254/api/cms/GetDept?DeptType=1")
-      .then((resp) => {
-        this.departments = resp.data;
-        this.isLoadingdepartments = false;
-      });
 
- 
+      this.$set(this, list[i].loading, false);
+    }
   },
 
   methods: {
-    fillData(data) {
-      this.sendRequestBody = data;
-      this.barcodeValue = data.IncidentNumber ?? "";
-      //this.by = data.SourceType;
-      this.dep = data.GehaName ?? "";
-      this.to = data.FromGeha;
-      this.id = data.FromID ?? "";
-      this.title = data.IOboundSubject ?? "";
-      this.email = data.RelatedEmail ?? "";
-      this.remarks = data.IOboundRemarks ?? "";
-      this.mobileNumber = data.RelatedPhone ?? "";
-      this.senderName = data.RelatedName ?? "";
-      this.senderID = data.RelatedID ?? "";
-      this.selectedImportance = data.Importance ?? "";
-      this.selectedConfid = data.Confidential ?? "";
-      this.selectedCorrespondenceType = data.txt6 ?? "";
-      this.selectedObjectiveClass = data.txt7 ?? "";
-      this.selectedCategory = data.IOboundClassification ?? "";
-      this.requestBody.IncidentNumber = data.IncidentNumber ?? "";
-      this.IncidentNumber = data.IncidentNumber ?? "";
-      if (data.IOboundClassification == "Copy") {
-        this.selectedCategory = "صورة";
-      }
-      if (data.IOboundClassification == "Original") {
-        this.selectedCategory = "أصل";
-      }
-
-      data.RelatedAtt.lenght > 0
-        ? this.fillAttatchment(data.RelatedAtt)
-        : false;
-      this.fillDepts(data.RelatedGehat);
-      if (data.SourceType % 2 != 0) {
-        // رقم صادر الصندوق
-        this.outboundNumber = data.OutboundDocNo;
-        this.toggle = false;
-        this.idText = "رقم الوارد";
-      } else {
-        this.idText = "رقم الصادر";
-        this.toggleInbound = false;
-        this.toggle = true;
-        // رقم وارد الصندوق و رقم صادر الجهة المرسلة
-        this.outboundNumber = data.OutboundDocNo;
-      }
-      if (this.toggleInbound) {
-        this.to = data.SelectedManagerName;
-      }
-      if (this.toggle) {
-        this.to = data.ToGeha;
-      }
-    },
     fillAttatchment(list) {
       for (var i = 0; i < list.length; i++) {
         this.filsUrls.push({
@@ -1088,13 +995,6 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       WinPrint.close();
-    },
-    replay() {
-      var t = localStorage.getObject("obj");
-      this.isLoading = true;
-      this.requestBody.PreviousNo = t.IncidentNumber;
-      this.to = t.to;
-      this.isLoading = false;
     },
     deleteAtt(index) {
       this.filsUrls.splice(this.filsUrls[index], 1);
@@ -1234,7 +1134,7 @@ export default {
       this.requestBody.IOboundRemarks = this.remarks;
       this.requestBody.OutboundDocNo = "";
       this.requestBody.RequestDate = new Date().toLocaleString();
-      this.requestBody.OutboundHDate = this.date;
+      this.requestBody.OutboundHDate = new Date().toISOString().substr(0, 10);
       this.requestBody.OutboundGDate = new Date().toISOString().substr(0, 10);
 
       if (this.other) {
@@ -1312,7 +1212,7 @@ export default {
           }
         });
       console.log("request body in request");
-      console.log(JSON.stringify(this.requestBody));
+      console.log(this.requestBody);
     },
     listSearch(nameKey, myArray) {
       for (var i = 0; i < myArray.length; i++) {

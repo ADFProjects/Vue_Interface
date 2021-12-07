@@ -275,7 +275,6 @@ axios.defaults.headers.post["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST reque
 export default {
   data: () => {
     return {
-      displayData: "",
       // itemsPerPageArray: [4, 8, 12],
       search: "",
       filter: {},
@@ -309,9 +308,17 @@ export default {
   },
   methods: {
     navigate(item) {
+      // 1 outbound
+      // 2 inner outbound
+      // 3 inbound
+      if (item.FromID == "127000") {
+        item.viewType = 1;
+      } else {
+        item.viewType = 3;
+      }
+      this.$store.commit("SET_CURRENT", item);
       this.$router.push({
         name: "viewCorrespondence", //use name for router push
-        params: { data: item },
       });
     },
     searchbyid(id) {
@@ -324,12 +331,11 @@ export default {
     },
   }, // end methodes
   mounted() {
-    let data = this.$route.params.data;
-    this.displayData = data;
-    console.log("data is");
-    console.log(this.displayData);
   },
   computed: {
+    displayData() {
+      return this.$store.state.searchedList;
+    },
     filteredKeys() {
       //return this.keys.filter((key.t) => key.text !== "رقم المعاملة");
       return this.keys;

@@ -8,6 +8,7 @@ import login from './views/login-adf';
 import OutboundRegistry from './views/OutboundRegistry-adf';
 import InboundRegistry from './views/InboundRegistry-adf';
 import viewInquire from './views/Search-adf';
+import resend from './views/ResendOutboundRegistry-adf';
 import inboundbox from './views/InboundsBox-adf';
 import publicOutboundbox from './views/PublicOutboundsBox-adf';
 import internalOutboundbox from './views/InternalOutboundsBox-adf';
@@ -95,6 +96,11 @@ const routes = [
     path: '/internalOutboundbox',
     name: 'internalOutboundbox',
     component: internalOutboundbox,
+  },
+  {
+    path: '/resend',
+    name: 'resend',
+    component: resend,
   },
   // {
   //   path: '/saudipostreport',
