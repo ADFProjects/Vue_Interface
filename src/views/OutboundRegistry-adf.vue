@@ -91,7 +91,7 @@
   /* height: 100vh; */
 }
 </style>
-<template>
+<template >
   <!--
                 ***  TO_DO: ***
     1. font
@@ -223,7 +223,7 @@
                   </v-container>
                 </v-card>
               </v-container>
-              <v-container>
+              <v-container >
                 <v-row>
                   <v-col>
                     <v-autocomplete
@@ -483,19 +483,58 @@
                       </div>
                     </div>
                     <v-row>
-                      <v-col cols="7">
-                        <v-file-input
+                      <v-col cols="1">
+                        <v-btn
+                          v-if="!bWASM"
+                          @click="acquireImage()"
+                          class="mx-2"
+                          fab
+                          dark
+                          large
                           color="#28714e"
-                          v-model="input"
-                          accept=".png, .jpg, .jpeg, .gif, .pdf , .bmp, .tif , .doc , .docx , .xls , .xlsx , "
-                          outlined
+                        >
+                          <img
+                            src="@/assets/scanner.png"
+                            height="30px"
+                            weidth="30px"
+                          />
+                        </v-btn>
+                      </v-col>
+                      <v-col cols="1">
+                        <v-btn
+                          @click="openImage()"
+                          class="mx-2"
+                          fab
+                          dark
+                          large
+                          color="#39ac73"
+                        >
+                          <img
+                            src="@/assets/attachment.png"
+                            height="30px"
+                            weidth="30px"
+                          />
+                        </v-btn>
+                      </v-col>
+                      <v-col cols="1" v-show="false">
+                        <select
+                          v-if="!bWASM"
+                          id="sources"
+                          v-show="false"
+                        ></select>
+                      </v-col>
+                      <v-col cols="4">
+                        <!-- required -->
+                        <v-text-field
+                          color="#28714e"
+                          label="اسم المرفق"
                           required
                           :rules="rules.required"
-                          label="اختيار مرفق"
-                          @change="selectFiles"
-                        ></v-file-input>
+                          outlined
+                          v-model="attachmentName"
+                        ></v-text-field>
                       </v-col>
-                      <v-col>
+                      <v-col cols="2">
                         <v-autocomplete
                           color="#28714e"
                           no-data-text="لايوجد بيانات"
@@ -510,7 +549,7 @@
                           outlined
                         ></v-autocomplete>
                       </v-col>
-                      <v-col>
+                      <v-col cols="2">
                         <v-autocomplete
                           color="#28714e"
                           no-data-text="لايوجد بيانات"
@@ -528,17 +567,22 @@
                       <v-col cols="1">
                         <v-btn
                           dark
-                          fab
+                          height="60px"
+                          weidth="40px"
                           large
-                          color="blue-grey"
+                          rounded
+                          color="#c69f26"
                           class="white--text"
                           @click="validateAttatchement()"
                         >
-                          <v-icon dark>mdi-cloud-upload</v-icon>
+                          <img
+                            src="@/assets/upload.png"
+                            height="25px"
+                            weidth="25px"
+                          />
                         </v-btn>
                       </v-col>
                     </v-row>
-
                     <v-alert
                       v-if="message"
                       border="left"
@@ -548,7 +592,6 @@
                     >
                       {{ message }}
                     </v-alert>
-
                     <v-card
                       class="mx-auto text-center"
                       v-if="filsUrls.length > 0"
@@ -633,35 +676,33 @@
                 ></v-checkbox>
               </v-container>
               <v-container>
-
                 <v-row>
                   <v-col>
-                  <div class="text-center">
-                    <router-link to="" @click="overlay = !overlay">
-                      <v-btn
-                        rounded
-                        color="#3d7f5f"
-                        dark
-                        large
-                        @click="validate"
-                        width="200"
-                      >
-                        <h5
-                          class="my-10 my-application"
-                          style="color: white; font-size: 14px"
+                    <div class="text-center">
+                      <router-link to="" @click="overlay = !overlay">
+                        <v-btn
+                          rounded
+                          color="#3d7f5f"
+                          dark
+                          large
+                          @click="print"
+                          width="200"
                         >
-                          إرسال
-                        </h5>
-                      </v-btn>
-                    </router-link>
-                  </div>
+                          <h5
+                            class="my-10 my-application"
+                            style="color: white; font-size: 14px"
+                          >
+                            إرسال
+                          </h5>
+                        </v-btn>
+                      </router-link>
+                    </div>
                   </v-col>
-
                 </v-row>
               </v-container>
             </v-form>
-            <div>
-              <v-container v-show="false">
+            <div  id="printMe">
+              <v-container v-show="true">
                 <div id="bc">
                   <div style="width: 100%">
                     <div
@@ -672,7 +713,7 @@
                         v-bind:value="barcodeValue"
                         width="1"
                         height="30"
-                        :displayValue="false"
+                        :displayValue="true"
                         fontSize="10"
                       >
                         فشل تحميل الباركود
@@ -687,6 +728,9 @@
                   </div>
                 </div>
               </v-container>
+            </div>
+            <div v-show="false">
+              <v-container v-bind:id="containerId"></v-container>
             </div>
             <v-overlay :value="overlay">
               <v-progress-circular
@@ -713,7 +757,7 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
 import VueBarcode from "vue-barcode";
-
+import Dynamsoft from "dwt";
 // or, using the defaults with no stylesheet
 
 Vue.use(VueSimpleAlert, { reverseButtons: true });
@@ -723,6 +767,8 @@ axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
 axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + localStorage.getItem("token");
+axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // for POST requests
+
 const d = uq();
 const day = d.format("yyyy-MM-dd");
 const today = d.format("yyyy-MM-dd", "en");
@@ -770,6 +816,10 @@ export default {
   },
   data: function () {
     return {
+      barcodeValue: "",
+      attachmentName: "",
+      containerId: "dwtControlContainer",
+      bWASM: false,
       userID: "",
       toCopies: [],
       other: false,
@@ -785,7 +835,6 @@ export default {
       spoToggle: false,
       commpanyToggle: false,
       output: null,
-      barcodeValue: "219001144",
       validAttatchement: "",
       overlay: false,
       isLoading: false,
@@ -821,9 +870,10 @@ export default {
       isLoadingattatchmentCategory: true,
       isLoadingattatchmentExtention: true,
       isLoadingdepartments: true,
+      isLoadingentitiesM: true,
       sendway: ["صادر عادي", "البريد السعودي", "شركات شحن"],
       sendwaySPO: ["داخلي", "خارجي"],
-      deliveryCo: ["سمسا", "فيدكس"],
+      deliveryCo: ["سمسا"],
       //Start of filed data
       dep: "",
       from: "",
@@ -927,20 +977,154 @@ export default {
 
       this.$set(this, list[i].loading, false);
     }
+    this.bWASM = false;
+    /**
+     * ResourcesPath & ProductKey must be set in order to use the library!
+     */
+    Dynamsoft.DWT.ResourcesPath = "dwt-resources";
+    Dynamsoft.DWT.organizationID = "100780405";
+    Dynamsoft.DWT.Containers = [
+      {
+        WebTwainId: "dwtObject",
+        ContainerId: this.containerId,
+        Width: "100%",
+        Height: "400px",
+      },
+    ];
+    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", () => {
+      this.Dynamsoft_OnReady();
+    });
+    Dynamsoft.DWT.Load();
   },
 
   methods: {
-    fillAttatchment(list) {
-      for (var i = 0; i < list.length; i++) {
-        this.filsUrls.push({
-          name: list[i].FileName,
-          type: list[i].Text2,
-          category: list[i].Text4,
-          url:
-            "https://emp.adf.gov.sa/cms7514254/api/FileManager/GetFile?k=" +
-            list[i].FilePath,
-        });
-      } //end for
+    list(path, url) {
+      this.filsUrls.push({
+        url: url,
+        name: this.attachmentName.toString(),
+        path: path,
+        type: this.selectedAttatchmentType.toString(),
+        category: this.selectedAttatchmentCategory.toString(),
+      });
+      this.resetAttatchement();
+    },
+    SaveImage() {
+      if (this.DWObject) {
+        this.DWObject.IfShowFileDialog = true;
+        if (this.DWObject.HowManyImagesInBuffer > 0)
+          this.DWObject.SaveAllAsMultiPageTIFF("WebTWAINImage.tiff");
+      }
+    },
+    Dynamsoft_OnPostAllTransfers() {
+      var _this = this;
+      if (this.DWObject) {
+        if (this.DWObject.HowManyImagesInBuffer > 0) {
+          var strHTTPServer = "https://emp.adf.gov.sa";
+          this.DWObject.HTTPPort = location.port == "" ? 443 : 443;
+          var strActionPage = "/cms7514254/api/FileManager/UploadFile?k=cms";
+          /**
+           * 1.change file name, - REMOVE SPACES,
+           *
+           */
+          var uploadfilename = this.attachmentName + ".pdf";
+          this.DWObject.ClearAllHTTPFormField();
+          this.DWObject.SetHTTPFormField("k", "cms");
+
+          this.DWObject.HTTPUploadAllThroughPostAsPDF(
+            strHTTPServer,
+            strActionPage,
+            uploadfilename,
+            function OnHttpUploadSuccess() {
+              console.log("successful");
+            },
+            function onServerReturnedSomething(
+              errorCode,
+              errorString,
+              response
+            ) {
+              if (errorCode != 0 && errorCode != -2003) {
+                console.log("errorString: " + errorString);
+              } else {
+                var res = response.replaceAll('"', "");
+                console.log("response");
+                console.log(res);
+
+                var url =
+                  "https://emp.adf.gov.sa/cms7514254/api/FileManager/GetFile?k=".concat(
+                    res
+                  );
+                _this.list(res, url);
+              }
+            }
+          );
+        }
+      }
+      /*
+      3. call uploadFiles
+      */
+    },
+    Dynamsoft_OnReady() {
+      this.DWObject = Dynamsoft.DWT.GetWebTwain(this.containerId);
+      this.bWASM = Dynamsoft.Lib.env.bMobile || !Dynamsoft.DWT.UseLocalService;
+      if (this.bWASM) {
+        this.DWObject.Viewer.cursor = "pointer";
+      } else {
+        let sources = this.DWObject.GetSourceNames();
+        this.selectSources = document.getElementById("sources");
+        this.selectSources.options.length = 0;
+        for (let i = 0; i < sources.length; i++) {
+          this.selectSources.options.add(new Option(sources[i], i.toString()));
+        }
+      }
+    },
+    /**
+     * Acquire images from scanners or cameras or local files
+     */
+    acquireImage() {
+      if (!this.DWObject) this.DWObject = Dynamsoft.DWT.GetWebTwain();
+      if (this.bWASM) {
+        alert("Scanning is not supported under the WASM mode!");
+      } else if (
+        this.DWObject.SourceCount > 0 &&
+        this.DWObject.SelectSourceByIndex(this.selectSources.selectedIndex)
+      ) {
+        const onAcquireImageSuccess = () => {
+          this.DWObject.CloseSource();
+        };
+        const onAcquireImageFailure = onAcquireImageSuccess;
+        this.DWObject.OpenSource();
+        this.DWObject.AcquireImage(
+          {},
+          onAcquireImageSuccess,
+          onAcquireImageFailure
+        );
+      } else {
+        alert("الماسح الضوئي غير متصل");
+      }
+    },
+    /**
+     * Open local images.
+     */
+    openImage() {
+      if (!this.DWObject) this.DWObject = Dynamsoft.DWT.GetWebTwain();
+      this.DWObject.IfShowFileDialog = true;
+      /**
+       * Note:
+       * This following line of code uses the PDF Rasterizer which is an extra add-on that is licensed seperately
+       */
+      this.DWObject.Addon.PDF.SetConvertMode(
+        Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL
+      );
+      this.DWObject.LoadImageEx(
+        "",
+        Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,
+        () => {
+          //success
+        },
+        () => {
+          //failure
+        }
+      );
     },
     fillDepts(list) {
       for (var i = 0; i < list.length; i++) {
@@ -959,42 +1143,23 @@ export default {
         });
       }
     },
-    print() {
-      const prtHtml = document.getElementById("bc").innerHTML;
-      // Open the print window
-      const WinPrint = window.open(
-        "",
-        "",
-        "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
-      );
-      WinPrint.document.write(`<!DOCTYPE html>
-<html>
-  <head>
-    <style>
-    body{
-      padding: 0;
-      margin: 0;
-    }
-    @media print {
-      #bc {
-        padding-bottom: 10px;
-        zoom: 1;
-        transform: rotate(180deg);
-      }
-    }
-    </style>
-  </head>
-  <body>
-    <div id="bc">
-    ${prtHtml}
-    </div>
-  </body>
-</html>`);
+    toUpdate(id) {
+      console.log("from update " + id);
+      //this.$store.commit("SET_BARCODEVALUE", id);
+      this.barcodeValue = id;
 
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      WinPrint.close();
+      this.$forceUpdate();
+
+      setTimeout(() => {
+        this.print();
+      }, 300);
+    },
+    print() {
+                        this.$htmlToPaper("printMe");
+
+      this.showAlterSuccessMessage();
+      this.$refs.form.reset();
+      this.resetAttatchement();
     },
     deleteAtt(index) {
       this.filsUrls.splice(this.filsUrls[index], 1);
@@ -1071,7 +1236,7 @@ export default {
     upload(idx, file) {
       this.isLoading = true;
 
-      this.progressInfos[idx] = { percentage: 0, fileName: file.name };
+      this.progressInfos[idx] = { percentage: 0, fileName: "file.name" };
 
       UploadService.upload(file, (event) => {
         this.progressInfos[idx].percentage = Math.round(
@@ -1092,7 +1257,6 @@ export default {
             category: this.selectedAttatchmentCategory.toString(),
           });
           this.resetAttatchement();
-          return this.filsUrls;
         })
         .then((files) => {
           this.fileInfos = files.data;
@@ -1111,7 +1275,7 @@ export default {
     },
     validateAttatchement() {
       if (this.$refs.attatchmentForm.validate()) {
-        this.uploadFiles();
+        this.Dynamsoft_OnPostAllTransfers();
       }
     },
     resetAttatchement() {
@@ -1187,6 +1351,9 @@ export default {
       this.addDepartmentsList();
     },
     sendRequest() {
+      console.log("request body");
+      console.log(this.requestBody);
+
       this.isLoading = true;
       Vue.axios
         .post(
@@ -1194,16 +1361,21 @@ export default {
           this.requestBody
         )
         .then((resp) => {
+          console.log(resp);
           this.isLoading = false;
           if (!resp.data.ErrorCode) {
             this.outboundNumber = resp.data.Num.toString();
-            this.barcodeValue = this.outboundNumber;
+
             if (this.doprint) {
-              this.print();
+              console.log(
+                "barcodeValue from resp: " + resp.data.Num.toString()
+              );
+              this.toUpdate(resp.data.Num.toString());
+            } else {
+              this.showAlterSuccessMessage();
+              this.$refs.form.reset();
+              this.resetAttatchement();
             }
-            this.showAlterSuccessMessage();
-            this.$refs.form.reset();
-            this.resetAttatchement();
             this.$router.push({
               name: "publicOutboundbox", //use name for router push
             });
@@ -1234,9 +1406,7 @@ export default {
       } else {
         for (var i = 0; i < this.filsUrls.length; i++) {
           this.requestBody.RelatedAtt.push({
-            FileName: this.filsUrls[i].name
-              .toString()
-              .substring(0, this.filsUrls[i].name.toString().indexOf(".")),
+            FileName: this.filsUrls[i].name.replaceAll(" ", "_"),
             FilePath: this.filsUrls[i].path,
             Comments: "",
             Text1: this.listSearch(this.filsUrls[i].type, this.attatchmentType),

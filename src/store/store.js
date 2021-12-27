@@ -11,7 +11,7 @@ export const store = new Vuex.Store({
     state: {
         //JSON OBJ with name of GET methodes in ACTION and ITs FLAG
 
-
+        barcodeValue: "",
         username: "",
         password: "",
         permissionsApiList: [
@@ -87,7 +87,7 @@ export const store = new Vuex.Store({
                 method: "getMuraslatGehatList",
                 flag: "muraslatGehatListFlag",
                 name: "entitiesM",
-                loading: "entitiesM"
+                loading: "isLoadingentitiesM"
             },
             {
                 method: "getConfidentialityList",

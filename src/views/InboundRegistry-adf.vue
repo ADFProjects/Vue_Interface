@@ -1102,7 +1102,7 @@ export default {
      * ResourcesPath & ProductKey must be set in order to use the library!
      */
     Dynamsoft.DWT.ResourcesPath = "dwt-resources";
-    Dynamsoft.DWT.organizationID = "";
+    Dynamsoft.DWT.organizationID = "100780405";
     Dynamsoft.DWT.Containers = [
       {
         WebTwainId: "dwtObject",
@@ -1293,6 +1293,7 @@ export default {
         Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,
         () => {
           //success
+          
         },
         () => {
           //failure
@@ -1334,7 +1335,7 @@ export default {
             return resp.data;
           });
       }
-      this.print(id);
+      this.print(id)
     },
     deliveryCompany(value) {
       if (value.localeCompare(this.deliveryCo[0]) == 0) {

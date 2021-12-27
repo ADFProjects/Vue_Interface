@@ -66,6 +66,9 @@ export const SET_USERNAME = (state, payload) => {
 export const SET_PASSWORD = (state, payload) => {
     state.password = payload;
 };
+export const SET_BARCODEVALUE = (state, payload) => {
+    state.barcodeValue = payload;
+};
 //const saveCurrentCorrespondence = () => {
 
 // state.currentCorrespondence = correspondence;
@@ -88,6 +91,7 @@ const setName = (state, payload) => {
 };
 // By Abdullah 15-08-2021 -------- END
 export default {
+    SET_BARCODEVALUE,
     SET_USERNAME,
     SET_PASSWORD,
     SET_RESEND,

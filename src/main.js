@@ -31,9 +31,12 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import * as TastyBurgerButton from 'vue-tasty-burgers';
-import VueHtmlToPaper from 'vue-html-to-paper';
 import Vuex from 'vuex';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import VueHtmlToPaper from 'vue-html-to-paper';
+
+
+// or, using the defaults with no stylesheet
 
 Vue.use(Vuex);
 // or, using the defaults with no stylesheet
@@ -47,6 +50,7 @@ Vue.prototype.$config = config;
 
 Vue.component(VHijriDatePicker.name, VHijriDatePicker)
 Vue.component('Navbar', require('./components/navigation-adf/navbar2.vue').default)
+Vue.component('scan', require('./views/ScanerUpload.vue').default)
 Vue.use(VueRouter)
 // to store Objects
 if ( !Storage.prototype.setObject ) {
