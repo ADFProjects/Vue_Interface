@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar v-if= show />
+    <navbar v-if="show" />
     <router-view />
   </v-app>
 </template>
@@ -14,13 +14,10 @@ Vue.use(VueAxios, axios);
 
 axios.defaults.headers.common["ClientID"] = "Contest01"; // for POST requests
 axios.defaults.headers.common["ClientKey"] = "ADFFE1165rDDfTYR"; // for POST requests
-axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"; // for POST requests
-
 
 export default {
   components: {},
   name: "App",
-
 
   data: () => ({
     show: false,
@@ -31,31 +28,48 @@ export default {
     refreshRequestBody: "grant_type=refresh_token& refresh_token=",
   }),
   mounted() {
-    // By Abdullah 15-08-2021 -------- START
+    //1. get username and password
+    //2. save it to store
+    //3. dispatch LOGIN method
+    //4. redirect url
     console.log("$$$$$$$$$ App.vue $$$$$$$$$$");
+    var url =
+      "https://intgr.adf.gov.sa/?CU=cGkAgwMNgCAhkKDXwCoytV8Oi5vjgYlQrx52NfDGLhE%3d&P=uN04nbwO3rbuTivxBYeGVVima7vyE5Ihbn5FPFV6hoc%3d#/";
+    //window.location.href;
+    let subUrl = url.substring(url.indexOf("CU=") + 3);
+    this.username = url.substring(url.indexOf("CU=") + 3, url.indexOf("&P="));
+    this.password = subUrl.substring(
+      subUrl.indexOf("&P=") + 3,
+      subUrl.indexOf("/")
+    );
+    localStorage.setItem("username", this.username);
+    localStorage.setItem("password", this.password);
+
+    /*By Abdullah 15-08-2021 -------- START
     var usrCms = document.cookie
       .split("; ")
       .find((x) => x.startsWith("usrCms" + "="));
+
     var pasCms = document.cookie
       .split("; ")
       .find((x) => x.startsWith("pasCms" + "="));
     this.username = usrCms.substring(7);
     this.password = pasCms.substring(7);
-    // var ca = document.cookie.split(";");
-    // for (var i = 0; i < ca.length; i++) {
-    //   //var c = ca[i];
-    //   this.username = ca[0].substring(9);
-    //   this.password = ca[1].substring(10);
-    // }
+*/
+    /*var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      this.username = ca[0].substring(9);
+      this.password = ca[1].substring(10);
+    }*/
+
     this.requestBody =
       " userName=" +
       this.username +
       "&password=" +
       this.password +
       "&grant_type=password";
-    console.log("### user ###" + this.username);
-    console.log("### pass ###" + this.password);
-    // get token request
+
     // By Abdullah 15-08-2021 -------- END
     Vue.axios
       .post("https://emp.adf.gov.sa/cms7514254/api/cmstoken", this.requestBody)
@@ -63,6 +77,7 @@ export default {
         localStorage.setItem("token", resp.data.access_token);
         localStorage.setItem("expired", new Date(resp.data[".expires"]));
         localStorage.setItem("refresh", resp.data.refresh_token);
+
         console.log(resp.data.access_token);
       })
       .then(() => {
@@ -93,7 +108,6 @@ export default {
       "85rC41LAUtzXEvFh1gjmYGX2uoL65TkOu35rGbcaBW0LYBthwfqiz_M03gdnV6cEE1KSarSIpqe-bEo2Tbu5Hj_jvjagiN5KjSw1k2TSysi4Ipro10A9Mfot8QBL0oLYn_y1cmLx8yeT3rphHIxTvZu9K-eQlvnQAzWJiNm0-gfITr8q_027uf8Hxs47vG3M7w-8PgJ0RjryI8doLx95nkz7_TchMB98AlqoMDw-v37dWuGYDHQYR-NIldi6P_Qb92uT1bk-CP48Wx4Nh5SWYQqFglhO96Lwd_Pd8ucVGf4yXaWs8wdVP0pqE_cowFs01FX_LXuJO0AQ_bgq00rSOkBDVTunN-LmDM_GzivXYS88bTO-YkwFqyXslnpyKGtsHfdwp2SHks1i0HnaDrRTPlsNMoQ7r-ngMGzSdaEXAjA"
     );*/
     // By Abdullah 15-08-2021 -------- END
-
   },
   methods: {
     // By Abdullah 15-08-2021 -------- START
@@ -151,14 +165,15 @@ export default {
           list.push(1);
           pathList.push("/inboundbox");
           pathList.push("/inbound");
+          pathList.push("/resend");
         }
         if (p.search("11A") != -1) {
           list.push(2);
           pathList.push("/publicOutboundbox");
           pathList.push("/internalOutboundbox");
           pathList.push("/outbound");
+          pathList.push("/resend");
           pathList.push("/InternalOutbound");
-
         }
         if (p.search("13S") != -1) {
           list.push(3);

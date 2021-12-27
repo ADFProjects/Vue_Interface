@@ -18,6 +18,7 @@
     "bootstrap-vue": "^2.21.2",
     "canvas": "^2.7.0",
     "core-js": "^3.6.5",
+    "dwt": "^17.1.12",
     "html2canvas": "^1.0.0-rc.7",
     "jquery": "^3.6.0",
     "jsbarcode": "^3.11.3",

@@ -523,22 +523,59 @@
                     </div>
 
                     <v-row>
-                      <v-col cols="7">
-                        <v-file-input
-                          class="my-application"
+                      <v-col cols="1">
+                        <v-btn
+                          v-if="!bWASM"
+                          @click="acquireImage()"
+                          class="mx-2"
+                          fab
+                          dark
+                          large
                           color="#28714e"
-                          v-model="input"
-                          accept=".png, .jpg, .jpeg, .gif, .pdf , .bmp, .tif , .doc , .docx , .xls , .xlsx , "
-                          outlined
-                          :rules="rules.required"
-                          required
-                          label="اختيار مرفق"
-                          @change="selectFiles"
-                        ></v-file-input>
+                        >
+                          <img
+                            src="@/assets/scanner.png"
+                            height="30px"
+                            weidth="30px"
+                          />
+                        </v-btn>
                       </v-col>
-                      <v-col>
+                      <v-col cols="1">
+                        <v-btn
+                          @click="openImage()"
+                          class="mx-2"
+                          fab
+                          dark
+                          large
+                          color="#39ac73"
+                        >
+                          <img
+                            src="@/assets/attachment.png"
+                            height="30px"
+                            weidth="30px"
+                          />
+                        </v-btn>
+                      </v-col>
+                      <v-col cols="1" v-show="false">
+                        <select
+                          v-if="!bWASM"
+                          id="sources"
+                          v-show="false"
+                        ></select>
+                      </v-col>
+                      <v-col cols="4">
+                        <!-- required -->
+                        <v-text-field
+                          color="#28714e"
+                          label="اسم المرفق"
+                          required
+                          :rules="rules.required"
+                          outlined
+                          v-model="attachmentName"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="2">
                         <v-autocomplete
-                          class="my-application"
                           color="#28714e"
                           no-data-text="لايوجد بيانات"
                           :loading="isLoadingattatchmentType"
@@ -546,15 +583,14 @@
                           :items="attatchmentType"
                           v-model="selectedAttatchmentType"
                           label="نوع المرفق"
-                          :rules="rules.required"
                           required
+                          :rules="rules.required"
                           item-text="Name"
                           outlined
                         ></v-autocomplete>
                       </v-col>
-                      <v-col>
+                      <v-col cols="2">
                         <v-autocomplete
-                          class="my-application"
                           color="#28714e"
                           no-data-text="لايوجد بيانات"
                           :loading="isLoadingattatchmentCategory"
@@ -563,25 +599,30 @@
                           v-model="selectedAttatchmentCategory"
                           item-text="Name"
                           label="تصنيف المرفق"
-                          :rules="rules.required"
                           required
+                          :rules="rules.required"
                           outlined
                         ></v-autocomplete>
                       </v-col>
                       <v-col cols="1">
                         <v-btn
                           dark
-                          fab
+                          height="60px"
+                          weidth="40px"
                           large
-                          color="blue-grey"
+                          rounded
+                          color="#c69f26"
                           class="white--text"
                           @click="validateAttatchement()"
                         >
-                          <v-icon dark>mdi-cloud-upload</v-icon>
+                          <img
+                            src="@/assets/upload.png"
+                            height="25px"
+                            weidth="25px"
+                          />
                         </v-btn>
                       </v-col>
                     </v-row>
-
                     <v-alert
                       v-if="message"
                       border="left"
@@ -736,6 +777,14 @@
               </v-container>
               <v-container>
                 <v-checkbox
+                  class="checkBoxs--text"
+                  color="#28714e"
+                  v-model="doprint"
+                  label=" طباعة الباركود"
+                ></v-checkbox>
+              </v-container>
+              <v-container>
+                <v-checkbox
                   class="my-application checkBoxs--text"
                   rounded
                   color="#28714e"
@@ -752,7 +801,7 @@
                       color="#3d7f5f"
                       dark
                       large
-                      @click="validate"
+                      @click="running"
                       width="200"
                     >
                       <h5
@@ -766,6 +815,32 @@
                 </div>
               </v-container>
             </v-form>
+            <v-container style="width: 100%" id="printMe" v-show="false">
+              <v-container
+                class="d-flex justify-center"
+                style="display: table; margin: 0 auto"
+              >
+                <barcode
+                  v-bind:value="barcodeValue"
+                  width="1"
+                  height="30"
+                  :displayValue="true"
+                  fontSize="10"
+                >
+                  فشل تحميل الباركود
+                </barcode>
+                <v-container style="font-size: 15px; direction: rtl">
+                  {{ dateBc.substr(0, 10) }}
+                </v-container>
+
+                <v-container style="font-size: 15px; direction: rtl">
+                  عدد المرفقات: {{ filsUrls.length }}
+                </v-container>
+              </v-container>
+            </v-container>
+            <div v-show="false">
+              <v-container v-bind:id="containerId"></v-container>
+            </div>
             <v-overlay :value="overlay">
               <v-progress-circular
                 indeterminate
@@ -788,6 +863,8 @@ import VueAxios from "vue-axios";
 import VueSimpleAlert from "vue-simple-alert";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+import Dynamsoft from "dwt";
+import VueBarcode from "vue-barcode";
 
 Vue.use(VueSimpleAlert, { reverseButtons: true });
 Vue.use(VueAxios, axios);
@@ -816,6 +893,7 @@ const pattern2 = /^700[0-9]{7}$/;
 export default {
   components: {
     Loading,
+    barcode: VueBarcode,
   },
   computed: {
     departments() {
@@ -848,6 +926,12 @@ export default {
   },
   data: function () {
     return {
+      doprint: false,
+      barcodeValue: "",
+      barcodeToggle: false,
+      attachmentName: "",
+      containerId: "dwtControlContainer",
+      bWASM: false,
       userID: "",
       other: false,
       numberId: false,
@@ -882,6 +966,7 @@ export default {
       message: "",
       fileInfos: [],
       checkNums: ["رقم الهوية الوطنية / الإقامة", "رقم السجل التجاري"],
+      dateBc: new Date().toLocaleString(),
       isLoadingobjectiveClass: true,
       isLoadingentities: true,
       isLoadingconfidentiality: true,
@@ -892,6 +977,7 @@ export default {
       isLoadingattatchmentCategory: true,
       isLoadingattatchmentExtention: true,
       isLoadingdepartments: true,
+      isLoadingentitiesM: true,
       //Start of filed data
       from: "",
       selectNumber: "",
@@ -1011,10 +1097,210 @@ export default {
       }
       this.$set(this, list[i].loading, false);
     }
+    this.bWASM = false;
+    /**
+     * ResourcesPath & ProductKey must be set in order to use the library!
+     */
+    Dynamsoft.DWT.ResourcesPath = "dwt-resources";
+    Dynamsoft.DWT.organizationID = "";
+    Dynamsoft.DWT.Containers = [
+      {
+        WebTwainId: "dwtObject",
+        ContainerId: this.containerId,
+        Width: "100%",
+        Height: "400px",
+      },
+    ];
+    Dynamsoft.DWT.RegisterEvent("OnWebTwainReady", () => {
+      this.Dynamsoft_OnReady();
+    });
+    Dynamsoft.DWT.Load();
   },
 
   methods: {
+    running() {
+      if (this.$refs.form.validate()) {
+        this.registerInbound();
+        this.addDepartmentsList();
+        this.addAttatchmentToRequest();
+      } else {
+        this.$refs.from.focus();
+      }
+    },
+    print(id) {
+      this.barcodeValue = id;
+      console.log("print --START");
+      if (this.doprint) {
+        this.barcodeToggle = true;
+        const prtHtml = document.getElementById("printMe").innerHTML;
+        // Open the print window
+        const WinPrint = window.open(
+          "",
+          "",
+          "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
+        );
+        WinPrint.document.write(`<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    body{
+      padding: 0;
+      margin: 0;
+    }
+    @media print {
+      #bc {
+        padding-bottom: 10px;
+        zoom: 1;
+        transform: rotate(180deg);
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <div id="bc">
+    ${prtHtml}
+    </div>
+  </body>
+</html>`);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
+      }
+            this.showAlterSuccessMessage(id);
+
+      console.log("print --END");
+    },
+    list(path, url) {
+      this.filsUrls.push({
+        url: url,
+        name: this.attachmentName.toString(),
+        path: path,
+        type: this.selectedAttatchmentType.toString(),
+        category: this.selectedAttatchmentCategory.toString(),
+      });
+      this.resetAttatchement();
+    },
+    SaveImage() {
+      if (this.DWObject) {
+        this.DWObject.IfShowFileDialog = true;
+        if (this.DWObject.HowManyImagesInBuffer > 0)
+          this.DWObject.SaveAllAsMultiPageTIFF("WebTWAINImage.tiff");
+      }
+    },
+    Dynamsoft_OnPostAllTransfers() {
+      var _this = this;
+      if (this.DWObject) {
+        if (this.DWObject.HowManyImagesInBuffer > 0) {
+          var strHTTPServer = "https://emp.adf.gov.sa";
+          this.DWObject.HTTPPort = location.port == "" ? 443 : 443;
+          var strActionPage = "/cms7514254/api/FileManager/UploadFile?k=cms";
+          /**
+           * 1.change file name, - REMOVE SPACES,
+           *
+           */
+          var uploadfilename = this.attachmentName + ".pdf";
+          this.DWObject.ClearAllHTTPFormField();
+          this.DWObject.SetHTTPFormField("k", "cms");
+
+          this.DWObject.HTTPUploadAllThroughPostAsPDF(
+            strHTTPServer,
+            strActionPage,
+            uploadfilename,
+            function OnHttpUploadSuccess() {
+              console.log("successful");
+            },
+            function onServerReturnedSomething(
+              errorCode,
+              errorString,
+              response
+            ) {
+              if (errorCode != 0 && errorCode != -2003) {
+                console.log("errorString: " + errorString);
+              } else {
+                var res = response.replaceAll('"', "");
+                console.log("response");
+                console.log(res);
+
+                var url =
+                  "https://emp.adf.gov.sa/cms7514254/api/FileManager/GetFile?k=".concat(
+                    res
+                  );
+                _this.list(res, url);
+              }
+            }
+          );
+        }
+      }
+      /*
+      3. call uploadFiles
+      */
+    },
+    Dynamsoft_OnReady() {
+      this.DWObject = Dynamsoft.DWT.GetWebTwain(this.containerId);
+      this.bWASM = Dynamsoft.Lib.env.bMobile || !Dynamsoft.DWT.UseLocalService;
+      if (this.bWASM) {
+        this.DWObject.Viewer.cursor = "pointer";
+      } else {
+        let sources = this.DWObject.GetSourceNames();
+        this.selectSources = document.getElementById("sources");
+        this.selectSources.options.length = 0;
+        for (let i = 0; i < sources.length; i++) {
+          this.selectSources.options.add(new Option(sources[i], i.toString()));
+        }
+      }
+    },
+    /**
+     * Acquire images from scanners or cameras or local files
+     */
+    acquireImage() {
+      if (!this.DWObject) this.DWObject = Dynamsoft.DWT.GetWebTwain();
+      if (this.bWASM) {
+        alert("Scanning is not supported under the WASM mode!");
+      } else if (
+        this.DWObject.SourceCount > 0 &&
+        this.DWObject.SelectSourceByIndex(this.selectSources.selectedIndex)
+      ) {
+        const onAcquireImageSuccess = () => {
+          this.DWObject.CloseSource();
+        };
+        const onAcquireImageFailure = onAcquireImageSuccess;
+        this.DWObject.OpenSource();
+        this.DWObject.AcquireImage(
+          {},
+          onAcquireImageSuccess,
+          onAcquireImageFailure
+        );
+      } else {
+        alert("الماسح الضوئي غير متصل");
+      }
+    },
+    /**
+     * Open local images.
+     */
+    openImage() {
+      if (!this.DWObject) this.DWObject = Dynamsoft.DWT.GetWebTwain();
+      this.DWObject.IfShowFileDialog = true;
+      /**
+       * Note:
+       * This following line of code uses the PDF Rasterizer which is an extra add-on that is licensed seperately
+       */
+      this.DWObject.Addon.PDF.SetConvertMode(
+        Dynamsoft.DWT.EnumDWT_ConvertMode.CM_RENDERALL
+      );
+      this.DWObject.LoadImageEx(
+        "",
+        Dynamsoft.DWT.EnumDWT_ImageType.IT_ALL,
+        () => {
+          //success
+        },
+        () => {
+          //failure
+        }
+      );
+    },
     addDepartmentsList() {
+      console.log("addDepartmentsList --- START");
       for (let i = 0; i < this.toCopies.length; i++) {
         this.requestBody.RelatedGehat.push({
           Name: this.listSearchDep(this.toCopies[i], this.departments).GehaName,
@@ -1024,25 +1310,31 @@ export default {
             .ManagerUserName,
         });
       }
+      console.log("addDepartmentsList -- END");
     },
     sendSMS(id) {
-      var sms2 =
-        "عزيزي العميل، \n" +
-        "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية بالرقم المرجعي :" +
-        "\n" +
-        id +
-        ".";
+      console.log("sendSMS --START");
+      if (this.doSendSMS) {
+        var sms2 =
+          "عزيزي العميل، \n" +
+          "نفيدكم بأنه تم استلام معاملتك في صندوق التنمية الزراعية بالرقم المرجعي :" +
+          "\n" +
+          id +
+          ".";
 
-      this.sendSmsRequestBody.MobileNo = this.mobileNumber;
-      this.sendSmsRequestBody.Message = sms2;
-      Vue.axios
-        .post(
-          "https://emp.adf.gov.sa/cms7514254/api/cms/SendSMS",
-          this.sendSmsRequestBody
-        )
-        .then((resp) => {
-          console.log(resp.data);
-        });
+        this.sendSmsRequestBody.MobileNo = this.mobileNumber;
+        this.sendSmsRequestBody.Message = sms2;
+        Vue.axios
+          .post(
+            "https://emp.adf.gov.sa/cms7514254/api/cms/SendSMS",
+            this.sendSmsRequestBody
+          )
+          .then((resp) => {
+            console.log("sendSMS --END");
+            return resp.data;
+          });
+      }
+      this.print(id);
     },
     deliveryCompany(value) {
       if (value.localeCompare(this.deliveryCo[0]) == 0) {
@@ -1114,7 +1406,6 @@ export default {
         });
     },
     validate() {
-      this.$refs.form.validate();
       if (this.$refs.form.validate()) {
         this.registerInbound();
       } else {
@@ -1123,13 +1414,14 @@ export default {
     },
     validateAttatchement() {
       if (this.$refs.attatchmentForm.validate()) {
-        this.uploadFiles();
+        this.Dynamsoft_OnPostAllTransfers();
       }
     },
     resetAttatchement() {
       this.$refs.attatchmentForm.reset();
     },
     registerInbound() {
+      console.log("registerInbound --- START");
       /*
 *API ID* - *Dropdown List Name*  -  *Name in Code*  - *Name in Request*
 الجهة             13                  entities
@@ -1205,12 +1497,11 @@ export default {
       this.requestBody.RelatedEmail = this.email;
       this.requestBody.RelatedName = this.senderName;
       this.requestBody.RelatedPhone = this.mobileNumber;
-      this.addAttatchmentToRequest();
-      this.addDepartmentsList();
 
-      console.log(this.requestBody);
+      console.log("registerInbound --- END");
     },
     sendRequest() {
+      console.log("sendRequest --START");
       this.isLoading = true;
 
       Vue.axios
@@ -1221,53 +1512,58 @@ export default {
         .then((resp) => {
           this.isLoading = false;
           if (!resp.data.ErrorCode) {
-            //send Origin
-            if (this.sendOriginal) {
-              this.sendOriginRequest(resp.data.Num.toString());
-            }
-            if (this.doSendSMS) {
-              this.sendSMS(resp.data.Num.toString());
-            }
-            this.showAlterSuccessMessage(resp.data.Num.toString());
-            this.$refs.form.reset();
-            this.resetAttatchement();
-            this.$router.push({
-              name: "inboundbox", //use name for router push
-            });
+      this.sendOriginRequest(resp.data.Num.toString());
           } else {
             this.showAlterFailureMessage(resp.data.ErrorCode);
           }
         });
+      console.log("sendRequest --END");
+    },
+    postSend() {
+      // origin
+      //  const callback = () => {
+      //   this.$router.push({
+      //   name: "inboundbox", //use name for router push
+      // });
+      //  };
+  
+
     },
     sendOriginRequest(incidentNumber) {
-      this.sendOriginRequestBody.IncidentNumber = incidentNumber;
-      this.sendOriginRequestBody.GehaCode = this.listSearchDep(
-        this.originalTo,
-        this.departments
-      ).DeptNo;
-      this.sendOriginRequestBody.GehaName = this.originalTo;
-      this.sendOriginRequestBody.Details = this.remarksOrigin;
+      console.log("sendOriginRequest --START");
+      if (this.sendOriginal) {
+        this.sendOriginRequestBody.IncidentNumber = incidentNumber;
+        this.sendOriginRequestBody.GehaCode = this.listSearchDep(
+          this.originalTo,
+          this.departments
+        ).DeptNo;
+        this.sendOriginRequestBody.GehaName = this.originalTo;
+        this.sendOriginRequestBody.Details = this.remarksOrigin;
 
-      this.sendOriginRequestBody.RecieverUsername = this.listSearchDep(
-        this.originalTo,
-        this.departments
-      ).ManagerUserName;
-      this.sendOriginRequestBody.title =
-        "طلب تأكيد استلام الوارد رقم" +
-        ": " +
-        incidentNumber +
-        " - " +
-        this.title;
+        this.sendOriginRequestBody.RecieverUsername = this.listSearchDep(
+          this.originalTo,
+          this.departments
+        ).ManagerUserName;
+        this.sendOriginRequestBody.title =
+          "طلب تأكيد استلام الوارد رقم" +
+          ": " +
+          incidentNumber +
+          " - " +
+          this.title;
 
-      Vue.axios
-        .post(
-          "https://emp.adf.gov.sa/cms7514254/api/cms/ConfirmInboundReceive",
-          this.sendOriginRequestBody
-        )
-        .then((resp) => {
-          this.isLoading = false;
-          console.log(resp.data);
-        });
+        Vue.axios
+          .post(
+            "https://emp.adf.gov.sa/cms7514254/api/cms/ConfirmInboundReceive",
+            this.sendOriginRequestBody
+          )
+          .then((resp) => {
+            this.isLoading = false;
+            console.log("sendOriginRequest --END");
+            return resp.data;
+          });
+      }
+      this.sendSMS(incidentNumber);
+      console.log("sendOriginRequest --END");
     },
     listSearch(nameKey, myArray) {
       for (var i = 0; i < myArray.length; i++) {
@@ -1284,14 +1580,14 @@ export default {
       }
     },
     addAttatchmentToRequest() {
+      console.log("addAttatchmentToRequest --START");
       if (this.filsUrls.length == 0) {
+        console.log("addAttatchmentToRequest --END");
         this.showAlterWarningMessage();
       } else {
         for (var i = 0; i < this.filsUrls.length; i++) {
           this.requestBody.RelatedAtt.push({
-            FileName: this.filsUrls[i].name
-              .toString()
-              .substring(0, this.filsUrls[i].name.toString().indexOf(".")),
+            FileName: this.filsUrls[i].name.replaceAll(" ", "_"),
             FilePath: this.filsUrls[i].path,
             Comments: "",
             Text1: this.listSearch(this.filsUrls[i].type, this.attatchmentType),
@@ -1304,6 +1600,7 @@ export default {
             Text5: i + 1,
           });
         } //end for
+        console.log("addAttatchmentToRequest --END");
         this.sendRequest();
       }
     },
@@ -1314,7 +1611,17 @@ export default {
         type: "success",
         confirmButtonText: "إغلاق",
         confirmButtonColor: "#28714e",
+      }).then(() => {
+        this.$router.push({
+         name: "inboundbox", //use name for router push
+       });
       });
+
+
+
+
+
+      
     },
     showAlterFailureMessage(code) {
       this.$fire({
@@ -1327,6 +1634,7 @@ export default {
       });
     },
     showAlterWarningMessage() {
+      var resp = false;
       this.$fire({
         title: "لايوجد مرفقات",
         text: "هل أنت متأكد من الإرسال بدون مرفقات؟",
@@ -1338,10 +1646,11 @@ export default {
         cancelButtonText: "إلغاء",
         reverseButtons: true,
       }).then((result) => {
-        if (result.value) {
+        if (result.value == true) {
           this.sendRequest();
         }
       });
+      return resp;
     },
     confidentialTitle(value) {
       if (
